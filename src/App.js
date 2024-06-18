@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './sections/Hero';
+import About from './sections/About';
+import Projects from './sections/Projects';
+import Extracurricular from './sections/Extracurricular';
+import Contact from './sections/Contact';
 import './App.css';
 
 function App() {
+  const [darkTheme, setDarkTheme] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkTheme(!darkTheme);
+    document.body.classList.toggle('dark-theme', !darkTheme);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`app ${darkTheme ? 'dark-theme' : ''}`}>
+      <Navbar toggleTheme={toggleTheme} darkTheme={darkTheme} />
+      <Hero />
+      <About />
+      <Projects />
+      <Extracurricular />
+      <Contact />
     </div>
   );
 }
