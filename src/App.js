@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './sections/Hero';
-import About from './sections/About';
-import Projects from './sections/Projects';
-import Extracurricular from './sections/Extracurricular';
-import Contact from './sections/Contact';
-import './App.css';
+import React from 'react';
+import { ThemeProvider } from './context/ThemeContext';
+import Layout from './components/layout/Layout';
+import Hero from './components/home/Hero';
+import About from './components/about/About';
+import Projects from './components/projects/Projects';
+import Skills from './components/skills/Skills';
+import Contact from './components/contact/Contact';
 
 function App() {
-  const [darkTheme, setDarkTheme] = useState(false);
-
-  const toggleTheme = () => {
-    setDarkTheme(!darkTheme);
-    document.body.classList.toggle('dark-theme', !darkTheme);
-  };
-
-  return (
-    <div className={`app ${darkTheme ? 'dark-theme' : ''}`}>
-      <Navbar toggleTheme={toggleTheme} darkTheme={darkTheme} />
-      <Hero />
-      <About />
-      <Projects />
-      <Extracurricular />
-      <Contact />
-    </div>
-  );
+    return (
+        <ThemeProvider>
+            <Layout>
+                <Hero />
+                <About />
+                <Projects />
+                <Skills />
+                <Contact />
+            </Layout>
+        </ThemeProvider>
+    );
 }
 
 export default App;
