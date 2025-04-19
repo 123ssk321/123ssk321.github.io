@@ -13,90 +13,77 @@ export const skillsData = {
     aiDataScience: [
         {
             name: "Python",
-            icon: SiPython,
-            level: 90,
-            description: "Advanced Python programming with focus on data science and ML",
+            monoIcon: SiPython,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
         },
         {
             name: "TensorFlow",
-            icon: SiTensorflow,
-            level: 85,
-            description: "Deep learning model development and deployment",
+            monoIcon: SiTensorflow,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg"
         },
         {
             name: "scikit-learn",
-            icon: SiScikitlearn,
-            level: 88,
-            description: "Machine learning modeling and analysis",
+            monoIcon: SiScikitlearn,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg"
         },
         {
             name: "Pandas",
-            icon: SiPandas,
-            level: 92,
-            description: "Data manipulation and analysis",
+            monoIcon: SiPandas,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
         },
         {
             name: "NumPy",
-            icon: SiNumpy,
-            level: 90,
-            description: "Numerical computing and array operations",
+            monoIcon: SiNumpy,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"
         }
     ],
 
     softwareEngineering: [
         {
             name: "JavaScript",
-            icon: SiJavascript,
-            level: 88,
-            description: "Modern JavaScript development (ES6+)",
+            monoIcon: SiJavascript,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
         },
         {
             name: "React",
-            icon: SiReact,
-            level: 85,
-            description: "Frontend development with React ecosystem",
+            monoIcon: SiReact,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
         },
         {
             name: "Node.js",
-            icon: SiNodedotjs,
-            level: 82,
-            description: "Backend development and API design",
+            monoIcon: SiNodedotjs,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
         },
         {
             name: "Docker",
-            icon: SiDocker,
-            level: 80,
-            description: "Containerization and deployment",
+            monoIcon: SiDocker,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
         },
         {
             name: "Git",
-            icon: SiGit,
-            level: 88,
-            description: "Version control and collaboration",
+            monoIcon: SiGit,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
         },
         {
             name: "PostgreSQL",
-            icon: SiPostgresql,
-            level: 85,
-            description: "Relational database design and optimization",
+            monoIcon: SiPostgresql,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
         },
         {
             name: "MongoDB",
-            icon: SiMongodb,
-            level: 83,
-            description: "NoSQL database development",
+            monoIcon: SiMongodb,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
         },
         {
             name: "AWS",
-            icon: SiAmazonwebservices,
-            level: 78,
-            description: "Cloud infrastructure and services",
+            monoIcon: SiAmazonwebservices,
+
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
         },
         {
             name: "Linux",
-            icon: SiLinux,
-            level: 85,
-            description: "System administration and shell scripting",
+            monoIcon: SiLinux,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg"
         }
     ],
 

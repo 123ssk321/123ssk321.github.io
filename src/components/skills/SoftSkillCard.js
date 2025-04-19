@@ -18,8 +18,8 @@ const Card = styled(motion.div)`
     transform: translateY(-5px);
     box-shadow: ${props => props.theme === 'dark'
         ? `0 10px 20px rgba(255, 255, 255, 0.1),
-         0 5px 12px rgba(255, 255, 255, 0.08),
-         0 3px 6px rgba(255, 255, 255, 0.06)`
+       0 5px 12px rgba(255, 255, 255, 0.08),
+       0 3px 6px rgba(255, 255, 255, 0.06)`
         : '0 10px 20px rgba(0, 0, 0, 0.1)'};
   }
 `;
@@ -43,20 +43,6 @@ const Description = styled.p`
   margin-bottom: 1rem;
 `;
 
-const ProgressBar = styled.div`
-  width: 100%;
-  height: 4px;
-  background: var(--color-bg-primary);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-`;
-
-const Progress = styled(motion.div)`
-  height: 100%;
-  background: var(--color-text-primary);
-  border-radius: var(--radius-full);
-`;
-
 const StrengthsList = styled.ul`
   list-style: none;
   padding: 0;
@@ -73,7 +59,7 @@ const StrengthItem = styled.li`
   color: var(--color-text-secondary);
 `;
 
-const SkillCard = ({ skill, isSoftSkill }) => {
+const SoftSkillCard = ({ skill }) => {
     const { theme } = useTheme();
     const Icon = skill.icon;
 
@@ -90,19 +76,7 @@ const SkillCard = ({ skill, isSoftSkill }) => {
             </IconWrapper>
             <SkillName>{skill.name}</SkillName>
             <Description>{skill.description}</Description>
-
-            {!isSoftSkill && (
-                <ProgressBar>
-                    <Progress
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                    />
-                </ProgressBar>
-            )}
-
-            {isSoftSkill && skill.strengths && (
+            {skill.strengths && (
                 <StrengthsList>
                     {skill.strengths.map((strength, index) => (
                         <StrengthItem key={index}>{strength}</StrengthItem>
@@ -113,4 +87,4 @@ const SkillCard = ({ skill, isSoftSkill }) => {
     );
 };
 
-export default SkillCard;
+export default SoftSkillCard; 

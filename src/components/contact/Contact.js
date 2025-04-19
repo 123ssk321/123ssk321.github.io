@@ -45,8 +45,8 @@ const Title = styled(motion.h2)`
   font-weight: 700;
   margin-bottom: 1.5rem;
   background: ${props => props.theme === 'dark'
-        ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-        : 'none'};
+    ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
+    : 'none'};
   -webkit-background-clip: ${props => props.theme === 'dark' ? 'text' : 'none'};
   -webkit-text-fill-color: ${props => props.theme === 'dark' ? 'transparent' : 'inherit'};
 `;
@@ -84,72 +84,72 @@ const FormWrapper = styled(motion.div)`
   padding: 2rem;
   border-radius: var(--radius-lg);
   box-shadow: ${props => props.theme === 'dark'
-        ? '0 4px 20px rgba(255, 255, 255, 0.05)'
-        : '0 4px 20px rgba(0, 0, 0, 0.1)'};
+    ? '0 4px 20px rgba(255, 255, 255, 0.05)'
+    : '0 4px 20px rgba(0, 0, 0, 0.1)'};
   border: 1px solid var(--color-border);
 `;
 
 const Contact = () => {
-    const { theme } = useTheme();
+  const { theme } = useTheme();
 
-    return (
-        <ContactSection id="contact">
-            <Container>
-                <Grid>
-                    <ContentWrapper>
-                        <Title
-                            theme={theme}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                        >
-                            Let's Work Together
-                        </Title>
-                        <Description>
-                            I'm always open to discussing new projects, creative ideas, or
-                            opportunities to be part of your visions. Feel free to reach out
-                            through the form or via social media.
-                        </Description>
-                        <SocialLinks>
-                            <SocialLink
-                                href="https://github.com/yourusername"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <FiGithub />
-                            </SocialLink>
-                            <SocialLink
-                                href="https://linkedin.com/in/yourusername"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <FiLinkedin />
-                            </SocialLink>
-                            <SocialLink
-                                href="mailto:your.email@example.com"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <FiMail />
-                            </SocialLink>
-                        </SocialLinks>
-                    </ContentWrapper>
-                    <FormWrapper
-                        theme={theme}
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <ContactForm />
-                    </FormWrapper>
-                </Grid>
-            </Container>
-        </ContactSection>
-    );
+  return (
+    <ContactSection id="contact">
+      <Container>
+        <Grid>
+          <ContentWrapper>
+            <Title
+              theme={theme}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Let's Work Together
+            </Title>
+            <Description>
+              I'm always open to discussing new projects, creative ideas, or
+              opportunities to be part of your visions. Feel free to reach out
+              through the form or via social media.
+            </Description>
+            <SocialLinks>
+              <SocialLink
+                href="https://github.com/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FiGithub />
+              </SocialLink>
+              <SocialLink
+                href="https://linkedin.com/in/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FiLinkedin />
+              </SocialLink>
+              <SocialLink
+                href="mailto:your.email@example.com"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FiMail />
+              </SocialLink>
+            </SocialLinks>
+          </ContentWrapper>
+          <FormWrapper
+            theme={theme}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <ContactForm />
+          </FormWrapper>
+        </Grid>
+      </Container>
+    </ContactSection>
+  );
 };
 
 export default Contact;

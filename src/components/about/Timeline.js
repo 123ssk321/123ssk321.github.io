@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import TimelineCard from './TimelineCard';
@@ -22,6 +22,13 @@ const TimelineContainer = styled.div`
   };
     transform: translateX(-50%);
     z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    &::before {
+      left: 20px;
+      transform: none;
+    }
   }
 `;
 
@@ -51,12 +58,12 @@ const TimelineItem = styled(motion.div)`
   }
 
   @media (max-width: 768px) {
-    padding: 0 0 0 2rem;
+    padding: 0 0 0 60px;
     justify-content: flex-start;
 
     &::before {
-      left: 0;
-      transform: translateY(-50%);
+      left: 20px;
+      transform: translate(-50%, -50%);
     }
   }
 `;
@@ -66,11 +73,41 @@ const CardWrapper = styled.div`
   max-width: 500px;
 
   @media (max-width: 768px) {
-    max-width: 100%;
+    max-width: calc(100% - 20px);
   }
 `;
 
 const Timeline = ({ items, theme, onCardClick }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getAnimationProps = (index) => {
+    if (isMobile) {
+      return {
+        initial: { opacity: 0, x: 50 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: 50 },
+        transition: { duration: 0.5 }
+      };
+    }
+
+    const isLeft = index % 2 === 0;
+    return {
+      initial: { opacity: 0, x: isLeft ? -50 : 50 },
+      animate: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: isLeft ? -50 : 50 },
+      transition: { duration: 0.5 }
+    };
+  };
+
   return (
     <TimelineContainer theme={theme}>
       <AnimatePresence mode="wait">
@@ -79,10 +116,7 @@ const Timeline = ({ items, theme, onCardClick }) => {
             key={item.id}
             theme={theme}
             align={index % 2 === 0 ? 'left' : 'right'}
-            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-            transition={{ duration: 0.5 }}
+            {...getAnimationProps(index)}
           >
             <CardWrapper>
               <TimelineCard
