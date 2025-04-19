@@ -29,9 +29,9 @@ const AnimatedGradient = styled(motion.div)`
   width: 200%;
   height: 200%;
   background: ${props => props.theme === 'dark'
-        ? 'radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%)'
-        : 'radial-gradient(circle at center, rgba(0, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%)'
-    };
+    ? 'radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%)'
+    : 'radial-gradient(circle at center, rgba(0, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%)'
+  };
   transform-origin: center;
 `;
 
@@ -42,9 +42,9 @@ const PlanetEdge = styled(motion.div)`
   width: 100%;
   height: 40%;
   background: ${props => props.theme === 'dark'
-        ? 'linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent)'
-        : 'linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent)'
-    };
+    ? 'linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent)'
+    : 'linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent)'
+  };
   z-index: 2;
 `;
 
@@ -62,9 +62,9 @@ const Title = styled(motion.h1)`
   font-weight: 800;
   margin-bottom: 1rem;
   background: ${props => props.theme === 'dark'
-        ? 'linear-gradient(90deg, #00ffff, #ff00ff)'
-        : 'linear-gradient(90deg, #0066ff, #ff00ff)'
-    };
+    ? 'linear-gradient(90deg, #00ffff, #ff00ff)'
+    : 'linear-gradient(90deg, #0066ff, #ff00ff)'
+  };
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
@@ -88,76 +88,76 @@ const Subtitle = styled(motion.p)`
 `;
 
 const Hero = ({ theme }) => {
-    const gradientRef = useRef(null);
+  const gradientRef = useRef(null);
 
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            if (gradientRef.current) {
-                const { clientX, clientY } = e;
-                const { width, height } = gradientRef.current.getBoundingClientRect();
-                const x = (clientX / window.innerWidth) * 100;
-                const y = (clientY / window.innerHeight) * 100;
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (gradientRef.current) {
+        const { clientX, clientY } = e;
+        const { width, height } = gradientRef.current.getBoundingClientRect();
+        const x = (clientX / window.innerWidth) * 100;
+        const y = (clientY / window.innerHeight) * 100;
 
-                gradientRef.current.style.transform = `translate(${-x}%, ${-y}%)`;
-            }
-        };
+        gradientRef.current.style.transform = `translate(${-x}%, ${-y}%)`;
+      }
+    };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-    return (
-        <HeroContainer theme={theme}>
-            <Background>
-                <AnimatedGradient
-                    ref={gradientRef}
-                    theme={theme}
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, 0],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-                <PlanetEdge
-                    theme={theme}
-                    animate={{
-                        height: ['40%', '45%', '40%'],
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-            </Background>
+  return (
+    <HeroContainer theme={theme} id="hero">
+      <Background>
+        <AnimatedGradient
+          ref={gradientRef}
+          theme={theme}
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 5, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <PlanetEdge
+          theme={theme}
+          animate={{
+            height: ['40%', '45%', '40%'],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </Background>
 
-            <Content>
-                <Title
-                    theme={theme}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    Hello, I'm [Your Name]
-                </Title>
+      <Content>
+        <Title
+          theme={theme}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Hello, I'm [Your Name]
+        </Title>
 
-                <Subtitle
-                    theme={theme}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                    A Full Stack Developer passionate about creating seamless digital experiences
-                </Subtitle>
+        <Subtitle
+          theme={theme}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          A Full Stack Developer passionate about creating seamless digital experiences
+        </Subtitle>
 
-                <SocialLinks theme={theme} />
-            </Content>
-        </HeroContainer>
-    );
+        <SocialLinks theme={theme} />
+      </Content>
+    </HeroContainer>
+  );
 };
 
 export default Hero; 

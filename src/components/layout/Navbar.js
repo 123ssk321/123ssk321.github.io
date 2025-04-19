@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
@@ -11,34 +11,46 @@ const NavContainer = styled(motion.nav)`
   right: 0;
   z-index: 1000;
   padding: 1rem 2rem;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  background: transparent;
 `;
 
 const NavContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
   align-items: center;
-  gap: 2rem;
-`;
-
-const Logo = styled(motion.div)`
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
   }
 `;
 
-const NavLinks = styled.div`
+const LeftSection = styled.div`
   display: flex;
-  gap: 2rem;
   align-items: center;
+`;
+
+const CenterSection = styled.div`
+  display: flex;
   justify-content: center;
+  align-items: center;
+  background: ${props => props.theme === 'dark'
+        ? 'rgba(23, 23, 23, 0.8)'
+        : 'rgba(255, 255, 255, 0.1)'
+    };
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  padding: 0.5rem;
+  box-shadow: ${props => props.theme === 'dark'
+        ? '0 0 20px rgba(0, 0, 0, 0.2)'
+        : '0 0 20px rgba(255, 255, 255, 0.1)'
+    };
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     display: none;
@@ -47,6 +59,7 @@ const NavLinks = styled.div`
 
 const RightSection = styled.div`
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
 
@@ -55,25 +68,69 @@ const RightSection = styled.div`
   }
 `;
 
+const Logo = styled(motion.a)`
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: ${props => props.theme === 'dark' ? '#fff' : '#000'};
+  text-decoration: none;
+  user-select: none;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 0.5rem;
+`;
+
 const NavLink = styled(motion.a)`
-  color: inherit;
+  color: ${props => props.theme === 'dark' ? '#fff' : '#000'};
   text-decoration: none;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
   position: relative;
+  transition: all 0.3s ease;
   
-  &:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -4px;
-    left: 0;
-    background-color: currentColor;
-    transition: width 0.3s ease;
+  &:hover {
+    color: ${props => props.theme === 'dark' ? '#00f2fe' : '#0070f3'};
   }
 
-  &:hover:after {
-    width: 100%;
+  &.active {
+    background: ${props => props.theme === 'dark'
+        ? 'linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(0, 112, 243, 0.1))'
+        : 'linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(0, 112, 243, 0.1))'
+    };
+    color: ${props => props.theme === 'dark' ? '#00f2fe' : '#0070f3'};
+    box-shadow: ${props => props.theme === 'dark'
+        ? '0 0 20px rgba(0, 242, 254, 0.2)'
+        : '0 0 20px rgba(0, 112, 243, 0.2)'
+    };
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 3px;
+      background: ${props => props.theme === 'dark' ? '#00f2fe' : '#0070f3'};
+      border-radius: 3px;
+      box-shadow: ${props => props.theme === 'dark'
+        ? '0 0 5px #00f2fe, 0 0 10px #00f2fe, 0 0 15px #00f2fe'
+        : '0 0 5px #0070f3, 0 0 10px #0070f3, 0 0 15px #0070f3'
+    };
+      opacity: ${props => props.shouldglow ? 1 : 0};
+      transition: opacity 0.3s ease;
+    }
   }
 `;
 
@@ -85,6 +142,7 @@ const ThemeToggle = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${props => props.theme === 'dark' ? '#fff' : '#000'};
 
   @media (max-width: 768px) {
     display: none;
@@ -110,7 +168,7 @@ const HamburgerButton = styled(motion.button)`
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: inherit;
+  color: ${props => props.theme === 'dark' ? '#fff' : '#000'};
   
   @media (max-width: 768px) {
     display: flex;
@@ -181,23 +239,151 @@ const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
     const [fullLogo, setFullLogo] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState('about');
+    const [shouldShowGlow, setShouldShowGlow] = useState(false);
+    const [isScrolling, setIsScrolling] = useState(false);
+    const scrollTimeout = useRef(null);
+
+    // Debounce function to limit the rate of scroll updates
+    const debounce = (func, wait) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    };
+
+    const handleScroll = useCallback(debounce(() => {
+        setIsScrolled(window.scrollY > 50);
+        setFullLogo(window.scrollY <= 50);
+    }, 10), []);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
             setFullLogo(window.scrollY <= 50);
+            if (isMobileMenuOpen) {
+                setIsMobileMenuOpen(false);
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, [isMobileMenuOpen]);
+
+    useEffect(() => {
+        const options = {
+            rootMargin: '-20% 0px -30% 0px',
+            threshold: Array.from({ length: 100 }, (_, i) => i / 100)
+        };
+
+        let currentSection = '';
+        const sectionRatios = new Map();
+
+        const handleIntersect = (entries) => {
+            // Don't update during programmatic scrolling
+            if (isScrolling) return;
+
+            entries.forEach(entry => {
+                sectionRatios.set(entry.target.id, entry.intersectionRatio);
+            });
+
+            let maxRatio = 0;
+            let maxSection = currentSection;
+
+            sectionRatios.forEach((ratio, section) => {
+                if (ratio > maxRatio) {
+                    maxRatio = ratio;
+                    maxSection = section;
+                }
+            });
+
+            if (maxRatio > 0.15) {
+                if (maxSection !== currentSection) {
+                    currentSection = maxSection;
+                    setActiveLink(maxSection);
+                    setShouldShowGlow(maxSection !== 'hero');
+                }
+            }
+        };
+
+        const observer = new IntersectionObserver(handleIntersect, options);
+
+        const sections = document.querySelectorAll('section[id]');
+        sections.forEach(section => {
+            observer.observe(section);
+            sectionRatios.set(section.id, 0);
+        });
+
+        return () => {
+            sections.forEach(section => observer.unobserve(section));
+        };
+    }, [isScrolling]);
+
+    const handleLogoClick = (e) => {
+        e.preventDefault();
+        setIsMobileMenuOpen(false);
+        setIsScrolling(true);
+
+        // Clear any existing timeout
+        if (scrollTimeout.current) {
+            clearTimeout(scrollTimeout.current);
+        }
+
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+            heroSection.scrollIntoView({ behavior: 'smooth' });
+            setActiveLink('hero');
+            setShouldShowGlow(false);
+
+            // Reset scrolling state after animation
+            scrollTimeout.current = setTimeout(() => {
+                setIsScrolling(false);
+            }, 1000);
+        }
+    };
+
+    const handleNavClick = (sectionId) => {
+        // Set scrolling state
+        setIsScrolling(true);
+
+        // Clear any existing timeout
+        if (scrollTimeout.current) {
+            clearTimeout(scrollTimeout.current);
+        }
+
+        // Immediately update active link and glow
+        setActiveLink(sectionId);
+        setShouldShowGlow(true);
+        setIsMobileMenuOpen(false);
+
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+
+            // Reset scrolling state after animation
+            scrollTimeout.current = setTimeout(() => {
+                setIsScrolling(false);
+            }, 1000);
+        }
+    };
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (scrollTimeout.current) {
+                clearTimeout(scrollTimeout.current);
+            }
+        };
     }, []);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
-
-    const handleMobileNavClick = () => {
-        setIsMobileMenuOpen(false);
     };
 
     return (
@@ -205,60 +391,108 @@ const Navbar = () => {
             <NavContainer
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
-                style={{
-                    backgroundColor: isScrolled
-                        ? theme === 'dark' ? 'rgba(17, 17, 17, 0.8)'
-                            : 'rgba(255, 255, 255, 0.8)'
-                        : 'transparent'
-                }}
             >
                 <NavContent>
-                    <Logo>
-                        <AnimatePresence mode="wait">
-                            {fullLogo ? (
-                                <motion.span
-                                    key="full"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                >
-                                    YourName
-                                </motion.span>
-                            ) : (
-                                <motion.span
-                                    key="short"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                >
-                                    YN
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
-                    </Logo>
-
-                    <NavLinks>
-                        <NavLink href="#about">About</NavLink>
-                        <NavLink href="#projects">Projects</NavLink>
-                        <NavLink href="#skills">Skills</NavLink>
-                        <NavLink href="#contact">Contact</NavLink>
-                        <NavLink
-                            href="/resume.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                    <LeftSection>
+                        <Logo
+                            theme={theme}
+                            href="#hero"
+                            onClick={handleLogoClick}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                         >
-                            CV
-                        </NavLink>
-                    </NavLinks>
+                            <AnimatePresence mode="wait">
+                                {fullLogo ? (
+                                    <motion.span
+                                        key="full"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        YourName
+                                    </motion.span>
+                                ) : (
+                                    <motion.span
+                                        key="short"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        YN
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </Logo>
+                    </LeftSection>
+
+                    <CenterSection theme={theme}>
+                        <NavLinks>
+                            <NavLink
+                                href="#about"
+                                theme={theme}
+                                className={activeLink === 'about' ? 'active' : ''}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleNavClick('about')}
+                                shouldglow={shouldShowGlow}
+                            >
+                                About
+                            </NavLink>
+                            <NavLink
+                                href="#projects"
+                                theme={theme}
+                                className={activeLink === 'projects' ? 'active' : ''}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleNavClick('projects')}
+                                shouldglow={shouldShowGlow}
+                            >
+                                Projects
+                            </NavLink>
+                            <NavLink
+                                href="#skills"
+                                theme={theme}
+                                className={activeLink === 'skills' ? 'active' : ''}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleNavClick('skills')}
+                                shouldglow={shouldShowGlow}
+                            >
+                                Skills
+                            </NavLink>
+                            <NavLink
+                                href="#contact"
+                                theme={theme}
+                                className={activeLink === 'contact' ? 'active' : ''}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleNavClick('contact')}
+                                shouldglow={shouldShowGlow}
+                            >
+                                Contact
+                            </NavLink>
+                            <NavLink
+                                href="/resume.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                theme={theme}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                CV
+                            </NavLink>
+                        </NavLinks>
+                    </CenterSection>
 
                     <RightSection>
-                        <ThemeToggle onClick={toggleTheme}>
+                        <ThemeToggle onClick={toggleTheme} theme={theme}>
                             {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
                         </ThemeToggle>
                         <HamburgerButton
                             onClick={toggleMobileMenu}
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
+                            theme={theme}
                         >
                             {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
                         </HamburgerButton>
@@ -276,23 +510,43 @@ const Navbar = () => {
                         variants={menuVariants}
                     >
                         <MobileNavLinks>
-                            <MobileNavLink href="#about" onClick={handleMobileNavClick}>
+                            <MobileNavLink
+                                href="#about"
+                                onClick={() => handleNavClick('about')}
+                                theme={theme}
+                                className={activeLink === 'about' ? 'active' : ''}
+                            >
                                 About
                             </MobileNavLink>
-                            <MobileNavLink href="#projects" onClick={handleMobileNavClick}>
+                            <MobileNavLink
+                                href="#projects"
+                                onClick={() => handleNavClick('projects')}
+                                theme={theme}
+                                className={activeLink === 'projects' ? 'active' : ''}
+                            >
                                 Projects
                             </MobileNavLink>
-                            <MobileNavLink href="#skills" onClick={handleMobileNavClick}>
+                            <MobileNavLink
+                                href="#skills"
+                                onClick={() => handleNavClick('skills')}
+                                theme={theme}
+                                className={activeLink === 'skills' ? 'active' : ''}
+                            >
                                 Skills
                             </MobileNavLink>
-                            <MobileNavLink href="#contact" onClick={handleMobileNavClick}>
+                            <MobileNavLink
+                                href="#contact"
+                                onClick={() => handleNavClick('contact')}
+                                theme={theme}
+                                className={activeLink === 'contact' ? 'active' : ''}
+                            >
                                 Contact
                             </MobileNavLink>
                             <MobileNavLink
                                 href="/resume.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={handleMobileNavClick}
+                                theme={theme}
                             >
                                 CV
                             </MobileNavLink>
