@@ -77,7 +77,7 @@ const CardWrapper = styled.div`
   }
 `;
 
-const Timeline = ({ items, theme, onCardClick }) => {
+const Timeline = ({ items, theme }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -122,7 +122,6 @@ const Timeline = ({ items, theme, onCardClick }) => {
               <TimelineCard
                 item={item}
                 theme={theme}
-                onClick={() => onCardClick(item)}
               />
             </CardWrapper>
           </TimelineItem>
