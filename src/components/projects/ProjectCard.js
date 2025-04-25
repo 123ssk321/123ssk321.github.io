@@ -11,8 +11,19 @@ const Card = styled(motion.div)`
   background: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'white'};
   border: 1px solid var(--color-border);
   height: 100%;
+  transition: all var(--transition-medium);
   
   &:hover {
+    transform: translateY(-5px);
+    box-shadow: ${props => props.theme === 'dark'
+    ? '0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2)'
+    : '0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.05)'
+  };
+    border-color: ${props => props.theme === 'dark'
+    ? 'rgba(255, 255, 255, 0.2)'
+    : 'rgba(0, 0, 0, 0.1)'
+  };
+
     .project-image {
       transform: scale(1.05);
     }
@@ -47,9 +58,9 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   background: ${props => props.theme === 'dark'
-        ? 'rgba(0, 0, 0, 0.7)'
-        : 'rgba(255, 255, 255, 0.9)'
-    };
+    ? 'rgba(0, 0, 0, 0.7)'
+    : 'rgba(255, 255, 255, 0.9)'
+  };
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,9 +100,9 @@ const Tech = styled.span`
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
   background: ${props => props.theme === 'dark'
-        ? 'rgba(255, 255, 255, 0.05)'
-        : '#F1F5F9'
-    };
+    ? 'rgba(255, 255, 255, 0.05)'
+    : '#F1F5F9'
+  };
   color: var(--color-text-secondary);
 `;
 
@@ -111,18 +122,18 @@ const LinkButton = styled(motion.a)`
   font-weight: 500;
   color: ${props => props.theme === 'dark' ? 'white' : 'inherit'};
   background: ${props => props.theme === 'dark'
-        ? 'rgba(255, 255, 255, 0.1)'
-        : '#F1F5F9'
-    };
+    ? 'rgba(255, 255, 255, 0.1)'
+    : '#F1F5F9'
+  };
   text-decoration: none;
   transition: all var(--transition-medium);
 
   &:hover {
     transform: translateY(-2px);
     background: ${props => props.theme === 'dark'
-        ? 'rgba(255, 255, 255, 0.2)'
-        : '#E2E8F0'
-    };
+    ? 'rgba(255, 255, 255, 0.2)'
+    : '#E2E8F0'
+  };
   }
 
   svg {
@@ -144,59 +155,59 @@ const Category = styled.span`
 `;
 
 const ProjectCard = ({ project }) => {
-    const { theme } = useTheme();
+  const { theme } = useTheme();
 
-    return (
-        <Card
-            theme={theme}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-        >
-            {project.featured && <Category>Featured</Category>}
-            <ImageContainer>
-                <ProjectImage
-                    src={project.image}
-                    alt={project.title}
-                    className="project-image"
-                />
-                <Overlay className="overlay" theme={theme}>
-                    <Description>{project.description}</Description>
-                    <Links>
-                        <LinkButton
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            theme={theme}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <FiGithub /> Source Code
-                        </LinkButton>
-                        <LinkButton
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            theme={theme}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <FiExternalLink /> Live Demo
-                        </LinkButton>
-                    </Links>
-                </Overlay>
-            </ImageContainer>
-            <Content>
-                <Title>{project.title}</Title>
-                <Technologies>
-                    {project.technologies.map((tech, index) => (
-                        <Tech key={index} theme={theme}>{tech}</Tech>
-                    ))}
-                </Technologies>
-            </Content>
-        </Card>
-    );
+  return (
+    <Card
+      theme={theme}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      {project.featured && <Category>Featured</Category>}
+      <ImageContainer>
+        <ProjectImage
+          src={project.image}
+          alt={project.title}
+          className="project-image"
+        />
+        <Overlay className="overlay" theme={theme}>
+          <Description>{project.description}</Description>
+          <Links>
+            <LinkButton
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              theme={theme}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiGithub /> Source Code
+            </LinkButton>
+            <LinkButton
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              theme={theme}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiExternalLink /> Live Demo
+            </LinkButton>
+          </Links>
+        </Overlay>
+      </ImageContainer>
+      <Content>
+        <Title>{project.title}</Title>
+        <Technologies>
+          {project.technologies.map((tech, index) => (
+            <Tech key={index} theme={theme}>{tech}</Tech>
+          ))}
+        </Technologies>
+      </Content>
+    </Card>
+  );
 };
 
 export default ProjectCard;

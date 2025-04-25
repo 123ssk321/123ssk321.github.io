@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import HardSkillCard from './HardSkillCard';
 import SoftSkillCard from './SoftSkillCard';
 import { skillsData } from '../../data/skills';
+import { useTheme } from '../../context/ThemeContext';
 
 const SkillsSection = styled.section`
   padding: var(--section-padding) 0;
@@ -31,18 +32,29 @@ const CategoryTabs = styled.div`
   flex-wrap: wrap;
 `;
 
-const TabButton = styled.button`
+const TabButton = styled(motion.button)`
   padding: 0.75rem 1.5rem;
-  border: none;
   border-radius: var(--radius-full);
-  background: ${props => props.active ? 'var(--color-text-primary)' : 'var(--color-bg-secondary)'};
-  color: ${props => props.active ? 'var(--color-bg-primary)' : 'var(--color-text-primary)'};
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-medium);
-
+  background: ${props => props.active
+    ? props.theme === 'dark'
+      ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
+      : '#FF6B6B'
+    : props.theme === 'dark'
+      ? 'rgba(255, 255, 255, 0.05)'
+      : '#F1F5F9'
+  };
+  color: ${props => props.active ? 'white' : 'inherit'};
+  
   &:hover {
     transform: translateY(-2px);
+    box-shadow: ${props => props.theme === 'dark'
+    ? '0 4px 12px rgba(255, 255, 255, 0.1)'
+    : '0 4px 12px rgba(0, 0, 0, 0.1)'
+  };
   }
 `;
 
@@ -83,6 +95,7 @@ const HardSkillWrapper = styled.div`
 
 const Skills = () => {
   const [activeCategory, setActiveCategory] = useState('aiDataScience');
+  const { theme } = useTheme();
 
   const categories = {
     aiDataScience: 'AI & Data Science',
@@ -110,7 +123,10 @@ const Skills = () => {
             <TabButton
               key={key}
               active={activeCategory === key}
+              theme={theme}
               onClick={() => setActiveCategory(key)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {label}
             </TabButton>

@@ -12,10 +12,10 @@ const FilterContainer = styled.div`
 `;
 
 const FilterButton = styled(motion.button)`
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: var(--radius-full);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-medium);
