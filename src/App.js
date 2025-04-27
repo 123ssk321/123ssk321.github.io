@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/layout/Layout';
 import Hero from './components/home/Hero';
 import About from './components/about/About';
@@ -9,15 +8,13 @@ import Contact from './components/contact/Contact';
 
 function App() {
     return (
-        <ThemeProvider>
-            <Layout>
-                <Hero />
-                <About />
-                <Projects />
-                <Skills />
-                <Contact />
-            </Layout>
-        </ThemeProvider>
+        <Layout>
+            <Hero />
+            <About />
+            <Projects />
+            <Skills />
+            <Contact />
+        </Layout>
     );
 }
 

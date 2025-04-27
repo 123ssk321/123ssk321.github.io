@@ -39,18 +39,23 @@ const CenterSection = styled.div`
   align-items: center;
   background: ${props => props.theme === 'dark'
         ? 'rgba(23, 23, 23, 0.8)'
-        : 'rgba(255, 255, 255, 0.1)'
+        : 'rgba(255, 255, 255, 0.8)'
     };
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 100px;
   padding: 0.5rem;
   box-shadow: ${props => props.theme === 'dark'
         ? '0 0 20px rgba(0, 0, 0, 0.2)'
-        : '0 0 20px rgba(255, 255, 255, 0.1)'
+        : '0 0 20px rgba(255, 255, 255, 0.3)'
     };
   position: relative;
   width: fit-content;
   margin: 0 auto;
+  border: ${props => props.theme === 'dark'
+        ? 'none'
+        : '1px solid rgba(255, 255, 255, 0.3)'
+    };
 
   @media (max-width: 768px) {
     display: none;

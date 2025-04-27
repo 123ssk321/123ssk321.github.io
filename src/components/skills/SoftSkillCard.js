@@ -10,17 +10,12 @@ const Card = styled(motion.div)`
   height: 100%;
   transition: all var(--transition-medium);
   border: 1px solid var(--color-border);
-  box-shadow: ${props => props.theme === 'dark'
-        ? '0 4px 8px rgba(255, 255, 255, 0.05)'
-        : 'none'};
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: ${props => props.theme === 'dark'
-        ? `0 10px 20px rgba(255, 255, 255, 0.1),
-       0 5px 12px rgba(255, 255, 255, 0.08),
-       0 3px 6px rgba(255, 255, 255, 0.06)`
-        : '0 10px 20px rgba(0, 0, 0, 0.1)'};
+    ? '0 10px 20px rgba(0, 0, 0, 0.3)'
+    : '0 10px 20px rgba(0, 0, 0, 0.1)'};
   }
 `;
 
@@ -60,31 +55,31 @@ const StrengthItem = styled.li`
 `;
 
 const SoftSkillCard = ({ skill }) => {
-    const { theme } = useTheme();
-    const Icon = skill.icon;
+  const { theme } = useTheme();
+  const Icon = skill.icon;
 
-    return (
-        <Card
-            theme={theme}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-        >
-            <IconWrapper>
-                <Icon />
-            </IconWrapper>
-            <SkillName>{skill.name}</SkillName>
-            <Description>{skill.description}</Description>
-            {skill.strengths && (
-                <StrengthsList>
-                    {skill.strengths.map((strength, index) => (
-                        <StrengthItem key={index}>{strength}</StrengthItem>
-                    ))}
-                </StrengthsList>
-            )}
-        </Card>
-    );
+  return (
+    <Card
+      theme={theme}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      <IconWrapper>
+        <Icon />
+      </IconWrapper>
+      <SkillName>{skill.name}</SkillName>
+      <Description>{skill.description}</Description>
+      {skill.strengths && (
+        <StrengthsList>
+          {skill.strengths.map((strength, index) => (
+            <StrengthItem key={index}>{strength}</StrengthItem>
+          ))}
+        </StrengthsList>
+      )}
+    </Card>
+  );
 };
 
 export default SoftSkillCard; 
