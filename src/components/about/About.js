@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX } from 'react-icons/fi';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 import Timeline from './Timeline';
 import TimelinePopup from './TimelinePopup';
 import { educationData, workData, extracurricularData } from '../../data/timeline';

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SocialLinks from './SocialLinks';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 
 const HeroContainer = styled.section`
   position: relative;

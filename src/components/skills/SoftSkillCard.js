@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 
 const Card = styled(motion.div)`
   background: var(--color-bg-secondary);

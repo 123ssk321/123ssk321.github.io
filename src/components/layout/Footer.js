@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
 
 const Footer = () => {

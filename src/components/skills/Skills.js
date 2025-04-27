@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import HardSkillCard from './HardSkillCard';
 import SoftSkillCard from './SoftSkillCard';
 import { skillsData } from '../../data/skills';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 
 const SkillsSection = styled.section`
   padding: var(--section-padding) 0;

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../styles/ThemeContext';
 
 const gradients = {
-    blue: 'linear-gradient(135deg, #00C6FF 0%, #0072FF 100%)',
-    purple: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
-    orange: 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)',
-    green: 'linear-gradient(135deg, #00B09B 0%, #96C93D 100%)',
-    pink: 'linear-gradient(135deg, #FF61D2 0%, #FE9090 100%)'
+  blue: 'linear-gradient(135deg, #00C6FF 0%, #0072FF 100%)',
+  purple: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
+  orange: 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)',
+  green: 'linear-gradient(135deg, #00B09B 0%, #96C93D 100%)',
+  pink: 'linear-gradient(135deg, #FF61D2 0%, #FE9090 100%)'
 };
 
 const getGradient = (index) => {
-    const gradientKeys = Object.keys(gradients);
-    return gradients[gradientKeys[index % gradientKeys.length]];
+  const gradientKeys = Object.keys(gradients);
+  return gradients[gradientKeys[index % gradientKeys.length]];
 };
 
 const Card = styled(motion.div)`
@@ -76,9 +76,9 @@ const Card = styled(motion.div)`
     }
 
     box-shadow: 0 4px 20px ${props => {
-        const gradientColor = props.gradient.match(/#[A-Fa-f0-9]{6}/g)[0] + '40';
-        return gradientColor;
-    }};
+    const gradientColor = props.gradient.match(/#[A-Fa-f0-9]{6}/g)[0] + '40';
+    return gradientColor;
+  }};
   }
 `;
 
@@ -140,36 +140,36 @@ const SkillName = styled.h3`
 `;
 
 const HardSkillCard = ({ skill, index }) => {
-    const { theme } = useTheme();
-    const [isHovered, setIsHovered] = useState(false);
-    const MonoIcon = skill.monoIcon;
-    const gradient = getGradient(index);
+  const { theme } = useTheme();
+  const [isHovered, setIsHovered] = useState(false);
+  const MonoIcon = skill.monoIcon;
+  const gradient = getGradient(index);
 
-    return (
-        <Card
-            theme={theme}
-            gradient={gradient}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <IconWrapper theme={theme} isHovered={isHovered}>
-                <div className="mono-icon">
-                    <MonoIcon />
-                </div>
-                <img
-                    src={skill.colorIcon}
-                    alt={skill.name}
-                    className="color-icon"
-                    loading="lazy"
-                />
-            </IconWrapper>
-            <SkillName theme={theme}>{skill.name}</SkillName>
-        </Card>
-    );
+  return (
+    <Card
+      theme={theme}
+      gradient={gradient}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <IconWrapper theme={theme} isHovered={isHovered}>
+        <div className="mono-icon">
+          <MonoIcon />
+        </div>
+        <img
+          src={skill.colorIcon}
+          alt={skill.name}
+          className="color-icon"
+          loading="lazy"
+        />
+      </IconWrapper>
+      <SkillName theme={theme}>{skill.name}</SkillName>
+    </Card>
+  );
 };
 
 export default HardSkillCard; 
