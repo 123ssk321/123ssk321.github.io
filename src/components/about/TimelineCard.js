@@ -33,12 +33,15 @@ const Card = styled(motion.div)`
   }
 `;
 
+const CardContent = styled.div`
+  padding-${props => props.align === 'left' ? 'right' : 'left'}: 2.5rem; /* Add space for the expand icon */
+`;
+
 const CardTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--color-text-primary);
-  padding-right: 2rem;
 `;
 
 const CardSubtitle = styled.p`
@@ -65,11 +68,15 @@ const CardGrade = styled.span`
 const ExpandIcon = styled(motion.div)`
   position: absolute;
   top: 1.5rem;
-  right: 1.5rem;
+  ${props => props.align === 'left' ? 'right: 1.5rem' : 'left: 1.5rem'};
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    right: 1.5rem;
+  }
 `;
 
 const CardDetails = styled(motion.div)`
@@ -84,7 +91,7 @@ const CardDetails = styled(motion.div)`
   will-change: transform, opacity;
 `;
 
-const TimelineCard = ({ item, theme }) => {
+const TimelineCard = ({ item, theme, align = 'left' }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -94,52 +101,55 @@ const TimelineCard = ({ item, theme }) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
-      <CardTitle>{item.title}</CardTitle>
-      <CardSubtitle>{item.subtitle}</CardSubtitle>
-      <CardDate>{item.date}</CardDate>
-      {item.grade && <CardGrade theme={theme}>{item.grade}</CardGrade>}
-
       <ExpandIcon
+        align={align}
         animate={{ rotate: isExpanded ? 180 : 0 }}
         transition={{ duration: 0.3 }}
       >
         <FiChevronDown size={20} />
       </ExpandIcon>
 
-      <AnimatePresence>
-        {isExpanded && (
-          <CardDetails
-            theme={theme}
-            initial={{
-              opacity: 0,
-              y: -20,
-              scale: 0.95
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1
-            }}
-            exit={{
-              opacity: 0,
-              y: -20,
-              scale: 0.95
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 25,
-              mass: 0.5,
-              opacity: {
-                duration: 0.2,
-                ease: "easeOut"
-              }
-            }}
-          >
-            {item.details}
-          </CardDetails>
-        )}
-      </AnimatePresence>
+      <CardContent align={align}>
+        <CardTitle>{item.title}</CardTitle>
+        <CardSubtitle>{item.subtitle}</CardSubtitle>
+        <CardDate>{item.date}</CardDate>
+        {item.grade && <CardGrade theme={theme}>{item.grade}</CardGrade>}
+
+        <AnimatePresence>
+          {isExpanded && (
+            <CardDetails
+              theme={theme}
+              initial={{
+                opacity: 0,
+                y: -20,
+                scale: 0.95
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+                scale: 0.95
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                mass: 0.5,
+                opacity: {
+                  duration: 0.2,
+                  ease: "easeOut"
+                }
+              }}
+            >
+              {item.details}
+            </CardDetails>
+          )}
+        </AnimatePresence>
+      </CardContent>
     </Card>
   );
 };

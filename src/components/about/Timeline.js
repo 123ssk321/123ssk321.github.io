@@ -122,6 +122,7 @@ const Timeline = ({ items, theme }) => {
               <TimelineCard
                 item={item}
                 theme={theme}
+                align={isMobile ? 'right' : (index % 2 === 0 ? 'left' : 'right')}
               />
             </CardWrapper>
           </TimelineItem>
