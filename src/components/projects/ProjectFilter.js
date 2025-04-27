@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
 
-const FilterContainer = styled.div`
+const TabContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   flex-wrap: wrap;
 `;
 
-const FilterButton = styled(motion.button)`
+const Tab = styled(motion.button)`
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: var(--radius-full);
@@ -55,9 +55,9 @@ const ProjectFilter = ({ activeFilter, setActiveFilter }) => {
     ];
 
     return (
-        <FilterContainer>
+        <TabContainer>
             {filters.map(filter => (
-                <FilterButton
+                <Tab
                     key={filter.id}
                     isActive={activeFilter === filter.id}
                     theme={theme}
@@ -66,9 +66,9 @@ const ProjectFilter = ({ activeFilter, setActiveFilter }) => {
                     whileTap={{ scale: 0.95 }}
                 >
                     {filter.label}
-                </FilterButton>
+                </Tab>
             ))}
-        </FilterContainer>
+        </TabContainer>
     );
 };
 

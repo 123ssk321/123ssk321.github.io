@@ -4,26 +4,14 @@ import { motion } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import ContactForm from './ContactForm';
 import { useTheme } from '../../styles/ThemeContext';
-
-const ContactSection = styled.section`
-  padding: var(--section-padding) 0;
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: center;
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-  width: 100%;
-`;
+import Section from '../layout/Section';
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
+  min-height: calc(100vh - 80px);
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -93,62 +81,64 @@ const Contact = () => {
   const { theme } = useTheme();
 
   return (
-    <ContactSection id="contact">
-      <Container>
-        <Grid>
-          <ContentWrapper>
-            <Title
-              theme={theme}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              Let's Work Together
-            </Title>
-            <Description>
-              I'm always open to discussing new projects, creative ideas, or
-              opportunities to be part of your visions. Feel free to reach out
-              through the form or via social media.
-            </Description>
-            <SocialLinks>
-              <SocialLink
-                href="https://github.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FiGithub />
-              </SocialLink>
-              <SocialLink
-                href="https://linkedin.com/in/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FiLinkedin />
-              </SocialLink>
-              <SocialLink
-                href="mailto:your.email@example.com"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FiMail />
-              </SocialLink>
-            </SocialLinks>
-          </ContentWrapper>
-          <FormWrapper
+    <Section
+      id="contact"
+      showTitle={false}
+      showSubtitle={false}
+    >
+      <Grid>
+        <ContentWrapper>
+          <Title
             theme={theme}
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <ContactForm />
-          </FormWrapper>
-        </Grid>
-      </Container>
-    </ContactSection>
+            Let's Work Together
+          </Title>
+          <Description>
+            I'm always open to discussing new projects, creative ideas, or
+            opportunities to be part of your visions. Feel free to reach out
+            through the form or via social media.
+          </Description>
+          <SocialLinks>
+            <SocialLink
+              href="https://github.com/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiGithub />
+            </SocialLink>
+            <SocialLink
+              href="https://linkedin.com/in/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiLinkedin />
+            </SocialLink>
+            <SocialLink
+              href="mailto:your.email@example.com"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiMail />
+            </SocialLink>
+          </SocialLinks>
+        </ContentWrapper>
+        <FormWrapper
+          theme={theme}
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <ContactForm />
+        </FormWrapper>
+      </Grid>
+    </Section>
   );
 };
 

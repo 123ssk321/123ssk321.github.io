@@ -4,38 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import ProjectFilter from './ProjectFilter';
 import { useTheme } from '../../styles/ThemeContext';
+import Section from '../layout/Section';
 import projects from '../../data/projects';
-
-const ProjectsSection = styled.section`
-  padding: var(--section-padding) 0;
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-`;
-
-const Title = styled(motion.h2)`
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 1rem;
-  background: ${props => props.theme === 'dark'
-        ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-        : 'none'};
-  -webkit-background-clip: ${props => props.theme === 'dark' ? 'text' : 'none'};
-  -webkit-text-fill-color: ${props => props.theme === 'dark' ? 'transparent' : 'inherit'};
-`;
-
-const Subtitle = styled.p`
-  text-align: center;
-  color: var(--color-text-secondary);
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-`;
 
 const ProjectsGrid = styled(motion.div)`
   display: grid;
@@ -90,12 +60,10 @@ const Projects = () => {
         setVisibleProjects(prev => prev + 6);
     };
 
-    // Reset visible projects when filter changes
     useEffect(() => {
         setVisibleProjects(6);
         setShowButton(false);
 
-        // Only show button if there are more projects to show
         if (filteredProjects.length > 6) {
             const timer = setTimeout(() => {
                 setShowButton(true);
@@ -105,58 +73,47 @@ const Projects = () => {
     }, [activeFilter, filteredProjects.length]);
 
     return (
-        <ProjectsSection id="projects">
-            <Container>
-                <Title
-                    theme={theme}
+        <Section
+            id="projects"
+            title="Featured Projects"
+            subtitle="A collection of projects that showcase my expertise in AI/ML, data science, software engineering, and financial technology."
+        >
+            <ProjectFilter
+                activeFilter={activeFilter}
+                setActiveFilter={setActiveFilter}
+            />
+
+            <AnimatePresence mode="wait">
+                <ProjectsGrid
+                    key={activeFilter}
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
                 >
-                    Featured Projects
-                </Title>
-                <Subtitle>
-                    A collection of projects that showcase my expertise in AI/ML, data science,
-                    software engineering, and financial technology.
-                </Subtitle>
+                    {displayedProjects.map(project => (
+                        <ProjectCard key={project.id} project={project} />
+                    ))}
+                </ProjectsGrid>
+            </AnimatePresence>
 
-                <ProjectFilter
-                    activeFilter={activeFilter}
-                    setActiveFilter={setActiveFilter}
-                />
-
-                <AnimatePresence mode="wait">
-                    <ProjectsGrid
-                        key={activeFilter}
+            <AnimatePresence>
+                {hasMoreProjects && showButton && (
+                    <ShowMoreButton
+                        theme={theme}
+                        onClick={handleShowMore}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                     >
-                        {displayedProjects.map(project => (
-                            <ProjectCard key={project.id} project={project} />
-                        ))}
-                    </ProjectsGrid>
-                </AnimatePresence>
-
-                <AnimatePresence>
-                    {hasMoreProjects && showButton && (
-                        <ShowMoreButton
-                            theme={theme}
-                            onClick={handleShowMore}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3, delay: 0.2 }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            Show More Projects
-                        </ShowMoreButton>
-                    )}
-                </AnimatePresence>
-            </Container>
-        </ProjectsSection>
+                        Show More Projects
+                    </ShowMoreButton>
+                )}
+            </AnimatePresence>
+        </Section>
     );
 };
 

@@ -3,26 +3,9 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import HardSkillCard from './HardSkillCard';
 import SoftSkillCard from './SoftSkillCard';
+import Section from '../layout/Section';
 import { skillsData } from '../../data/skills';
 import { useTheme } from '../../styles/ThemeContext';
-
-const SkillsSection = styled.section`
-  padding: var(--section-padding) 0;
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-`;
-
-const SectionTitle = styled(motion.h2)`
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--color-text-primary);
-`;
 
 const CategoryTabs = styled.div`
   display: flex;
@@ -108,53 +91,47 @@ const Skills = () => {
   };
 
   return (
-    <SkillsSection id="skills">
-      <Container>
-        <SectionTitle
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Skills & Expertise
-        </SectionTitle>
-
-        <CategoryTabs>
-          {Object.entries(categories).map(([key, label]) => (
-            <TabButton
-              key={key}
-              active={activeCategory === key}
-              theme={theme}
-              onClick={() => setActiveCategory(key)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {label}
-            </TabButton>
-          ))}
-        </CategoryTabs>
-
-        <AnimatePresence mode="wait">
-          <SkillsGrid
-            key={activeCategory}
-            className={activeCategory === 'softSkills' ? 'soft-skills' : ''}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+    <Section
+      id="skills"
+      title="Skills & Expertise"
+      showSubtitle={false}
+    >
+      <CategoryTabs>
+        {Object.entries(categories).map(([key, label]) => (
+          <TabButton
+            key={key}
+            active={activeCategory === key}
+            theme={theme}
+            onClick={() => setActiveCategory(key)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {getCurrentSkills().map((skill, index) => (
-              activeCategory === 'softSkills' ? (
-                <SoftSkillCard key={skill.name} skill={skill} />
-              ) : (
-                <HardSkillWrapper key={skill.name}>
-                  <HardSkillCard skill={skill} index={index} />
-                </HardSkillWrapper>
-              )
-            ))}
-          </SkillsGrid>
-        </AnimatePresence>
-      </Container>
-    </SkillsSection>
+            {label}
+          </TabButton>
+        ))}
+      </CategoryTabs>
+
+      <AnimatePresence mode="wait">
+        <SkillsGrid
+          key={activeCategory}
+          className={activeCategory === 'softSkills' ? 'soft-skills' : ''}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {getCurrentSkills().map((skill, index) => (
+            activeCategory === 'softSkills' ? (
+              <SoftSkillCard key={skill.name} skill={skill} />
+            ) : (
+              <HardSkillWrapper key={skill.name}>
+                <HardSkillCard skill={skill} index={index} />
+              </HardSkillWrapper>
+            )
+          ))}
+        </SkillsGrid>
+      </AnimatePresence>
+    </Section>
   );
 };
 
