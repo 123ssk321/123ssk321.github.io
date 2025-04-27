@@ -61,7 +61,7 @@ const Skills = () => {
     <Section
       id="skills"
       title="Skills & Expertise"
-      showSubtitle={false}
+      subtitle="Here are some of the skills I've acquired over the years. I'm always learning and growing, so this list will continue to evolve."
     >
       <TabContainer>
         {Object.entries(categories).map(([key, label]) => (

@@ -34,7 +34,6 @@
 /* Base styles */
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
     /* Height of fixed navbar */
 }
 

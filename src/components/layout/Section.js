@@ -5,6 +5,7 @@ import { useTheme } from '../../styles/ThemeContext';
 
 const StyledSection = styled.section`
   padding: var(--section-padding) 0;
+  min-height: 100vh;
 `;
 
 const Container = styled.div`
@@ -46,7 +47,7 @@ const Section = ({
 
   return (
     <StyledSection id={id}>
-      <Container>
+      <Container >
         {showTitle && (
           <Title
             theme={theme}

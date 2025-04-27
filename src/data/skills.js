@@ -1,7 +1,7 @@
 import {
     SiPython, SiTensorflow, SiScikitlearn, SiPandas, SiNumpy,
     SiJavascript, SiReact, SiNodedotjs, SiDocker, SiGit,
-    SiPostgresql, SiMongodb, SiAmazonwebservices, SiLinux
+    SiPostgresql, SiMongodb, SiAmazonwebservices, SiLinux, SiPytorch, SiTableau, SiApachespark
 } from 'react-icons/si';
 import { BiBrain } from 'react-icons/bi';
 import {
@@ -15,6 +15,11 @@ export const skillsData = {
             name: "Python",
             monoIcon: SiPython,
             colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+        },
+        {
+            name: "PyTorch",
+            monoIcon: SiPytorch,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg"
         },
         {
             name: "TensorFlow",
@@ -35,6 +40,16 @@ export const skillsData = {
             name: "NumPy",
             monoIcon: SiNumpy,
             colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"
+        },
+        {
+            name: "Tableau",
+            monoIcon: SiTableau,
+            colorIcon: "https://img.icons8.com/color/48/tableau-software.png"
+        },
+        {
+            name: "Spark",
+            monoIcon: SiApachespark,
+            colorIcon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachespark/apachespark-original.svg"
         }
     ],
 
