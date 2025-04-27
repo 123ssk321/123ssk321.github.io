@@ -6,40 +6,7 @@ import SoftSkillCard from './SoftSkillCard';
 import Section from '../layout/Section';
 import { skillsData } from '../../data/skills';
 import { useTheme } from '../../styles/ThemeContext';
-
-const CategoryTabs = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-`;
-
-const TabButton = styled(motion.button)`
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-full);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-medium);
-  background: ${props => props.active
-    ? props.theme === 'dark'
-      ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-      : '#FF6B6B'
-    : props.theme === 'dark'
-      ? 'rgba(255, 255, 255, 0.05)'
-      : '#F1F5F9'
-  };
-  color: ${props => props.active ? 'white' : 'inherit'};
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme === 'dark'
-    ? '0 4px 12px rgba(255, 255, 255, 0.1)'
-    : '0 4px 12px rgba(0, 0, 0, 0.1)'
-  };
-  }
-`;
+import SectionTab, { TabContainer } from '../layout/SectionTab';
 
 const SkillsGrid = styled(motion.div)`
   display: flex;
@@ -96,20 +63,18 @@ const Skills = () => {
       title="Skills & Expertise"
       showSubtitle={false}
     >
-      <CategoryTabs>
+      <TabContainer>
         {Object.entries(categories).map(([key, label]) => (
-          <TabButton
+          <SectionTab
             key={key}
-            active={activeCategory === key}
+            isActive={activeCategory === key}
             theme={theme}
             onClick={() => setActiveCategory(key)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
           >
             {label}
-          </TabButton>
+          </SectionTab>
         ))}
-      </CategoryTabs>
+      </TabContainer>
 
       <AnimatePresence mode="wait">
         <SkillsGrid

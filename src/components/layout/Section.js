@@ -19,8 +19,8 @@ const Title = styled(motion.h2)`
   text-align: center;
   margin-bottom: ${props => props.hasSubtitle ? '1rem' : '3rem'};
   background: ${props => props.theme === 'dark'
-        ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-        : 'none'};
+    ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
+    : 'none'};
   -webkit-background-clip: ${props => props.theme === 'dark' ? 'text' : 'none'};
   -webkit-text-fill-color: ${props => props.theme === 'dark' ? 'transparent' : 'inherit'};
 `;
@@ -35,34 +35,34 @@ const Subtitle = styled.p`
 `;
 
 const Section = ({
-    id,
-    title,
-    subtitle,
-    showTitle = true,
-    showSubtitle = true,
-    children
+  id,
+  title,
+  subtitle,
+  showTitle = true,
+  showSubtitle = true,
+  children
 }) => {
-    const { theme } = useTheme();
+  const { theme } = useTheme();
 
-    return (
-        <StyledSection id={id}>
-            <Container>
-                {showTitle && (
-                    <Title
-                        theme={theme}
-                        hasSubtitle={showSubtitle && subtitle}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        {title}
-                    </Title>
-                )}
-                {showSubtitle && subtitle && <Subtitle>{subtitle}</Subtitle>}
-                {children}
-            </Container>
-        </StyledSection>
-    );
+  return (
+    <StyledSection id={id}>
+      <Container>
+        {showTitle && (
+          <Title
+            theme={theme}
+            hasSubtitle={showSubtitle && subtitle}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {title}
+          </Title>
+        )}
+        {showSubtitle && subtitle && <Subtitle>{subtitle}</Subtitle>}
+        {children}
+      </Container>
+    </StyledSection>
+  );
 };
 
 export default Section; 
