@@ -7,7 +7,11 @@ import Section from '../layout/Section';
 import SectionTab, { TabContainer } from '../layout/SectionTab';
 import Timeline from './Timeline';
 import TimelinePopup from './TimelinePopup';
-import { educationData, workData, extracurricularData } from '../../data/timeline';
+import {
+  educationData,
+  workData,
+  extracurricularData,
+} from '../../data/timeline';
 
 const About = () => {
   const { theme } = useTheme();
@@ -17,11 +21,11 @@ const About = () => {
 
   useEffect(() => {
     const options = {
-      threshold: 0.2
+      threshold: 0.2,
     };
 
     const handleIntersect = (entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         setIsVisible(entry.isIntersecting);
         if (!entry.isIntersecting && selectedItem) {
           setSelectedItem(null);
@@ -64,9 +68,9 @@ const About = () => {
 
   return (
     <Section
-      id="about"
-      title="About Me"
-      subtitle="I'm a passionate developer with a love for creating elegant solutions to complex problems. With expertise in modern web technologies, I strive to build responsive and user-friendly applications."
+      id='about'
+      title='About Me'
+      subtitle="I'm passionate about AI, data science, and software engineering. I enjoy building models to learn complex patterns, extracting insights from data, and developing apps. Above all, I love solving problems and continuously learning new things."
     >
       <TabContainer>
         <SectionTab
@@ -92,7 +96,12 @@ const About = () => {
         </SectionTab>
       </TabContainer>
 
-      <Timeline items={getData()} theme={theme} onCardClick={handleCardClick} activeTab={activeTab} />
+      <Timeline
+        items={getData()}
+        theme={theme}
+        onCardClick={handleCardClick}
+        activeTab={activeTab}
+      />
 
       <AnimatePresence>
         {selectedItem && isVisible && (

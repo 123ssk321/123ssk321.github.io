@@ -5,6 +5,7 @@ import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import ContactForm from './ContactForm';
 import { useTheme } from '../../styles/ThemeContext';
 import Section from '../layout/Section';
+import SocialLinks from '../home/SocialLinks';
 
 const Grid = styled.div`
   display: grid;
@@ -32,11 +33,14 @@ const Title = styled(motion.h2)`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  background: ${props => props.theme === 'dark'
-    ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-    : 'none'};
-  -webkit-background-clip: ${props => props.theme === 'dark' ? 'text' : 'none'};
-  -webkit-text-fill-color: ${props => props.theme === 'dark' ? 'transparent' : 'inherit'};
+  background: ${(props) =>
+    props.theme === 'dark'
+      ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
+      : 'none'};
+  -webkit-background-clip: ${(props) =>
+    props.theme === 'dark' ? 'text' : 'none'};
+  -webkit-text-fill-color: ${(props) =>
+    props.theme === 'dark' ? 'transparent' : 'inherit'};
 `;
 
 const Description = styled.p`
@@ -46,7 +50,7 @@ const Description = styled.p`
   color: var(--color-text-secondary);
 `;
 
-const SocialLinks = styled.div`
+const SocialLinkss = styled.div`
   display: flex;
   gap: 1.5rem;
   margin-bottom: 2rem;
@@ -57,23 +61,24 @@ const SocialLinks = styled.div`
 `;
 
 const SocialLink = styled(motion.a)`
-  color: var(--color-text-primary);
+  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#333')};
   font-size: 1.5rem;
-  transition: all var(--transition-medium);
+  transition: color 0.3s ease;
 
   &:hover {
-    color: var(--color-primary);
-    transform: translateY(-3px);
+    color: ${(props) => (props.theme === 'dark' ? '#00ffff' : '#0066ff')};
   }
 `;
 
 const FormWrapper = styled(motion.div)`
-  background: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'white'};
+  background: ${(props) =>
+    props.theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'white'};
   padding: 2rem;
   border-radius: var(--radius-lg);
-  box-shadow: ${props => props.theme === 'dark'
-    ? '0 4px 20px rgba(255, 255, 255, 0.05)'
-    : '0 4px 20px rgba(0, 0, 0, 0.1)'};
+  box-shadow: ${(props) =>
+    props.theme === 'dark'
+      ? '0 4px 20px rgba(255, 255, 255, 0.05)'
+      : '0 4px 20px rgba(0, 0, 0, 0.1)'};
   border: 1px solid var(--color-border);
 `;
 
@@ -81,11 +86,7 @@ const Contact = () => {
   const { theme } = useTheme();
 
   return (
-    <Section
-      id="contact"
-      showTitle={false}
-      showSubtitle={false}
-    >
+    <Section id='contact' showTitle={false} showSubtitle={false}>
       <Grid>
         <ContentWrapper>
           <Title
@@ -101,33 +102,7 @@ const Contact = () => {
             opportunities to be part of your visions. Feel free to reach out
             through the form or via social media.
           </Description>
-          <SocialLinks>
-            <SocialLink
-              href="https://github.com/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FiGithub />
-            </SocialLink>
-            <SocialLink
-              href="https://linkedin.com/in/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FiLinkedin />
-            </SocialLink>
-            <SocialLink
-              href="mailto:your.email@example.com"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FiMail />
-            </SocialLink>
-          </SocialLinks>
+          <SocialLinks theme={theme} />
         </ContentWrapper>
         <FormWrapper
           theme={theme}

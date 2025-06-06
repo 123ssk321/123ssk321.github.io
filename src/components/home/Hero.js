@@ -12,7 +12,7 @@ const HeroContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.theme === 'dark' ? '#16012c' : '#f0f7ff'};
+  background: ${(props) => (props.theme === 'dark' ? '#16012c' : '#f0f7ff')};
 `;
 
 const Background = styled.div`
@@ -29,10 +29,11 @@ const SkyGradient = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background: ${props => props.theme === 'dark'
-    ? 'linear-gradient(180deg, #2b1055 0%, #7597de 60%, #ff1b6b 85%, #ff9966 100%)'
-    : 'linear-gradient(180deg, #87CEEB 0%, #B5D8F7 60%, #FFB6C1 85%, #FFF0F5 100%)'};
-  opacity: ${props => props.theme === 'dark' ? 0.8 : 0.9};
+  background: ${(props) =>
+    props.theme === 'dark'
+      ? 'linear-gradient(180deg, #2b1055 0%, #7597de 60%, #ff1b6b 85%, #ff9966 100%)'
+      : 'linear-gradient(180deg, #87CEEB 0%, #B5D8F7 60%, #FFB6C1 85%, #FFF0F5 100%)'};
+  opacity: ${(props) => (props.theme === 'dark' ? 0.8 : 0.9)};
 `;
 
 const Mountains = styled.div`
@@ -40,9 +41,10 @@ const Mountains = styled.div`
   bottom: 0;
   width: 100%;
   height: 60%;
-  background: ${props => props.theme === 'dark'
-    ? 'linear-gradient(-5deg, #1a0f2e 0%, #31165e 30%, #4b2395 60%, #6b30cc 100%)'
-    : 'linear-gradient(-5deg, #a4c2f4 0%, #8ab4f8 30%, #709fee 60%, #5686e1 100%)'};
+  background: ${(props) =>
+    props.theme === 'dark'
+      ? 'linear-gradient(-5deg, #1a0f2e 0%, #31165e 30%, #4b2395 60%, #6b30cc 100%)'
+      : 'linear-gradient(-5deg, #a4c2f4 0%, #8ab4f8 30%, #709fee 60%, #5686e1 100%)'};
   clip-path: polygon(
     0% 100%,
     15% 65%,
@@ -60,9 +62,10 @@ const Mountains = styled.div`
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: ${props => props.theme === 'dark'
-    ? 'linear-gradient(-5deg, #130b22 0%, #251147 30%, #371b72 60%, #4b249e 100%)'
-    : 'linear-gradient(-5deg, #8ab4f8 0%, #709fee 30%, #5686e1 60%, #4072c4 100%)'};
+    background: ${(props) =>
+      props.theme === 'dark'
+        ? 'linear-gradient(-5deg, #130b22 0%, #251147 30%, #371b72 60%, #4b249e 100%)'
+        : 'linear-gradient(-5deg, #8ab4f8 0%, #709fee 30%, #5686e1 60%, #4072c4 100%)'};
     clip-path: polygon(
       0% 100%,
       20% 75%,
@@ -84,9 +87,10 @@ const Sun = styled(motion.div)`
   transform: translateX(-50%);
   width: 200px;
   height: 200px;
-  background: ${props => props.theme === 'dark'
-    ? 'radial-gradient(circle, rgba(255, 99, 177, 1) 0%, rgba(255, 99, 177, 0.8) 50%, rgba(255, 99, 177, 0) 100%)'
-    : 'radial-gradient(circle, rgba(255, 182, 193, 1) 0%, rgba(255, 182, 193, 0.8) 50%, rgba(255, 182, 193, 0) 100%)'};
+  background: ${(props) =>
+    props.theme === 'dark'
+      ? 'radial-gradient(circle, rgba(255, 99, 177, 1) 0%, rgba(255, 99, 177, 0.8) 50%, rgba(255, 99, 177, 0) 100%)'
+      : 'radial-gradient(circle, rgba(255, 182, 193, 1) 0%, rgba(255, 182, 193, 0.8) 50%, rgba(255, 182, 193, 0) 100%)'};
   border-radius: 50%;
   z-index: 1;
 `;
@@ -96,10 +100,11 @@ const Grid = styled.div`
   bottom: 0;
   width: 100%;
   height: 50%;
-  background-image: ${props => props.theme === 'dark'
-    ? `linear-gradient(0deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px),
+  background-image: ${(props) =>
+    props.theme === 'dark'
+      ? `linear-gradient(0deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px),
        linear-gradient(90deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px)`
-    : `linear-gradient(0deg, rgba(106, 154, 238, 0.2) 1px, transparent 1px),
+      : `linear-gradient(0deg, rgba(106, 154, 238, 0.2) 1px, transparent 1px),
        linear-gradient(90deg, rgba(106, 154, 238, 0.2) 1px, transparent 1px)`};
   background-size: 40px 40px;
   transform: perspective(500px) rotateX(60deg);
@@ -129,10 +134,11 @@ const Title = styled(motion.h1)`
   font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  color: ${props => props.theme === 'dark' ? '#fff' : '#2d3748'};
-  text-shadow: ${props => props.theme === 'dark'
-    ? '0 0 20px rgba(255, 27, 107, 0.5), 0 0 40px rgba(255, 27, 107, 0.3), 0 0 60px rgba(255, 27, 107, 0.2)'
-    : '0 0 20px rgba(106, 154, 238, 0.5), 0 0 40px rgba(106, 154, 238, 0.3), 0 0 60px rgba(106, 154, 238, 0.2)'};
+  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#2d3748')};
+  text-shadow: ${(props) =>
+    props.theme === 'dark'
+      ? '0 0 20px rgba(255, 27, 107, 0.5), 0 0 40px rgba(255, 27, 107, 0.3), 0 0 60px rgba(255, 27, 107, 0.2)'
+      : '0 0 20px rgba(106, 154, 238, 0.5), 0 0 40px rgba(106, 154, 238, 0.3), 0 0 60px rgba(106, 154, 238, 0.2)'};
 
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -141,14 +147,15 @@ const Title = styled(motion.h1)`
 
 const Subtitle = styled(motion.p)`
   font-size: 1.5rem;
-  color: ${props => props.theme === 'dark' ? '#fff' : '#4a5568'};
+  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#4a5568')};
   margin-bottom: 2rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  text-shadow: ${props => props.theme === 'dark'
-    ? '0 0 10px rgba(255, 27, 107, 0.3)'
-    : '0 0 10px rgba(106, 154, 238, 0.3)'};
+  text-shadow: ${(props) =>
+    props.theme === 'dark'
+      ? '0 0 10px rgba(255, 27, 107, 0.3)'
+      : '0 0 10px rgba(106, 154, 238, 0.3)'};
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -159,7 +166,7 @@ const Hero = () => {
   const { theme } = useTheme();
 
   return (
-    <HeroContainer theme={theme} id="hero">
+    <HeroContainer theme={theme} id='hero'>
       <Background>
         <SkyGradient theme={theme} />
         <Sun
@@ -171,7 +178,7 @@ const Hero = () => {
           transition={{
             duration: 5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           }}
         />
         <Mountains theme={theme} />
@@ -185,7 +192,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Hello, I'm [Your Name]
+          Hello, I'm Sahil Kumar
         </Title>
 
         <Subtitle
@@ -194,7 +201,9 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          A Full Stack Developer passionate about creating seamless digital experiences
+          An AI Engineer | Data Scientist | Software Engineer passionate about
+          solving problems <br />
+          Always learning, always evolving
         </Subtitle>
 
         <SocialLinks theme={theme} />
@@ -203,4 +212,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;

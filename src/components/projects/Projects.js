@@ -27,94 +27,91 @@ const ShowMoreButton = styled(motion.button)`
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-medium);
-  background: ${props => props.theme === 'dark'
-        ? 'rgba(255, 255, 255, 0.1)'
-        : '#F1F5F9'
-    };
+  background: ${(props) =>
+    props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#F1F5F9'};
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 
   &:hover {
     transform: translateY(-2px);
-    background: ${props => props.theme === 'dark'
-        ? 'rgba(255, 255, 255, 0.2)'
-        : '#E2E8F0'
-    };
+    background: ${(props) =>
+      props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#E2E8F0'};
   }
 `;
 
 const Projects = () => {
-    const { theme } = useTheme();
-    const [activeFilter, setActiveFilter] = useState('all');
-    const [visibleProjects, setVisibleProjects] = useState(6);
-    const [showButton, setShowButton] = useState(false);
+  const { theme } = useTheme();
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [visibleProjects, setVisibleProjects] = useState(6);
+  const [showButton, setShowButton] = useState(false);
 
-    const filteredProjects = activeFilter === 'all'
-        ? projects
-        : projects.filter(project => project.category === activeFilter);
+  const filteredProjects =
+    activeFilter === 'all'
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
 
-    const displayedProjects = filteredProjects.slice(0, visibleProjects);
-    const hasMoreProjects = filteredProjects.length > visibleProjects;
+  const displayedProjects = filteredProjects.slice(0, visibleProjects);
+  const hasMoreProjects = filteredProjects.length > visibleProjects;
 
-    const handleShowMore = () => {
-        setVisibleProjects(prev => prev + 6);
-    };
+  const handleShowMore = () => {
+    setVisibleProjects((prev) => prev + 6);
+  };
 
-    useEffect(() => {
-        setVisibleProjects(6);
-        setShowButton(false);
+  useEffect(() => {
+    setVisibleProjects(6);
+    setShowButton(false);
 
-        if (filteredProjects.length > 6) {
-            const timer = setTimeout(() => {
-                setShowButton(true);
-            }, 800);
-            return () => clearTimeout(timer);
-        }
-    }, [activeFilter, filteredProjects.length]);
+    if (filteredProjects.length > 6) {
+      const timer = setTimeout(() => {
+        setShowButton(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [activeFilter, filteredProjects.length]);
 
-    return (
-        <Section
-            id="projects"
-            title="Featured Projects"
-            subtitle="A collection of projects that showcase my expertise in AI/ML, data science, software engineering, and financial technology."
+  return (
+    <Section
+      id='projects'
+      title='Featured Projects'
+      subtitle='A collection of projects that showcase my work on AI/ML, data science, software engineering, and finance applications.'
+    >
+      <ProjectFilter
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
+      />
+
+      <AnimatePresence mode='wait'>
+        <ProjectsGrid
+          key={activeFilter}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
         >
-            <ProjectFilter
-                activeFilter={activeFilter}
-                setActiveFilter={setActiveFilter}
-            />
+          {displayedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </ProjectsGrid>
+      </AnimatePresence>
 
-            <AnimatePresence mode="wait">
-                <ProjectsGrid
-                    key={activeFilter}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    {displayedProjects.map(project => (
-                        <ProjectCard key={project.id} project={project} />
-                    ))}
-                </ProjectsGrid>
-            </AnimatePresence>
-
-            <AnimatePresence>
-                {hasMoreProjects && showButton && (
-                    <ShowMoreButton
-                        theme={theme}
-                        onClick={handleShowMore}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: 0.2 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        Show More Projects
-                    </ShowMoreButton>
-                )}
-            </AnimatePresence>
-        </Section>
-    );
+      <AnimatePresence>
+        {hasMoreProjects && showButton && (
+          <ShowMoreButton
+            theme={theme}
+            onClick={handleShowMore}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Show More Projects
+          </ShowMoreButton>
+        )}
+      </AnimatePresence>
+    </Section>
+  );
 };
 
 export default Projects;

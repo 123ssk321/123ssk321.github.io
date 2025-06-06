@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-
+import { BsGithub, BsLinkedin, BsMailbox2 } from 'react-icons/bs';
+import { FiMail } from 'react-icons/fi';
 const SocialLinksContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
@@ -11,55 +11,55 @@ const SocialLinksContainer = styled(motion.div)`
 `;
 
 const SocialLink = styled(motion.a)`
-  color: ${props => props.theme === 'dark' ? '#fff' : '#333'};
+  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#333')};
   font-size: 1.5rem;
   transition: color 0.3s ease;
-  
+
   &:hover {
-    color: ${props => props.theme === 'dark' ? '#00ffff' : '#0066ff'};
+    color: ${(props) => (props.theme === 'dark' ? '#00ffff' : '#0066ff')};
   }
 `;
 
 const SocialLinks = ({ theme, className }) => {
-    return (
-        <SocialLinksContainer
-            className={className}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-        >
-            <SocialLink
-                theme={theme}
-                href="https://github.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                <FaGithub />
-            </SocialLink>
-            <SocialLink
-                theme={theme}
-                href="https://linkedin.com/in/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                <FaLinkedin />
-            </SocialLink>
-            <SocialLink
-                theme={theme}
-                href="https://twitter.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                <FaTwitter />
-            </SocialLink>
-        </SocialLinksContainer>
-    );
+  return (
+    <SocialLinksContainer
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+    >
+      <SocialLink
+        theme={theme}
+        href='https://github.com/123ssk321'
+        target='_blank'
+        rel='noopener noreferrer'
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <BsGithub />
+      </SocialLink>
+      <SocialLink
+        theme={theme}
+        href='https://linkedin.com/in/sahilkumar5'
+        target='_blank'
+        rel='noopener noreferrer'
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <BsLinkedin />
+      </SocialLink>
+      <SocialLink
+        theme={theme}
+        href='mailto:sahilsatishkumar7@gmail.com'
+        target='_blank'
+        rel='noopener noreferrer'
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <FiMail />
+      </SocialLink>
+    </SocialLinksContainer>
+  );
 };
 
-export default SocialLinks; 
+export default SocialLinks;
