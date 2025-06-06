@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
 
+
 const gradients = {
   blue: 'linear-gradient(135deg, #00C6FF 0%, #0072FF 100%)',
   purple: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
@@ -155,6 +156,7 @@ const HardSkillCard = ({ skill, index }) => {
       transition={{ duration: 0.5 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => window.open(skill.url)}
     >
       <IconWrapper theme={theme} isHovered={isHovered}>
         <div className="mono-icon">
