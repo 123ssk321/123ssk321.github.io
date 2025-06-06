@@ -77,7 +77,7 @@ const CardWrapper = styled.div`
   }
 `;
 
-const Timeline = ({ items, theme }) => {
+const Timeline = ({ items, theme, activeTab }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -123,6 +123,7 @@ const Timeline = ({ items, theme }) => {
                 item={item}
                 theme={theme}
                 align={isMobile ? 'right' : (index % 2 === 0 ? 'left' : 'right')}
+                type={activeTab}
               />
             </CardWrapper>
           </TimelineItem>

@@ -92,7 +92,7 @@ const About = () => {
         </SectionTab>
       </TabContainer>
 
-      <Timeline items={getData()} theme={theme} onCardClick={handleCardClick} />
+      <Timeline items={getData()} theme={theme} onCardClick={handleCardClick} activeTab={activeTab} />
 
       <AnimatePresence>
         {selectedItem && isVisible && (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
+import { MdSchool, MdLocationOn, MdCalendarToday, MdGrade, MdBusinessCenter, MdVolunteerActivism } from 'react-icons/md';
 
 const Card = styled(motion.div)`
   background: ${props => props.theme === 'dark'
@@ -34,7 +35,7 @@ const Card = styled(motion.div)`
 `;
 
 const CardContent = styled.div`
-  padding-${props => props.align === 'left' ? 'right' : 'left'}: 2.5rem; /* Add space for the expand icon */
+  padding-right: 2.5rem; /* Add space for the expand icon */
 `;
 
 const CardTitle = styled.h3`
@@ -42,33 +43,62 @@ const CardTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--color-text-primary);
+  text-align: left;
 `;
 
-const CardSubtitle = styled.p`
+const CardSubtitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+`;
+
+const SubtitleItem = styled.p`
   font-size: 1rem;
   color: var(--color-text-secondary);
-  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    font-size: 1.2rem;
+    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+  }
 `;
 
 const CardDate = styled.span`
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   font-weight: 500;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    font-size: 1.2rem;
+    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+  }
 `;
 
 const CardGrade = styled.span`
   font-size: 0.9rem;
   color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
   font-weight: 500;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.25rem;
+
+  svg {
+    font-size: 1.2rem;
+    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+  }
 `;
 
 const ExpandIcon = styled(motion.div)`
   position: absolute;
   top: 1.5rem;
-  ${props => props.align === 'left' ? 'right: 1.5rem' : 'left: 1.5rem'};
+  right: 1.5rem;
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
@@ -89,9 +119,38 @@ const CardDetails = styled(motion.div)`
   color: var(--color-text-secondary);
   line-height: 1.6;
   will-change: transform, opacity;
+  text-align: left;
+  align-items: flex-start;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    align-items: flex-start;
+
+    &:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 `;
 
-const TimelineCard = ({ item, theme, align = 'left' }) => {
+const TimelineCard = ({ item, theme, align = 'left', type }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -102,7 +161,6 @@ const TimelineCard = ({ item, theme, align = 'left' }) => {
       whileTap={{ scale: 0.98 }}
     >
       <ExpandIcon
-        align={align}
         animate={{ rotate: isExpanded ? 180 : 0 }}
         transition={{ duration: 0.3 }}
       >
@@ -111,9 +169,28 @@ const TimelineCard = ({ item, theme, align = 'left' }) => {
 
       <CardContent align={align}>
         <CardTitle>{item.title}</CardTitle>
-        <CardSubtitle>{item.subtitle}</CardSubtitle>
-        <CardDate>{item.date}</CardDate>
-        {item.grade && <CardGrade theme={theme}>{item.grade}</CardGrade>}
+        <CardSubtitle>
+          <SubtitleItem theme={theme}>
+            {type === 'education' && <MdSchool />}
+            {type === 'work' && <MdBusinessCenter />}
+            {type === 'extracurricular' && <MdBusinessCenter />}
+            {item.institution}
+          </SubtitleItem>
+          <SubtitleItem theme={theme}>
+            <MdLocationOn />
+            {item.country}
+          </SubtitleItem>
+        </CardSubtitle>
+        <CardDate theme={theme}>
+          <MdCalendarToday />
+          {item.date}
+        </CardDate>
+        {item.grade && (
+          <CardGrade theme={theme}>
+            <MdGrade />
+            {item.grade}
+          </CardGrade>
+        )}
 
         <AnimatePresence>
           {isExpanded && (
@@ -145,7 +222,11 @@ const TimelineCard = ({ item, theme, align = 'left' }) => {
                 }
               }}
             >
-              {item.details}
+              <ul>
+                {item.details.split('\n').map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
             </CardDetails>
           )}
         </AnimatePresence>
