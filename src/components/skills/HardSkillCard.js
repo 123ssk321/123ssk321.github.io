@@ -19,7 +19,7 @@ const getGradient = (index) => {
 
 const Card = styled(motion.div)`
   position: relative;
-  background: ${props => props.theme === 'dark' ? '#1A1A1A' : '#f4f4f5'};
+  background: var(--color-skill-card-bg);
   border-radius: 16px;
   aspect-ratio: 1;
   width: 100%;
@@ -59,7 +59,7 @@ const Card = styled(motion.div)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${props => props.theme === 'dark' ? '#1A1A1A' : '#f4f4f5'};
+    background: var(--color-skill-card-bg);
     border-radius: 15px;
     z-index: -1;
     transition: background-color 0.3s ease;
@@ -73,7 +73,7 @@ const Card = styled(motion.div)`
     }
 
     &::after {
-      background: ${props => props.theme === 'dark' ? '#000000' : '#ffffff'};
+      background: var(--color-skill-card-hover-bg);
     }
 
     box-shadow: 0 4px 20px ${props => {
@@ -85,7 +85,7 @@ const Card = styled(motion.div)`
 
 const IconWrapper = styled.div`
   font-size: 2rem;
-  color: ${props => props.theme === 'dark' ? '#ffffff' : '#000000'};
+  color: var(--color-text-primary);
   opacity: 0.9;
   transition: all 0.3s ease;
   display: flex;
@@ -120,7 +120,7 @@ const IconWrapper = styled.div`
 const SkillName = styled.h3`
   font-size: 0.875rem;
   font-weight: 500;
-  color: ${props => props.theme === 'dark' ? '#ffffff' : '#000000'};
+  color: var(--color-text-primary);
   margin: 0;
   text-align: center;
   opacity: 0.9;

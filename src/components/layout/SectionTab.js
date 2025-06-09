@@ -18,22 +18,15 @@ export const Tab = styled(motion.button)`
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-medium);
-  background: ${props => props.isActive
-        ? props.theme === 'dark'
-            ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-            : '#FF6B6B'
-        : props.theme === 'dark'
-            ? 'rgba(255, 255, 255, 0.05)'
-            : '#F1F5F9'
-    };
-  color: ${props => props.isActive ? 'white' : 'inherit'};
-  
+  background: ${(props) =>
+    props.isActive
+      ? 'var(--color-section-tab-active)'
+      : 'var(--color-section-tab)'};
+  color: ${(props) => (props.isActive ? 'white' : 'inherit')};
+
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.theme === 'dark'
-        ? '0 4px 12px rgba(255, 255, 255, 0.1)'
-        : '0 4px 12px rgba(0, 0, 0, 0.1)'
-    };
+    box-shadow: 0 4px 12px var(--color-section-tab-shadow);
   }
 
   @media (max-width: 768px) {
@@ -43,18 +36,18 @@ export const Tab = styled(motion.button)`
 `;
 
 const SectionTab = ({ isActive, theme, onClick, children, ...props }) => {
-    return (
-        <Tab
-            isActive={isActive}
-            theme={theme}
-            onClick={onClick}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            {...props}
-        >
-            {children}
-        </Tab>
-    );
+  return (
+    <Tab
+      isActive={isActive}
+      theme={theme}
+      onClick={onClick}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      {...props}
+    >
+      {children}
+    </Tab>
+  );
 };
 
-export default SectionTab; 
+export default SectionTab;

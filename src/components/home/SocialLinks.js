@@ -11,12 +11,12 @@ const SocialLinksContainer = styled(motion.div)`
 `;
 
 const SocialLink = styled(motion.a)`
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#333')};
+  color: var(--color-text-primary);
   font-size: 1.5rem;
   transition: color 0.3s ease;
 
   &:hover {
-    color: ${(props) => (props.theme === 'dark' ? '#00ffff' : '#0066ff')};
+    color: var(--color-text-accent);
   }
 `;
 

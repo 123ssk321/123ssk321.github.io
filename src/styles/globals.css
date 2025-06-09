@@ -48,24 +48,64 @@ body {
 
 /* Theme specific styles */
 .light {
-    --color-text-primary: #2C3E50;
-    --color-text-secondary: #7F8C8D;
+    --color-text-primary: #0080ff; /* Card title color */
+    --color-text-secondary: #04eeff; /* Card subtitle and section description color */
     --color-bg-primary: #FFFFFF;
     --color-bg-secondary: #F9FAFB;
-    --color-border: #E2E8F0;
+    --color-border: #00ff04; /* Card border color */
+
+    /* Light theme section backgrounds */
+    --section-bg-primary: transparent;
+    --section-bg-secondary: rgba(0, 0, 0, 0.03);
 }
 
 .dark {
     --color-text-primary: #F1F5F9;
     --color-text-secondary: #CBD5E1;
-    --color-bg-primary: #0F172A;
-    --color-bg-secondary: #1E293B;
-    --color-border: #334155;
+    --color-text-accent: #FFE66D; /* Card title color */
+    --color-text-shadow: rgba(0, 0, 0, 0.44); /* Card subtitle and section description color */
+    --color-bg-primary: #11042a;
+    --color-bg-secondary: #040A2A;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-hover: rgba(255, 255, 255, 0.2); /* Card border hover color */
+    --color-border-focus: rgba(255, 255, 255, 0.441); /* Card border active color */
 
-    /* Dark theme section backgrounds */
-    --section-bg-primary: transparent;
-    --section-bg-secondary: rgba(255, 255, 255, 0.05);
+    --color-navbar-logo: #ff0077; /* Navbar logo color */
+    --color-navbar-logo-shadow: rgba(255, 0, 119, 0.31); /* Navbar logo shadow color */
+    --color-navbar-bg: rgba(23, 23, 23, 0.777); /* Navbar background color */
+    --color-navbar-shadow: rgba(0, 0, 0, 0.2); /* Navbar shadow color */
+    --color-navbar-border: rgba(255, 255, 255, 0); /* Navbar border color */
+    
+    --color-navlink-active-bg: linear-gradient(135deg, rgba(254, 254, 0, 0.1), rgba(243, 162, 0, 0.1)); /* Active navlink color */
+    --color-navlink-active-text: #FFE66D; /* Active navlink text color */
+    --color-navlink-active-shadow: rgba(254, 246, 0, 0.2); /* Active navlink shadow color */
+
+
+    --color-navlink-bulb-bg: #FFE66D; /* Navlink bulb background color */
+    --color-navlink-bulb-shadow: #FFE66D; /* Navlink bulb shadow color */
+
+    --color-section-title: linear-gradient(135deg, #ff1b6b 30%,  #FFE66D 70%); /* Section title color */
+    --color-section-tab: rgba(255, 255, 255, 0.05);
+    --color-section-tab-active: linear-gradient(135deg, #ff1b6b 0%,  #FFE66D 100%);
+    --color-section-tab-shadow: #ff9966bf;
+
+    --color-card-bg: rgba(255, 255, 255, 0.03);
+    --color-card-shadow: rgba(0, 0, 0, 0.821);
+    --color-card-border: rgba(255, 255, 255, 0.1);
+    --color-card-border-hover: rgba(255, 255, 255, 0.2);
+    --color-card-icon: #ff1b6b;
+    
+    --color-skill-card-bg: rgba(17, 4, 42, 0.91);
+    --color-skill-card-hover-bg: #000000;
+
+    --color-form-bg: rgba(255, 255, 255, 0.02);
+    --color-form-shadow: rgba(255, 255, 255, 0.1);
+    --color-form-input-bg: rgba(255, 255, 255, 0.07);
+    --color-form-input-shadow: rgba(255, 255, 255, 0.2);
+    
 }
+
+
 
 /* Utility classes */
 .container {
@@ -160,17 +200,17 @@ body {
 
 /* Section backgrounds */
 section#about {
-    background: var(--section-bg-secondary);
+    background: var(--color-bg-primary);
 }
 
 section#projects {
-    background: var(--section-bg-primary);
+    background: var(--color-bg-secondary);
 }
 
 section#skills {
-    background: var(--section-bg-secondary);
+    background: var(--color-bg-primary);
 }
 
 section#contact {
-    background: var(--section-bg-primary);
+    background: var(--color-bg-secondary);
 }

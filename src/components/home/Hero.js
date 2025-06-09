@@ -64,7 +64,7 @@ const Mountains = styled.div`
     height: 100%;
     background: ${(props) =>
       props.theme === 'dark'
-        ? 'linear-gradient(-5deg, #130b22 0%, #251147 30%, #371b72 60%, #4b249e 100%)'
+        ? 'linear-gradient(to top,#11042a 0%,rgb(39, 1, 104) 50%)'
         : 'linear-gradient(-5deg, #8ab4f8 0%, #709fee 30%, #5686e1 60%, #4072c4 100%)'};
     clip-path: polygon(
       0% 100%,
@@ -134,11 +134,7 @@ const Title = styled(motion.h1)`
   font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#2d3748')};
-  text-shadow: ${(props) =>
-    props.theme === 'dark'
-      ? '0 0 20px rgba(255, 27, 107, 0.5), 0 0 40px rgba(255, 27, 107, 0.3), 0 0 60px rgba(255, 27, 107, 0.2)'
-      : '0 0 20px rgba(106, 154, 238, 0.5), 0 0 40px rgba(106, 154, 238, 0.3), 0 0 60px rgba(106, 154, 238, 0.2)'};
+  color: var(--color-text-primary);
 
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -147,15 +143,11 @@ const Title = styled(motion.h1)`
 
 const Subtitle = styled(motion.p)`
   font-size: 1.5rem;
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#4a5568')};
+  color: var(--color-text-secondary);
   margin-bottom: 2rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  text-shadow: ${(props) =>
-    props.theme === 'dark'
-      ? '0 0 10px rgba(255, 27, 107, 0.3)'
-      : '0 0 10px rgba(106, 154, 238, 0.3)'};
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -184,7 +176,6 @@ const Hero = () => {
         <Mountains theme={theme} />
         <Grid theme={theme} />
       </Background>
-
       <Content>
         <Title
           theme={theme}

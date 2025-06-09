@@ -18,12 +18,10 @@ const Title = styled(motion.h2)`
   font-size: 2.5rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: ${props => props.hasSubtitle ? '1rem' : '3rem'};
-  background: ${props => props.theme === 'dark'
-    ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-    : 'none'};
-  -webkit-background-clip: ${props => props.theme === 'dark' ? 'text' : 'none'};
-  -webkit-text-fill-color: ${props => props.theme === 'dark' ? 'transparent' : 'inherit'};
+  margin-bottom: ${(props) => (props.hasSubtitle ? '1rem' : '3rem')};
+  background: var(--color-section-title);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 const Subtitle = styled.p`
@@ -41,13 +39,13 @@ const Section = ({
   subtitle,
   showTitle = true,
   showSubtitle = true,
-  children
+  children,
 }) => {
   const { theme } = useTheme();
 
   return (
     <StyledSection id={id}>
-      <Container >
+      <Container>
         {showTitle && (
           <Title
             theme={theme}
@@ -66,4 +64,4 @@ const Section = ({
   );
 };
 
-export default Section; 
+export default Section;

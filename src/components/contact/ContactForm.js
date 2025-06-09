@@ -25,17 +25,15 @@ const Input = styled.input`
   padding: 0.75rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  background: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'white'};
+  background: var(--color-form-input-bg);
   color: var(--color-text-primary);
   font-size: 1rem;
   transition: all var(--transition-medium);
 
   &:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px ${props => props.theme === 'dark'
-        ? 'rgba(255, 107, 107, 0.2)'
-        : 'rgba(255, 107, 107, 0.1)'};
+    border-color:var(--color-border-focus);
+    box-shadow: 0 0 0 2px var(--color-form-input-shadow);
   }
 
   &::placeholder {
@@ -52,13 +50,13 @@ const SubmitButton = styled(motion.button)`
   padding: 0.75rem 2rem;
   border: none;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+  background: var(--color-section-title);
   color: white;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all var(--transition-medium);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 2px var(--color-text-shadow);
 
   &:disabled {
     opacity: 0.7;

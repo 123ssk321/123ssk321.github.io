@@ -37,23 +37,15 @@ const CenterSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${(props) =>
-    props.theme === 'dark'
-      ? 'rgba(23, 23, 23, 0.8)'
-      : 'rgba(255, 255, 255, 0.8)'};
+  background: var(--color-navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 100px;
   padding: 0.5rem;
-  box-shadow: ${(props) =>
-    props.theme === 'dark'
-      ? '0 0 20px rgba(0, 0, 0, 0.2)'
-      : '0 0 20px rgba(255, 255, 255, 0.3)'};
+  box-shadow: 0 0 20px var(--color-navbar-shadow);
   position: relative;
   width: fit-content;
   margin: 0 auto;
-  border: ${(props) =>
-    props.theme === 'dark' ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
 
   @media (max-width: 768px) {
     display: none;
@@ -72,10 +64,12 @@ const RightSection = styled.div`
 `;
 
 const Logo = styled(motion.a)`
+  font-family: 'Orbitron', sans-serif;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#000')};
+  color: var(--color-navbar-logo);
+  text-shadow: 0 0 10px var(--color-navbar-logo-shadow);
   text-decoration: none;
   user-select: none;
 
@@ -94,7 +88,7 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled(motion.a)`
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#000')};
+  color: var(--color-text-primary);
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -103,19 +97,13 @@ const NavLink = styled(motion.a)`
   transition: all 0.3s ease;
 
   &:hover {
-    color: ${(props) => (props.theme === 'dark' ? '#00f2fe' : '#0070f3')};
+    color: var(--color-text-accent);
   }
 
   &.active {
-    background: ${(props) =>
-      props.theme === 'dark'
-        ? 'linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(0, 112, 243, 0.1))'
-        : 'linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(0, 112, 243, 0.1))'};
-    color: ${(props) => (props.theme === 'dark' ? '#00f2fe' : '#0070f3')};
-    box-shadow: ${(props) =>
-      props.theme === 'dark'
-        ? '0 0 20px rgba(0, 242, 254, 0.2)'
-        : '0 0 20px rgba(0, 112, 243, 0.2)'};
+    background: var(--color-navlink-active-bg);
+    color: var(--color-navlink-active-text);
+    box-shadow: 0 0 20px var(--color-navlink-active-shadow);
 
     &::before {
       content: '';
@@ -125,13 +113,11 @@ const NavLink = styled(motion.a)`
       transform: translateX(-50%);
       width: 30px;
       height: 3px;
-      background: ${(props) =>
-        props.theme === 'dark' ? '#00f2fe' : '#0070f3'};
+      background: var(--color-navlink-bulb-bg);
       border-radius: 3px;
-      box-shadow: ${(props) =>
-        props.theme === 'dark'
-          ? '0 0 5px #00f2fe, 0 0 10px #00f2fe, 0 0 15px #00f2fe'
-          : '0 0 5px #0070f3, 0 0 10px #0070f3, 0 0 15px #0070f3'};
+      box-shadow: 0 0 5px var(--color-navlink-bulb-shadow),
+        0 0 10px var(--color-navlink-bulb-shadow),
+        0 0 15px var(--color-navlink-bulb-shadow);
       opacity: ${(props) => (props.shouldglow ? 1 : 0)};
       transition: opacity 0.3s ease;
     }
@@ -146,7 +132,11 @@ const ThemeToggle = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#000')};
+  color: var(--color-text-primary);
+
+  :hover {
+    color: var(--color-text-accent);
+  }
 
   @media (max-width: 768px) {
     display: none;
@@ -164,6 +154,9 @@ const MobileThemeToggle = styled(motion.button)`
   font-size: 1.5rem;
   margin-top: 4rem;
   color: inherit;
+  :hover {
+    color: var(--color-text-accent);
+  }
 `;
 
 const HamburgerButton = styled(motion.button)`

@@ -1,21 +1,21 @@
 export const lightTheme = {
     // Base colors
-    primary: '#FF6B6B',  // Warm red for primary actions
-    secondary: '#4ECDC4', // Teal for secondary elements
-    accent: '#FFE66D',    // Sunny yellow for accents
+    primary: ' #FF6B6B',  // Warm red for primary actions
+    secondary: ' #4ECDC4', // Teal for secondary elements
+    accent: ' #FFE66D',    // Sunny yellow for accents
 
     // Text colors
     text: {
-        primary: '#2C3E50',    // Dark blue-gray for main text
-        secondary: '#7F8C8D',  // Lighter gray for secondary text
-        inverse: '#FFFFFF',    // White text for dark backgrounds
+        primary: ' #2C3E50',    // Dark blue-gray for main text
+        secondary: ' #7F8C8D',  // Lighter gray for secondary text
+        inverse: ' #FFFFFF',    // White text for dark backgrounds
     },
 
     // Background colors
     background: {
-        primary: '#FFFFFF',    // White for main background
-        secondary: '#F9FAFB',  // Light gray for secondary background
-        tertiary: '#F1F5F9',   // Slightly darker gray for cards
+        primary: ' #FFFFFF',    // White for main background
+        secondary: ' #F9FAFB',  // Light gray for secondary background
+        tertiary: ' #F1F5F9',   // Slightly darker gray for cards
     },
 
     // Border colors
@@ -49,37 +49,37 @@ export const lightTheme = {
 
 export const darkTheme = {
     // Base colors
-    primary: '#FF6B6B',  // Keep primary color for consistency
-    secondary: '#4ECDC4', // Keep secondary color for consistency
-    accent: '#FFE66D',    // Keep accent color for consistency
+    primary: ' #FF6B6B',  // Keep primary color for consistency
+    secondary: ' #4ECDC4', // Keep secondary color for consistency
+    accent: ' #FFE66D',    // Keep accent color for consistency
 
     // Text colors
     text: {
-        primary: '#F1F5F9',    // Light gray for main text
-        secondary: '#CBD5E1',  // Lighter gray for secondary text
-        inverse: '#1E293B',    // Dark text for light backgrounds
+        primary: ' #F1F5F9',    // Light gray for main text
+        secondary: ' #CBD5E1',  // Lighter gray for secondary text
+        inverse: ' #1E293B',    // Dark text for light backgrounds
     },
 
     // Background colors
     background: {
-        primary: '#0F172A',    // Dark blue for main background
-        secondary: '#1E293B',  // Slightly lighter blue for secondary background
-        tertiary: '#334155',   // Even lighter blue for cards
+        primary: ' #0F172A',    // Dark blue for main background
+        secondary: ' #1E293B',  // Slightly lighter blue for secondary background
+        tertiary: ' #334155',   // Even lighter blue for cards
     },
 
     // Border colors
     border: {
-        light: '#334155',
-        medium: '#475569',
-        dark: '#64748B',
+        light: ' #334155',
+        medium: ' #475569',
+        dark: ' #64748B',
     },
 
     // Status colors (slightly muted for dark theme)
     status: {
-        success: '#059669',
-        error: '#DC2626',
-        warning: '#D97706',
-        info: '#2563EB',
+        success: ' #059669',
+        error: ' #DC2626',
+        warning: ' #D97706',
+        info: ' #2563EB',
     },
 
     // Gradient

@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
-import { MdSchool, MdLocationOn, MdCalendarToday, MdGrade, MdBusinessCenter, MdVolunteerActivism } from 'react-icons/md';
+import {
+  MdSchool,
+  MdLocationOn,
+  MdCalendarToday,
+  MdGrade,
+  MdBusinessCenter,
+  MdVolunteerActivism,
+} from 'react-icons/md';
 
 const Card = styled(motion.div)`
-  background: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.03)'
-    : 'rgba(18, 24, 38, 0.03)'
-  };
-  border: 1px solid ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.1)'
-    : 'rgba(18, 24, 38, 0.1)'
-  };
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   width: 100%;
@@ -23,14 +24,8 @@ const Card = styled(motion.div)`
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${props => props.theme === 'dark'
-    ? '0 10px 20px rgba(0, 0, 0, 0.3)'
-    : '0 10px 20px rgba(0, 0, 0, 0.1)'
-  };
-    border-color: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.2)'
-    : 'rgba(18, 24, 38, 0.2)'
-  };
+    box-shadow: 0 10px 20px var(--color-card-shadow);
+    border-color: var(--color-border-hover);
   }
 `;
 
@@ -62,7 +57,7 @@ const SubtitleItem = styled.p`
 
   svg {
     font-size: 1.2rem;
-    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+    color: var(--color-card-icon);
   }
 `;
 
@@ -76,13 +71,13 @@ const CardDate = styled.span`
 
   svg {
     font-size: 1.2rem;
-    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+    color: var(--color-card-icon);
   }
 `;
 
 const CardGrade = styled.span`
   font-size: 0.9rem;
-  color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+  color: var(--color-text-accent);
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -91,7 +86,7 @@ const CardGrade = styled.span`
 
   svg {
     font-size: 1.2rem;
-    color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+    color: var(--color-card-icon);
   }
 `;
 
@@ -112,10 +107,7 @@ const ExpandIcon = styled(motion.div)`
 const CardDetails = styled(motion.div)`
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.1)'
-    : 'rgba(18, 24, 38, 0.1)'
-  };
+  border-top: 1px solid var(--color-text-primary);
   color: var(--color-text-secondary);
   line-height: 1.6;
   will-change: transform, opacity;
@@ -138,10 +130,10 @@ const CardDetails = styled(motion.div)`
     align-items: flex-start;
 
     &:before {
-      content: "•";
+      content: '•';
       position: absolute;
       left: 0;
-      color: ${props => props.theme === 'dark' ? '#FFE66D' : '#FF6B6B'};
+      color: var(--color-card-icon);
     }
 
     &:last-child {
@@ -199,27 +191,27 @@ const TimelineCard = ({ item, theme, align = 'left', type }) => {
               initial={{
                 opacity: 0,
                 y: -20,
-                scale: 0.95
+                scale: 0.95,
               }}
               animate={{
                 opacity: 1,
                 y: 0,
-                scale: 1
+                scale: 1,
               }}
               exit={{
                 opacity: 0,
                 y: -20,
-                scale: 0.95
+                scale: 0.95,
               }}
               transition={{
-                type: "spring",
+                type: 'spring',
                 stiffness: 300,
                 damping: 25,
                 mass: 0.5,
                 opacity: {
                   duration: 0.2,
-                  ease: "easeOut"
-                }
+                  ease: 'easeOut',
+                },
               }}
             >
               <ul>

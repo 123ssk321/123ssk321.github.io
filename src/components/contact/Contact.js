@@ -33,14 +33,9 @@ const Title = styled(motion.h2)`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  background: ${(props) =>
-    props.theme === 'dark'
-      ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-      : 'none'};
-  -webkit-background-clip: ${(props) =>
-    props.theme === 'dark' ? 'text' : 'none'};
-  -webkit-text-fill-color: ${(props) =>
-    props.theme === 'dark' ? 'transparent' : 'inherit'};
+  background: var(--color-section-title);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 const Description = styled.p`
@@ -71,14 +66,10 @@ const SocialLink = styled(motion.a)`
 `;
 
 const FormWrapper = styled(motion.div)`
-  background: ${(props) =>
-    props.theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'white'};
+  background: var(--color-form-bg);
   padding: 2rem;
   border-radius: var(--radius-lg);
-  box-shadow: ${(props) =>
-    props.theme === 'dark'
-      ? '0 4px 20px rgba(255, 255, 255, 0.05)'
-      : '0 4px 20px rgba(0, 0, 0, 0.1)'};
+  box-shadow: 0 4px 20px var(--color-form-shadow);
   border: 1px solid var(--color-border);
 `;
 

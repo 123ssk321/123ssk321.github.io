@@ -51,7 +51,7 @@ const TimelineItem = styled(motion.div)`
     border-radius: 50%;
     background: ${props => props.theme === 'dark'
     ? 'linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)'
-    : '#FF6B6B'
+    : 'rgb(255, 0, 221)'
   };
     transform: translate(-50%, -50%);
     z-index: 2;

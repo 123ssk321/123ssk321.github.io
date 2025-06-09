@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
 
 const Card = styled(motion.div)`
-  background: var(--color-bg-secondary);
+  background: var(--color-card-bg);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   height: 100%;
@@ -13,9 +13,7 @@ const Card = styled(motion.div)`
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${props => props.theme === 'dark'
-    ? '0 10px 20px rgba(0, 0, 0, 0.3)'
-    : '0 10px 20px rgba(0, 0, 0, 0.1)'};
+    box-shadow: 0 10px 20px var(--color-card-shadow);
   }
 `;
 
@@ -82,4 +80,4 @@ const SoftSkillCard = ({ skill }) => {
   );
 };
 
-export default SoftSkillCard; 
+export default SoftSkillCard;
