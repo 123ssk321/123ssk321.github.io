@@ -8,21 +8,15 @@ const Card = styled(motion.div)`
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'white'};
+  background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   height: 100%;
   transition: all var(--transition-medium);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${props => props.theme === 'dark'
-    ? '0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2)'
-    : '0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.05)'
-  };
-    border-color: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.2)'
-    : 'rgba(0, 0, 0, 0.1)'
-  };
+    box-shadow: 0 10px 20px var(--color-card-shadow), 0 6px 12px var(--color-card-shadow);
+    border-color: var(--color-card-border-hover);
 
     .project-image {
       transform: scale(1.05);
@@ -57,10 +51,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${props => props.theme === 'dark'
-    ? 'rgba(0, 0, 0, 0.7)'
-    : 'rgba(255, 255, 255, 0.9)'
-  };
+  background: var(--color-project-card-overlay-bg);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -99,10 +90,7 @@ const Tech = styled.span`
   font-size: 0.8rem;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
-  background: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.05)'
-    : '#F1F5F9'
-  };
+  background: var(--color-project-card-tech-bg);
   color: var(--color-text-secondary);
 `;
 
@@ -120,20 +108,14 @@ const LinkButton = styled(motion.a)`
   border-radius: var(--radius-md);
   font-size: 0.9rem;
   font-weight: 500;
-  color: ${props => props.theme === 'dark' ? 'white' : 'inherit'};
-  background: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.1)'
-    : '#F1F5F9'
-  };
+  color: var(--color-text-primary);
+  background: var(--color-project-card-link-btn-bg);
   text-decoration: none;
   transition: all var(--transition-medium);
 
   &:hover {
     transform: translateY(-2px);
-    background: ${props => props.theme === 'dark'
-    ? 'rgba(255, 255, 255, 0.2)'
-    : '#E2E8F0'
-  };
+    background: var(--color-project-card-link-btn-hover);
   }
 
   svg {
@@ -149,7 +131,7 @@ const Category = styled.span`
   border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 500;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+  background: var(--color-section-title);
   color: white;
   z-index: 1;
 `;

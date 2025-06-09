@@ -62,7 +62,7 @@ body {
 .dark {
     --color-text-primary: #F1F5F9;
     --color-text-secondary: #CBD5E1;
-    --color-text-accent: #FFE66D; /* Card title color */
+    --color-text-accent: #33FFC7; /* Card title color */
     --color-text-shadow: rgba(0, 0, 0, 0.44); /* Card subtitle and section description color */
     --color-bg-primary: #11042a;
     --color-bg-secondary: #040A2A;
@@ -76,13 +76,13 @@ body {
     --color-navbar-shadow: rgba(0, 0, 0, 0.2); /* Navbar shadow color */
     --color-navbar-border: rgba(255, 255, 255, 0); /* Navbar border color */
     
-    --color-navlink-active-bg: linear-gradient(135deg, rgba(254, 254, 0, 0.1), rgba(243, 162, 0, 0.1)); /* Active navlink color */
-    --color-navlink-active-text: #FFE66D; /* Active navlink text color */
-    --color-navlink-active-shadow: rgba(254, 246, 0, 0.2); /* Active navlink shadow color */
+    --color-navlink-active-bg: linear-gradient(135deg, rgba(0, 254, 254, 0.1), rgba(0, 243, 227, 0.1)); /* Active navlink color */
+    --color-navlink-active-text: #33FFC7; /* Active navlink text color */
+    --color-navlink-active-shadow: rgba(0, 250, 254, 0.2); /* Active navlink shadow color */
 
 
-    --color-navlink-bulb-bg: #FFE66D; /* Navlink bulb background color */
-    --color-navlink-bulb-shadow: #FFE66D; /* Navlink bulb shadow color */
+    --color-navlink-bulb-bg: #33FFC7; /* Navlink bulb background color */
+    --color-navlink-bulb-shadow: #33FFC7; /* Navlink bulb shadow color */
 
     --color-section-title: linear-gradient(135deg, #ff1b6b 30%,  #FFE66D 70%); /* Section title color */
     --color-section-tab: rgba(255, 255, 255, 0.05);
@@ -94,6 +94,11 @@ body {
     --color-card-border: rgba(255, 255, 255, 0.1);
     --color-card-border-hover: rgba(255, 255, 255, 0.2);
     --color-card-icon: #ff1b6b;
+
+    --color-project-card-tech-bg: rgba(255, 255, 255, 0.05);
+    --color-project-card-overlay-bg: rgba(0, 0, 0, 0.7);
+    --color-project-card-link-btn-bg: rgba(255, 255, 255, 0.1);
+    --color-project-card-link-btn-hover:rgba(255, 255, 255, 0.2);
     
     --color-skill-card-bg: rgba(17, 4, 42, 0.91);
     --color-skill-card-hover-bg: #000000;

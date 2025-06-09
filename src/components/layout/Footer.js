@@ -8,10 +8,10 @@ const Footer = () => {
 
   return (
     <footer
-      className={`py-8 bg-[var(--color-bg-primary)]`}
+      className={`py-8 bg-[var(--color-bg-secondary)]`}
     >
-      <div className='container mx-auto px-4'>
-        <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
+      <div className='container mx-auto px-4 h-full border-t-2 border-[var(--color-card-icon)]'>
+        <div className='flex flex-col md:flex-row justify-center items-center py-4'>
           <div className='text-center md:text-left'>
             <p
               className={`text-sm text-[var(--color-text-accent)]`}
