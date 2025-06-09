@@ -30,8 +30,8 @@ export const Tab = styled(motion.button)`
   }
 
   @media (max-width: 768px) {
-    font-size: 0.8rem;
-    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
   }
 `;
 

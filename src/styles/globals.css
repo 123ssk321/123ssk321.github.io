@@ -89,6 +89,14 @@ body {
     --color-section-tab-active: linear-gradient(135deg, #ff1b6b 0%,  #FFE66D 100%);
     --color-section-tab-shadow: #ff9966bf;
 
+    --color-timeline-base: #33ffc93f;
+    --color-timeline-fill: #33ffc9; /* Timeline fill color */
+    --color-timeline-fill-shadow: #33ffc9; /* Timeline fill shadow color */
+    --color-timeline-dot: #1a4252; /* Timeline dot color */
+    --color-timeline-dot-active: #33ffc9; /* Timeline dot active color */
+    --color-timeline-dot-active-shadow: #33ffc9; /* Timeline dot active shadow color */
+
+
     --color-card-bg: rgba(255, 255, 255, 0.03);
     --color-card-shadow: rgba(0, 0, 0, 0.821);
     --color-card-border: rgba(255, 255, 255, 0.1);
