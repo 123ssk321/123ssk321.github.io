@@ -7,7 +7,7 @@ const projects = [
     image: '/images/projects/stock-predictor.jpg',
     category: 'AI/ML',
     technologies: ['Python', 'PyTorch Geometric', 'Pandas', 'Seaborn'],
-    liveUrl: 'https://example.com/stock-predictor',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/example/stock-predictor',
     featured: true,
   },
@@ -19,7 +19,7 @@ const projects = [
     image: '/images/projects/stock-predictor.jpg',
     category: 'AI/ML',
     technologies: ['Python', 'NumPy', 'Keras', 'Matplotlib'],
-    liveUrl: 'https://example.com/stock-predictor',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/rl-snake-agent',
   },
   {
@@ -30,7 +30,7 @@ const projects = [
     image: '/images/projects/portfolio-tracker.jpg',
     category: 'AI/ML',
     technologies: ['Python', 'Tensorflow', 'Keras', 'Matplotlib'],
-    liveUrl: 'https://example.com/portfolio-tracker',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/image-classification-segmentation',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     image: '/images/projects/data-dashboard.jpg',
     category: 'Software Engineering',
     technologies: ['Java', 'MongoDB', 'Redis', 'Azure', 'Docker', 'Kubernetes'],
-    liveUrl: 'https://example.com/data-dashboard',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/Airbnb-Backend',
   },
   {
@@ -61,7 +61,7 @@ const projects = [
       'Redis',
       'H2 Database',
     ],
-    liveUrl: 'https://example.com/ecommerce',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/HolidayAcc',
   },
   {
@@ -71,7 +71,7 @@ const projects = [
     image: '/images/projects/nlp-api.jpg',
     category: 'Software Engineering',
     technologies: ['Dart', 'Flutter'],
-    liveUrl: 'https://example.com/nlp-api',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/jacked-up-gym',
   },
   {
@@ -82,7 +82,7 @@ const projects = [
     image: '/images/projects/financial-analytics.jpg',
     category: 'Data Science',
     technologies: ['Tableau'],
-    liveUrl: 'https://example.com/financial-analytics',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/example/financial-analytics',
   },
 
@@ -94,7 +94,7 @@ const projects = [
     image: '/images/projects/online-glucose-forecasting.jpg',
     category: 'AI/ML',
     technologies: ['Python', 'river', 'NumPy', 'Pandas', 'Matplotlib'],
-    liveUrl: 'https://example.com/online-glucose-forecasting',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/glucose-forecastings',
   },
 
@@ -106,7 +106,7 @@ const projects = [
     image: '/images/projects/jabref-google-drive.jpg',
     category: 'Software Engineering',
     technologies: ['Java', 'Agile', 'Google Drive API', 'JUnit'],
-    liveUrl: 'https://example.com/jabref-google-drive',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/example/financial-analytics',
   },
 
@@ -118,7 +118,7 @@ const projects = [
     image: '/images/projects/air-quality-monitoring.jpg',
     category: 'Data Science',
     technologies: ['Python', 'PySpark'],
-    liveUrl: 'https://example.com/air-quality-monitoring',
+    liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/air-quality-monitoring',
   },
 ];

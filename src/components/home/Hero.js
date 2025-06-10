@@ -12,7 +12,7 @@ const HeroContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.theme === 'dark' ? '#16012c' : '#f0f7ff')};
+  background:var(--color-hero-bg);
 `;
 
 const Background = styled.div`
@@ -29,10 +29,7 @@ const SkyGradient = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background: ${(props) =>
-    props.theme === 'dark'
-      ? 'linear-gradient(180deg, #2b1055 0%, #7597de 60%, #ff1b6b 85%, #ff9966 100%)'
-      : 'linear-gradient(180deg, #87CEEB 0%, #B5D8F7 60%, #FFB6C1 85%, #FFF0F5 100%)'};
+  background: var(--color-hero-sky);
   opacity: ${(props) => (props.theme === 'dark' ? 0.8 : 0.9)};
 `;
 
@@ -41,10 +38,7 @@ const Mountains = styled.div`
   bottom: 0;
   width: 100%;
   height: 60%;
-  background: ${(props) =>
-    props.theme === 'dark'
-      ? 'linear-gradient(-5deg, #1a0f2e 0%, #31165e 30%, #4b2395 60%, #6b30cc 100%)'
-      : 'linear-gradient(-5deg, #a4c2f4 0%, #8ab4f8 30%, #709fee 60%, #5686e1 100%)'};
+  background: var(--color-hero-mountains);
   clip-path: polygon(
     0% 100%,
     15% 65%,
@@ -62,10 +56,7 @@ const Mountains = styled.div`
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: ${(props) =>
-      props.theme === 'dark'
-        ? 'linear-gradient(to top,#11042a 0%,rgb(39, 1, 104) 50%)'
-        : 'linear-gradient(-5deg, #8ab4f8 0%, #709fee 30%, #5686e1 60%, #4072c4 100%)'};
+    background: var(--color-hero-mountains-after);
     clip-path: polygon(
       0% 100%,
       20% 75%,
@@ -87,10 +78,7 @@ const Sun = styled(motion.div)`
   transform: translateX(-50%);
   width: 200px;
   height: 200px;
-  background: ${(props) =>
-    props.theme === 'dark'
-      ? 'radial-gradient(circle, rgba(255, 99, 177, 1) 0%, rgba(255, 99, 177, 0.8) 50%, rgba(255, 99, 177, 0) 100%)'
-      : 'radial-gradient(circle, rgba(255, 182, 193, 1) 0%, rgba(255, 182, 193, 0.8) 50%, rgba(255, 182, 193, 0) 100%)'};
+  background: var(--color-hero-sun);
   border-radius: 50%;
   z-index: 1;
 `;
@@ -100,12 +88,7 @@ const Grid = styled.div`
   bottom: 0;
   width: 100%;
   height: 50%;
-  background-image: ${(props) =>
-    props.theme === 'dark'
-      ? `linear-gradient(0deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px),
-       linear-gradient(90deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px)`
-      : `linear-gradient(0deg, rgba(106, 154, 238, 0.2) 1px, transparent 1px),
-       linear-gradient(90deg, rgba(106, 154, 238, 0.2) 1px, transparent 1px)`};
+  background-image: var(--color-hero-grid);
   background-size: 40px 40px;
   transform: perspective(500px) rotateX(60deg);
   transform-origin: bottom;

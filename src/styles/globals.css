@@ -89,6 +89,13 @@ body {
     --color-section-tab-active: linear-gradient(135deg, #ff1b6b 0%,  #FFE66D 100%);
     --color-section-tab-shadow: #ff9966bf;
 
+    --color-hero-bg: #16012c;
+    --color-hero-sky: linear-gradient(180deg, #2b1055 0%, #7597de 60%, #ff1b6b 85%, #ff9966 100%);
+    --color-hero-mountains: linear-gradient(-5deg, #1a0f2e 0%, #31165e 30%, #4b2395 60%, #6b30cc 100%);
+    --color-hero-mountains-after: rgba(0, 0, 0, 0.2); /* Hero mountains shadow color */
+    --color-hero-sun: radial-gradient(circle, rgba(255, 99, 177, 1) 0%, rgba(255, 99, 177, 0.8) 50%, rgba(255, 99, 177, 0) 100%); /* Hero sun color */
+    --color-hero-grid: linear-gradient(0deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 27, 107, 0.2) 1px, transparent 1px);
+
     --color-timeline-base: #33ffc93f;
     --color-timeline-fill: #33ffc9; /* Timeline fill color */
     --color-timeline-fill-shadow: #33ffc9; /* Timeline fill shadow color */
