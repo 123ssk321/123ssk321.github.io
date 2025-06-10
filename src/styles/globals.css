@@ -48,16 +48,84 @@ body {
 
 /* Theme specific styles */
 .light {
-    --color-text-primary: #0080ff; /* Card title color */
-    --color-text-secondary: #04eeff; /* Card subtitle and section description color */
-    --color-bg-primary: #FFFFFF;
-    --color-bg-secondary: #F9FAFB;
-    --color-border: #00ff04; /* Card border color */
+    /* Text colors */
+    --color-text-primary: #2a2a2a; /* Deep dark for primary text */
+    --color-text-secondary: #555555; /* Subtle dark grey for secondary text */
+    --color-text-accent: #FBC901; /* Neon pastel blue accent */
+    --color-text-shadow: rgba(51, 161, 255, 0.3); /* Soft neon blue glow */
 
-    /* Light theme section backgrounds */
-    --section-bg-primary: transparent;
-    --section-bg-secondary: rgba(0, 0, 0, 0.03);
+    /* Backgrounds & borders */
+    --color-bg-primary: #F0F8FF; /* Light pastel blue (AliceBlue) */
+    --color-bg-secondary: #E8F6FF; /* A complementary light blue tone */
+    --color-border: rgba(51, 161, 255, 0.15);
+    --color-border-hover: rgba(51, 161, 255, 0.3);
+    --color-border-focus: rgba(51, 161, 255, 0.4);
+
+    /* Navbar */
+    --color-navbar-logo: #FBC901;
+    --color-navbar-logo-shadow: #fff1763a;
+    --color-navbar-bg: rgba(255, 255, 255, 0.777);
+    --color-navbar-shadow: rgba(0, 0, 0, 0.05);
+    --color-navbar-border: rgba(51, 161, 255, 0.1);
+    
+    /* Navlink active state */
+    --color-navlink-active-bg: linear-gradient(135deg, rgba(255, 255, 51, 0.1), rgba(250, 252, 179, 0.1));
+    --color-navlink-active-text: #FBC901;
+    --color-navlink-active-shadow: #fbc90117;
+    --color-navlink-bulb-bg: #FBC901;
+    --color-navlink-bulb-shadow: #FBC901;
+
+    /* Section header & tabs */
+    --color-section-title: linear-gradient(135deg, #33A1FF 30%, #FBC901 70%);
+    --color-section-tab: rgba(0, 0, 0, 0.03);
+    --color-section-tab-active: linear-gradient(135deg, #33A1FF 0%, #FBC901 100%);
+    --color-section-tab-shadow: rgba(51, 161, 255, 0.3);
+
+    /* Hero section */
+    --color-hero-bg: #F0F8FF;
+    --color-hero-sky: linear-gradient(180deg, #33A1FF 0%, #FFA726 70%, #FFF176 100%);
+    --color-hero-mountains: linear-gradient(-5deg, #E8F6FF 0%, #B3E5FC 30%, #81D4FA 60%, #4FC3F7 100%);
+    --color-hero-mountains-after: rgba(51, 161, 255, 0.1);
+    --color-hero-sun: radial-gradient(circle, rgba(255,235,59,1) 0%, rgba(255,199,0,0.8) 50%, rgba(255,199,0,0) 100%);
+    --color-hero-grid: 
+         linear-gradient(0deg, rgba(51,161,255,0.15) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(51,161,255,0.15) 1px, transparent 1px);
+
+    /* Timeline */
+    --color-timeline-base: rgba(255, 211, 51, 0.25);
+    --color-timeline-fill: #FBC901;
+    --color-timeline-fill-shadow: #FBC901;
+    --color-timeline-dot: #eeedcc;
+    --color-timeline-dot-active: #FBC901;
+    --color-timeline-dot-active-shadow: #FBC901;
+
+    /* Card components */
+    --color-card-bg: rgba(255, 255, 255, 0.9);
+    --color-card-shadow: rgba(0, 0, 0, 0.1);
+    --color-card-border: rgba(51,161,255,0.15);
+    --color-card-border-hover: rgba(51,161,255,0.3);
+    --color-card-icon: #33A1FF;
+
+    /* Project card details */
+    --color-project-card-tech-bg: rgba(51,161,255,0.1);
+    --color-project-card-overlay-bg: rgba(216, 216, 216, 0.8);
+    --color-project-card-link-btn-bg: rgba(51,161,255,0.1);
+    --color-project-card-link-btn-hover: rgba(51,161,255,0.2);
+    
+    --color-btn-bg: rgba(255, 255, 255, 0.844); /* Button background color */
+    --color-btn-hover-bg: rgba(255, 255, 255, 0.142); /* Button hover background color */
+
+    /* Skill cards */
+    --color-skill-card-bg: rgba(255, 255, 255, 0.95);
+    --color-skill-card-hover-bg: #ffffff;
+
+    /* Form elements */
+    --color-form-bg: rgba(255, 255, 255, 0.95);
+    --color-form-shadow: rgba(51,161,255,0.1);
+    --color-form-input-bg: rgba(255, 255, 255, 0.98);
+    --color-form-input-shadow: rgba(51,161,255,0.1);
 }
+
 
 .dark {
     --color-text-primary: #F1F5F9;
@@ -115,6 +183,9 @@ body {
     --color-project-card-link-btn-bg: rgba(255, 255, 255, 0.1);
     --color-project-card-link-btn-hover:rgba(255, 255, 255, 0.2);
     
+    --color-btn-bg: rgba(255, 255, 255, 0.1); /* Button background color */
+    --color-btn-hover-bg: rgba(255, 255, 255, 0.2); /* Button hover background color */
+
     --color-skill-card-bg: rgba(17, 4, 42, 0.91);
     --color-skill-card-hover-bg: #000000;
 
@@ -122,7 +193,6 @@ body {
     --color-form-shadow: rgba(255, 255, 255, 0.1);
     --color-form-input-bg: rgba(255, 255, 255, 0.07);
     --color-form-input-shadow: rgba(255, 255, 255, 0.2);
-    
 }
 
 
@@ -198,7 +268,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-text-secondary);
+    background: var(--color-card-icon);
     border-radius: var(--radius-full);
 }
 

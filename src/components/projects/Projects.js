@@ -27,15 +27,13 @@ const ShowMoreButton = styled(motion.button)`
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-medium);
-  background: ${(props) =>
-    props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#F1F5F9'};
+  background: var(--color-btn-bg);
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 
   &:hover {
     transform: translateY(-2px);
-    background: ${(props) =>
-      props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#E2E8F0'};
+    background: var(--color-btn-hover-bg);
   }
 `;
 

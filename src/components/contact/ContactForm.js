@@ -65,7 +65,7 @@ const SubmitButton = styled(motion.button)`
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 12px var(--color-section-tab-shadow);
   }
 `;
 
