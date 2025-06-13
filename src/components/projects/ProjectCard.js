@@ -5,70 +5,33 @@ import { FiGithub, FiExternalLink } from 'react-icons/fi';
 import { useTheme } from '../../styles/ThemeContext';
 
 const Card = styled(motion.div)`
-  position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   height: 100%;
+  display: flex;
+  flex-direction: column;
   transition: all var(--transition-medium);
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px var(--color-card-shadow), 0 6px 12px var(--color-card-shadow);
     border-color: var(--color-card-border-hover);
-
-    .project-image {
-      transform: scale(1.05);
-    }
-    
-    .overlay {
-      opacity: 1;
-    }
   }
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
-  overflow: hidden;
-`;
-
-const ProjectImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--transition-medium);
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-project-card-overlay-bg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity var(--transition-medium);
-  padding: 2rem;
 `;
 
 const Content = styled.div`
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 const Title = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: var(--color-text-primary);
 `;
 
@@ -77,13 +40,14 @@ const Description = styled.p`
   color: var(--color-text-secondary);
   margin-bottom: 1rem;
   line-height: 1.6;
+  flex: 1;
 `;
 
 const Technologies = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.01rem;
+  margin-bottom: 1rem;
 `;
 
 const Tech = styled.span`
@@ -94,10 +58,17 @@ const Tech = styled.span`
   color: var(--color-text-secondary);
 `;
 
+const Separator = styled.hr`
+  border: none;
+  height: 1px;
+  background: var(--color-text-accent);
+  margin: 0.5rem 0 1rem;
+`;
+
 const Links = styled.div`
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: auto;
 `;
 
 const LinkButton = styled(motion.a)`
@@ -123,19 +94,6 @@ const LinkButton = styled(motion.a)`
   }
 `;
 
-const Category = styled.span`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: 500;
-  background: var(--color-section-title);
-  color: white;
-  z-index: 1;
-`;
-
 const ProjectCard = ({ project }) => {
   const { theme } = useTheme();
 
@@ -147,46 +105,37 @@ const ProjectCard = ({ project }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      {project.featured && <Category>Featured</Category>}
-      <ImageContainer>
-        <ProjectImage
-          src={project.image}
-          alt={project.title}
-          className="project-image"
-        />
-        <Overlay className="overlay" theme={theme}>
-          <Description>{project.description}</Description>
-          <Links>
-            <LinkButton
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              theme={theme}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FiGithub /> Source Code
-            </LinkButton>
-            <LinkButton
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              theme={theme}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FiExternalLink /> Live Demo
-            </LinkButton>
-          </Links>
-        </Overlay>
-      </ImageContainer>
       <Content>
         <Title>{project.title}</Title>
+        <Description>{project.description}</Description>
         <Technologies>
-          {project.technologies.map((tech, index) => (
-            <Tech key={index} theme={theme}>{tech}</Tech>
+          {project.technologies.map((tech, idx) => (
+            <Tech key={idx} theme={theme}>{tech}</Tech>
           ))}
         </Technologies>
+        <Separator />
+        <Links>
+          <LinkButton
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            theme={theme}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FiGithub /> Source Code
+          </LinkButton>
+          <LinkButton
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            theme={theme}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FiExternalLink /> Live Demo
+          </LinkButton>
+        </Links>
       </Content>
     </Card>
   );
