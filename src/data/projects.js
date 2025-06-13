@@ -32,6 +32,7 @@ const projects = [
     technologies: ['Python', 'Tensorflow', 'Keras', 'Matplotlib'],
     liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/image-classification-segmentation',
+    
   },
   {
     id: 4,
@@ -84,6 +85,7 @@ const projects = [
     technologies: ['Tableau'],
     liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/example/financial-analytics',
+    featured: true,
   },
 
   {

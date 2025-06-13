@@ -13,6 +13,7 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   transition: all var(--transition-medium);
+  position: relative;
 
   &:hover {
     transform: translateY(-5px);
@@ -26,6 +27,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: ${props => (props.hasCategory ? '1.5rem' : '0')};
 `;
 
 const Title = styled.h3`
@@ -94,8 +102,22 @@ const LinkButton = styled(motion.a)`
   }
 `;
 
+const Category = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--color-section-title);
+  color: white;
+  z-index: 1;
+`;
+
 const ProjectCard = ({ project }) => {
   const { theme } = useTheme();
+  const hasCategory = Boolean(project.featured);
 
   return (
     <Card
@@ -105,8 +127,11 @@ const ProjectCard = ({ project }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
+      {hasCategory && <Category>Featured</Category>}
       <Content>
-        <Title>{project.title}</Title>
+        <TitleWrapper hasCategory={hasCategory}>
+          <Title>{project.title}</Title>
+        </TitleWrapper>
         <Description>{project.description}</Description>
         <Technologies>
           {project.technologies.map((tech, idx) => (
