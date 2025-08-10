@@ -469,7 +469,7 @@ const Navbar = () => {
                 Contact
               </NavLink>
               <NavLink
-                href='/resume.pdf'
+                href='/CV-AI.pdf'
                 target='_blank'
                 rel='noopener noreferrer'
                 theme={theme}
@@ -540,7 +540,7 @@ const Navbar = () => {
                 Contact
               </MobileNavLink>
               <MobileNavLink
-                href='/resume.pdf'
+                href='/CV-AI.pdf'
                 target='_blank'
                 rel='noopener noreferrer'
                 theme={theme}

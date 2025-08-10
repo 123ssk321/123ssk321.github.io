@@ -6,9 +6,9 @@ const projects = [
       'CIExplainer: Causal Inference Explainer for Graph Neural Networks. ',
     image: '/images/projects/stock-predictor.jpg',
     category: 'AI/ML',
-    technologies: ['Python', 'PyTorch Geometric', 'Pandas', 'Seaborn'],
+    technologies: ['Python', 'PyTorch Geometric', 'Pandas', 'Seaborn', 'Torch Spatiotemporal'],
     liveUrl: '/coming-soon',
-    githubUrl: 'https://github.com/example/stock-predictor',
+    githubUrl: 'https://github.com/123ssk321/msc-thesis',
     featured: true,
   },
   {
@@ -32,7 +32,7 @@ const projects = [
     technologies: ['Python', 'Tensorflow', 'Keras', 'Matplotlib'],
     liveUrl: '/coming-soon',
     githubUrl: 'https://github.com/123ssk321/image-classification-segmentation',
-    
+
   },
   {
     id: 4,
