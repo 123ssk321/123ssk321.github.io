@@ -5,10 +5,10 @@ export const educationData = [
     institution: 'NOVA School of Science and Technology',
     country: 'Lisbon, Portugal',
     date: '2022-2025',
-    grade: 'Grade: 18/20 (A on the ECTS scale)',
+    grade: 'Grade: 18/20 (A on the ECTS scale).',
     details: `
         Specialized in Artificial Intelligence and Software Engineering.
-        Thesis: "CIExplainer: Causal Explanation Method for Graph Neural Networks using the Potential Outcome Framework."
+        Thesis: "CIExplainer: Causal Explanation Method for Graph Neural Networks using the Potential Outcome Framework." Grade: 18/20.
         Relevant Courses: Machine Learning, Deep Learning, Visualization and Data Analytics, High Performance Computing, Cloud Computing Systems, Internet Application Design and Implementation, Human-Computer Interaction, Software Construction and Verification.`,
   },
   {
@@ -27,6 +27,17 @@ export const educationData = [
 export const workData = [
   {
     id: 1,
+    title: 'Apprentice Backend Developer',
+    institution: 'Sky Portugal',
+    country: 'Lisbon, Portugal',
+    date: '07/2025-08/2025',
+    details: `
+        Built, published, and deployed a reusable React component library (TypeScript+Vite) across 3 services, improving UI consistency, development speed, and maintainability via full CI/CD pipeline while working in Agile.
+        Enhanced a client retention service endpoint using Java, Spring AI, and Ollama to generate AI-powered, user-friendly summaries of configuration validation errors and next actions to take to solve those errors.
+        Added client retention service endpoint with Java, Spring AI, and Ollama, generating AI-powered retention configuration suggestions to help users make faster, informed decisions, enhancing engagement.`,
+  },
+  {
+    id: 2,
     title: 'Scholarship Holder (Master Thesis)',
     institution: 'Neuraspace, Project AI Fights Space Debris',
     country: 'Lisbon, Portugal',
@@ -35,10 +46,12 @@ export const workData = [
         Worked on a GNN approach to space traffic management, specifically, collision avoidance.
         Collected publicly available TLE data to create a large time-series dataset.
         Built a discrete-time dynamic space conjunction graph based on a transformed evenly spaced over time TLE dataset.
-        Achieved 80% test accuracy in conjunction forecasting using RNN/CNN-based Spatio-Temporal GNN, outperforming a heuristic model by 10x.`,
+        Achieved 80% test accuracy in conjunction forecasting using RNN/CNN-based Spatio-Temporal GNN, outperforming a heuristic model by 10x.
+        Authored and published a research paper and presented a poster at the 9th Causal Inference Workshop at the Conference on Uncertainty in Artificial Intelligence (UAI) 2024.`,
+    link: 'https://openreview.net/forum?id=xB99i5yHtm&referrer=%5Bthe%20profile%20of%20Sahil%20Satish%20Kumar%5D(%2Fprofile%3Fid%3D~Sahil_Satish_Kumar1)',
   },
   {
-    id: 2,
+    id: 3,
     title: 'Visiting Researcher',
     institution: 'Human-Computer Interaction Institute, CMU',
     country: 'Pittsburgh, PA, USA',
@@ -49,7 +62,7 @@ export const workData = [
         Designed a user study to evaluate the quality of generated explanations for referral recommendations from GNNs.`,
   },
   {
-    id: 3,
+    id: 4,
     title: 'Undergraduate Researcher',
     institution: 'NOVA LINCS',
     country: 'Lisbon, Portugal',
@@ -70,6 +83,7 @@ export const extracurricularData = [
     institution: 'Lady Margaret Hall, Oxford University',
     country: 'Oxford, UK',
     date: '08/2022-08/2022',
+    grade: 'Grade: 85/100 (A+)',
     details: `
         Summer School in Machine Learning and Artificial Intelligence.
         Implemented Machine Learning algorithms and Deep Learning models in PyTorch, focused on computer vision.

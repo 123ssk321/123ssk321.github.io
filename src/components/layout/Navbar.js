@@ -469,7 +469,7 @@ const Navbar = () => {
                 Contact
               </NavLink>
               <NavLink
-                href='/CV-AI.pdf'
+                href='/CV.pdf'
                 target='_blank'
                 rel='noopener noreferrer'
                 theme={theme}

@@ -219,6 +219,17 @@ const TimelineCard = ({ item, theme, align = 'left', type }) => {
                   <li key={index}>{detail}</li>
                 ))}
               </ul>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {item.link && (
+                <a
+                  href={item.link}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  style={{ color: 'var(--color-text-accent)' }}
+                >
+                  [Link]
+                </a>
+              )}
             </CardDetails>
           )}
         </AnimatePresence>
