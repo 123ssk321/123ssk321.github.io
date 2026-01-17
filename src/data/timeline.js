@@ -27,6 +27,16 @@ export const educationData = [
 export const workData = [
   {
     id: 1,
+    title: 'Data Graduate Program',
+    institution: 'Fever',
+    country: 'Madrid, Spain',
+    date: '09/2025-03/2026',
+    details: `
+        Incorporating in Data Engineering, Machine Learning, and Data Science teams, gaining hands-on experience with scalable data pipelines, real-world ML models, and advanced analytics for business decision-making.
+        Enhancing concert-revenue forecasting in the Data Science team to improve city-level marketing budget recommendations and support more efficient campaign allocation.`,
+  },
+  {
+    id: 2,
     title: 'Apprentice Backend Developer',
     institution: 'Sky Portugal',
     country: 'Lisbon, Portugal',
@@ -37,7 +47,7 @@ export const workData = [
         Added client retention service endpoint with Java, Spring AI, and Ollama, generating AI-powered retention configuration suggestions to help users make faster, informed decisions, enhancing engagement.`,
   },
   {
-    id: 2,
+    id: 3,
     title: 'Scholarship Holder (Master Thesis)',
     institution: 'Neuraspace, Project AI Fights Space Debris',
     country: 'Lisbon, Portugal',
@@ -51,7 +61,7 @@ export const workData = [
     link: 'https://openreview.net/forum?id=xB99i5yHtm&referrer=%5Bthe%20profile%20of%20Sahil%20Satish%20Kumar%5D(%2Fprofile%3Fid%3D~Sahil_Satish_Kumar1)',
   },
   {
-    id: 3,
+    id: 4,
     title: 'Visiting Researcher',
     institution: 'Human-Computer Interaction Institute, CMU',
     country: 'Pittsburgh, PA, USA',
@@ -62,7 +72,7 @@ export const workData = [
         Designed a user study to evaluate the quality of generated explanations for referral recommendations from GNNs.`,
   },
   {
-    id: 4,
+    id: 5,
     title: 'Undergraduate Researcher',
     institution: 'NOVA LINCS',
     country: 'Lisbon, Portugal',
