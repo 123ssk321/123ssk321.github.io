@@ -33,7 +33,8 @@ export const workData = [
     date: '09/2025-03/2026',
     details: `
         Incorporating in Data Engineering, Machine Learning, and Data Science teams, gaining hands-on experience with scalable data pipelines, real-world ML models, and advanced analytics for business decision-making.
-        Enhancing concert-revenue forecasting in the Data Science team to improve city-level marketing budget recommendations and support more efficient campaign allocation.`,
+        Improved the reliability of concert-revenue forecasting in the Data Science team by building a data and model drift monitoring system to detect distribution shifts and support city-level marketing budget recommendations.
+        Building a production-grade training pipeline in the ML Engineering team, with Airflow, MLflow, and versioned datasets, automating feature engineering, model training, validation, and deployment for city-level marketing budget optimization`,
   },
   {
     id: 2,
