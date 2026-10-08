@@ -1,0 +1,338 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'"><title>Synthetic session journal</title><style>body{background:#101820;color:#edf4f3;font:16px system-ui;margin:0}main{max-width:1120px;margin:auto;padding:40px 24px}h1{font-size:42px;letter-spacing:-.04em}p{line-height:1.6}.muted{color:#adbfbc;overflow-wrap:anywhere}.unknown{color:#e3c989}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card,section{background:#18272e;border:1px solid #35504e;border-radius:12px;padding:22px}.card strong{display:block;font-size:34px;color:#8de2c2;margin-top:10px}.card p{font-size:14px}.trade{margin-top:24px;overflow-wrap:anywhere}article{border-top:1px solid #35504e;padding:12px 0}summary{cursor:pointer;padding:12px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere}.outcome{border-left:3px solid #e3c989;padding-left:14px}a{color:#8de2c2}</style></head><body><main><small>SYNTHETIC EXAMPLE · FICTIONAL TRADES AND REASONS · NO PRIVATE DATA</small><h1>Session journal</h1><p>Understand the choices behind each action, then inspect execution and later outcomes separately.</p><details><summary>Report and session provenance</summary><p>Trading Lab public report: not associated</p><p>Source reports: synthetic-report</p></details><div class="grid"><div class="card"><span>Decisions</span><strong>2</strong><p>Recorded strategy/person choices, including hold/no-execution decisions.</p></div><div class="card"><span>Trade record groups</span><strong>1</strong><p>Distinct source + run + supplied trade identities. Includes unexecuted intents and unlinked legacy groups; not a count of known round trips.</p></div><div class="card"><span>Orders</span><strong>2</strong><p>Distinct known order identities. Lifecycle callbacks do not add orders; missing IDs are excluded.</p></div><div class="card"><span>Executed linked intents</span><strong>1</strong><p>Trade identities with a fill linked to a known order. Unlinked legacy fill groups are excluded. This is not a round-trip count.</p></div><div class="card"><span>Fills</span><strong>3</strong><p>Individual executions. Two partial fills on one order count as two fills, one order.</p></div><div class="card"><span>Position close records</span><strong>1</strong><p>Explicit source close callbacks only. Imported segments may omit an earlier entry or later exit.</p></div><div class="card"><span>Reason evidence</span><strong>2 / 2</strong><p>Decisions with a recorded contemporaneous reason / all recorded decisions. Unknown reasons remain in the denominator.</p></div><div class="card"><span>Market context</span><strong>2 / 2</strong><p>Decisions with context / all recorded decisions. Zero decisions means coverage is unavailable, not 0%.</p></div><div class="card"><span>Unlinked fills</span><strong>0</strong><p>Recorded executions without native order/trade linkage. Kept as separate evidence groups; their entry/exit reasons and round trips are unknown.</p></div></div><p>Records are grouped by explicit trade identity, not guessed buy/sell pairs. A partial fill does not create another trade. Legacy reports can have fills without linked reasons; their reasons cannot be reconstructed honestly.</p><section class="trade"><h2>BTCUSDT · synthetic-trade-0</h2><p class="muted">backtest · source synthetic · run synthetic-run</p><article><h3>Entry / increase · order</h3><p class="muted">2025-01-01T00:00:00Z · order synthetic-order-0 · fill not applicable</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 102 exceeded slow average 100; choose a long target.</p><p class="muted">Decision synthetic-decision-0 · 2025-01-01T00:00:00Z · reason available 2025-01-01T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 102,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;long&quot;,
+  &quot;price_unit&quot;: &quot;USDT&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><article><h3>Entry / increase · fill · 0.4 units @ 100</h3><p class="muted">2025-01-01T00:00:00Z · order synthetic-order-0 · fill synthetic-fill-0</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 102 exceeded slow average 100; choose a long target.</p><p class="muted">Decision synthetic-decision-0 · 2025-01-01T00:00:00Z · reason available 2025-01-01T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 102,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;long&quot;,
+  &quot;price_unit&quot;: &quot;USDT&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><article><h3>Entry / increase · fill · 0.6 units @ 100</h3><p class="muted">2025-01-01T00:00:00Z · order synthetic-order-0 · fill synthetic-partial-2</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 102 exceeded slow average 100; choose a long target.</p><p class="muted">Decision synthetic-decision-0 · 2025-01-01T00:00:00Z · reason available 2025-01-01T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 102,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;long&quot;,
+  &quot;price_unit&quot;: &quot;USDT&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><article><h3>Exit / decrease · order</h3><p class="muted">2025-01-02T00:00:00Z · order synthetic-exit-order · fill not applicable</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 99 fell below slow average 100; choose a flat target.</p><p class="muted">Decision synthetic-exit-decision · 2025-01-02T00:00:00Z · reason available 2025-01-02T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 99,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;flat&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><article><h3>Exit / decrease · fill · 1 units @ 98</h3><p class="muted">2025-01-02T00:00:00Z · order synthetic-exit-order · fill synthetic-exit-fill</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 99 fell below slow average 100; choose a flat target.</p><p class="muted">Decision synthetic-exit-decision · 2025-01-02T00:00:00Z · reason available 2025-01-02T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 99,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;flat&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><article><h3>Position management · close</h3><p class="muted">2025-01-03T00:00:00Z · order unknown · fill not applicable</p><p><strong>Why this action?</strong> Synthetic moving-average rule: fast average 99 fell below slow average 100; choose a flat target.</p><p class="muted">Decision synthetic-exit-decision · 2025-01-02T00:00:00Z · reason available 2025-01-02T00:00:00Z</p><details><summary>Decision-time market context</summary><pre>{
+  &quot;fast_average&quot;: 99,
+  &quot;slow_average&quot;: 100,
+  &quot;target&quot;: &quot;flat&quot;,
+  &quot;fictional&quot;: true
+}</pre></details></article><details class="outcome"><summary>Later outcomes — excluded from decision evidence</summary><pre>{
+  &quot;fictional&quot;: true,
+  &quot;later_observation&quot;: &quot;Price after the exit is an outcome, not evidence for why the rule exited.&quot;
+}</pre><p class="muted">Observed 2025-01-03T00:00:00Z · available 2025-01-03T00:00:00Z</p></details><details><summary>Source lineage and full event timeline</summary><details><summary>2025-01-01T00:00:00Z &#183; decision</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-0-decision&quot;,
+  &quot;event_type&quot;: &quot;decision&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;0-decision&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: null,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-decision-0&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;reason&quot;: {
+      &quot;status&quot;: &quot;known&quot;,
+      &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+      &quot;text&quot;: &quot;Synthetic moving-average rule: fast average 102 exceeded slow average 100; choose a long target.&quot;
+    },
+    &quot;context&quot;: {
+      &quot;status&quot;: &quot;known&quot;,
+      &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+      &quot;values&quot;: {
+        &quot;fast_average&quot;: 102,
+        &quot;slow_average&quot;: 100,
+        &quot;target&quot;: &quot;long&quot;,
+        &quot;price_unit&quot;: &quot;USDT&quot;,
+        &quot;fictional&quot;: true
+      }
+    }
+  }
+}</pre></details><details><summary>2025-01-01T00:00:00Z &#183; order</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-0-order&quot;,
+  &quot;event_type&quot;: &quot;order&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;0-order&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: &quot;synthetic-order-0&quot;,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-decision-0&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;side&quot;: &quot;BUY&quot;,
+    &quot;quantity&quot;: &quot;1&quot;,
+    &quot;price&quot;: &quot;100&quot;
+  }
+}</pre></details><details><summary>2025-01-01T00:00:00Z &#183; fill</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-0-fill&quot;,
+  &quot;event_type&quot;: &quot;fill&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;0-fill&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: &quot;synthetic-order-0&quot;,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-decision-0&quot;,
+    &quot;fill_id&quot;: &quot;synthetic-fill-0&quot;
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;side&quot;: &quot;BUY&quot;,
+    &quot;quantity&quot;: &quot;0.4&quot;,
+    &quot;price&quot;: &quot;100&quot;
+  }
+}</pre></details><details><summary>2025-01-01T00:00:00Z &#183; fill</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-partial-2&quot;,
+  &quot;event_type&quot;: &quot;fill&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;synthetic-partial-2&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: &quot;synthetic-order-0&quot;,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-decision-0&quot;,
+    &quot;fill_id&quot;: &quot;synthetic-partial-2&quot;
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;side&quot;: &quot;BUY&quot;,
+    &quot;quantity&quot;: &quot;0.6&quot;,
+    &quot;price&quot;: &quot;100&quot;
+  }
+}</pre></details><details><summary>2025-01-02T00:00:00Z &#183; decision</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-exit-decision&quot;,
+  &quot;event_type&quot;: &quot;decision&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;synthetic-exit-decision&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: null,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-exit-decision&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;reason&quot;: {
+      &quot;status&quot;: &quot;known&quot;,
+      &quot;available_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+      &quot;text&quot;: &quot;Synthetic moving-average rule: fast average 99 fell below slow average 100; choose a flat target.&quot;
+    },
+    &quot;context&quot;: {
+      &quot;status&quot;: &quot;known&quot;,
+      &quot;available_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+      &quot;values&quot;: {
+        &quot;fast_average&quot;: 99,
+        &quot;slow_average&quot;: 100,
+        &quot;target&quot;: &quot;flat&quot;,
+        &quot;fictional&quot;: true
+      }
+    }
+  }
+}</pre></details><details><summary>2025-01-02T00:00:00Z &#183; order</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-exit-order&quot;,
+  &quot;event_type&quot;: &quot;order&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;synthetic-exit-order&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: &quot;synthetic-exit-order&quot;,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-exit-decision&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;side&quot;: &quot;SELL&quot;,
+    &quot;quantity&quot;: &quot;1&quot;,
+    &quot;price&quot;: &quot;100&quot;
+  }
+}</pre></details><details><summary>2025-01-02T00:00:00Z &#183; fill</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-exit-fill&quot;,
+  &quot;event_type&quot;: &quot;fill&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;synthetic-exit-fill&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-02T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: &quot;synthetic-exit-order&quot;,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-exit-decision&quot;,
+    &quot;fill_id&quot;: &quot;synthetic-exit-fill&quot;
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;side&quot;: &quot;SELL&quot;,
+    &quot;quantity&quot;: &quot;1&quot;,
+    &quot;price&quot;: &quot;98&quot;
+  }
+}</pre></details><details><summary>2025-01-03T00:00:00Z &#183; close</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-0-close&quot;,
+  &quot;event_type&quot;: &quot;close&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;0-close&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: null,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-exit-decision&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;synthetic&quot;: true
+  }
+}</pre></details><details><summary>2025-01-03T00:00:00Z &#183; outcome</summary><pre>{
+  &quot;schema_version&quot;: 1,
+  &quot;event_id&quot;: &quot;synthetic-0-outcome&quot;,
+  &quot;event_type&quot;: &quot;outcome&quot;,
+  &quot;mode&quot;: &quot;backtest&quot;,
+  &quot;source&quot;: {
+    &quot;system&quot;: &quot;synthetic&quot;,
+    &quot;record_id&quot;: &quot;0-outcome&quot;
+  },
+  &quot;event_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;available_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;recorded_time&quot;: &quot;2025-01-03T00:00:00Z&quot;,
+  &quot;identity&quot;: {
+    &quot;run_id&quot;: &quot;synthetic-run&quot;,
+    &quot;report_id&quot;: &quot;synthetic-report&quot;,
+    &quot;model_id&quot;: null,
+    &quot;order_id&quot;: null,
+    &quot;candidate_id&quot;: null,
+    &quot;trade_id&quot;: &quot;synthetic-trade-0&quot;,
+    &quot;decision_id&quot;: &quot;synthetic-exit-decision&quot;,
+    &quot;fill_id&quot;: null
+  },
+  &quot;instrument&quot;: {
+    &quot;asset_class&quot;: &quot;crypto_spot&quot;,
+    &quot;symbol&quot;: &quot;BTCUSDT&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;fictional&quot;: true,
+    &quot;later_observation&quot;: &quot;Price after the exit is an outcome, not evidence for why the rule exited.&quot;
+  }
+}</pre></details></details></section></main></body></html>

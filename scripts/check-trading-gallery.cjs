@@ -24,7 +24,7 @@ query.dispatchEvent(new gallery.window.Event('input'));
 assert.equal(visible(), 0);
 assert.equal(document.getElementById('empty').hidden, false);
 let charts = 0;
-for (const link of document.querySelectorAll('.card a')) {
+for (const link of document.querySelectorAll('.card a[data-report-link], .card a:first-of-type:not([data-report-link])')) {
   const reportPath = path.resolve(site, link.getAttribute('href'));
   assert.ok(reportPath.startsWith(site + path.sep));
   const report = new JSDOM(fs.readFileSync(reportPath, 'utf8'), { runScripts: 'outside-only' });
