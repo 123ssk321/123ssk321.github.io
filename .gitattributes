@@ -1,0 +1,2 @@
+# Preserve the exact third-party Plotly bundle; hide vendor noise in reviews.
+public/trading-lab/plotly.min.js -whitespace linguist-vendored
