@@ -21,6 +21,10 @@ const Footer = () => {
             <a href='/trading-lab/' className='text-sm text-[var(--color-text-accent)] underline'>
               Trading research reports
             </a>
+            <span className='text-sm text-[var(--color-text-accent)]'> · </span>
+            <a href='/trading-journal/' className='text-sm text-[var(--color-text-accent)] underline'>
+              Journal insights demo
+            </a>
           </div>
         </div>
       </div>
