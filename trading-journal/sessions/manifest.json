@@ -1,0 +1,29 @@
+{
+  "schema": "published-session-journals-v1",
+  "sessions": [
+    {
+      "report_id": "d37185f313bb99e0411fcb390d2af92011a11f2bfbf4246cd151d79805c378ca",
+      "visibility": "public",
+      "title": "BTC ridge \u00b7 holdout and sweep",
+      "kind": "evaluation"
+    },
+    {
+      "report_id": "02fa871ea9f495498b8ad9545dd728cf17c10a984dfd33557621e64aca470903",
+      "visibility": "public",
+      "title": "BTC baseline \u00b7 historical backtest",
+      "kind": "backtest"
+    },
+    {
+      "report_id": "946b77e33f3e1563981084ab7ac4ac019bb19a161c559210167670bf40bc4111",
+      "visibility": "public",
+      "title": "BTC hourly bars \u00b7 dataset exploration",
+      "kind": "eda"
+    },
+    {
+      "report_id": "28ca2c10af2348c7c4923f939ee35570d9294253f6c8026f6a9c9da8691f1281",
+      "visibility": "public",
+      "title": "BTC ridge \u00b7 60-second paper session",
+      "kind": "paper"
+    }
+  ]
+}
