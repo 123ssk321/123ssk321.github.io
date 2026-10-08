@@ -1,0 +1,32 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const {JSDOM}=require('jsdom');
+const root=path.resolve(process.argv[2]||'build');
+const gallery=path.join(root,'trading-lab');
+const manifest=JSON.parse(fs.readFileSync(path.join(gallery,'manifest.json'),'utf8'));
+const index=new JSDOM(fs.readFileSync(path.join(gallery,'index.html'),'utf8'));
+assert.ok(index.window.document.querySelector('.journal-home-link'));
+assert.equal(index.window.document.querySelectorAll('.session-link').length,manifest.reports.length);
+const known=new Set(manifest.reports.map(r=>r.report_id));
+for(const report of manifest.reports){
+ const id=report.report_id;
+ const original=fs.readFileSync(path.join(gallery,'reports',id+'.html'),'utf8');
+ const companion=fs.readFileSync(path.join(gallery,'reports',id+'.session.html'),'utf8');
+ const nav=`<a class="session-journal-link" href="../../trading-journal/sessions/${id}.html">Session journal →</a>`;
+ assert.ok(companion.includes(nav));assert.equal(companion.replace(nav,''),original);
+ const status=fs.readFileSync(path.join(root,'trading-journal','sessions',id+'.html'),'utf8');
+ const doc=new JSDOM(status).window.document;
+ assert.equal(doc.querySelector('.report-backlink').getAttribute('href'),`../../trading-lab/reports/${id}.session.html`);
+ assert.equal(doc.querySelector('.synthetic-link').getAttribute('href'),'../synthetic-session.html');
+ assert.ok(status.includes('not the journal for this report'));
+ if(report.kind==='eda')assert.ok(status.includes('No execution journal is applicable'));
+ else assert.ok(status.includes('Private/local evidence'));
+ for(const token of ['source_sha256','source_relative_path','candidate_id','model_id','run_id','trade_id','order_id','fill_id','close_window','C:/Users','file://','fetch(','XMLHttpRequest','WebSocket'])assert.ok(!status.includes(token),token);
+ for(const hash of status.match(/[a-f0-9]{64}/g)||[])assert.ok(known.has(hash),'unknown hash disclosed');
+ assert.equal(doc.querySelectorAll('script,iframe,img').length,0);
+}
+const home=new JSDOM(fs.readFileSync(path.join(root,'trading-journal','index.html'),'utf8'));
+assert.equal(home.window.document.querySelectorAll('#lab-sessions .session-card').length,manifest.reports.length);
+assert.ok(fs.existsSync(path.join(root,'trading-journal','synthetic-session.html')));
+console.log('Report sessions: exact links/backlinks, immutable originals, analysis-only state and public privacy boundary passed.');
