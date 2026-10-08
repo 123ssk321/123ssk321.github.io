@@ -18,6 +18,9 @@ const Footer = () => {
             >
               © {currentYear} Sahil Kumar. All rights reserved.
             </p>
+            <a href='/trading-lab/' className='text-sm text-[var(--color-text-accent)] underline'>
+              Trading research reports
+            </a>
           </div>
         </div>
       </div>
