@@ -1,32 +1,17 @@
-import React from 'react';
-import { useTheme } from '../../styles/ThemeContext';
-import SectionTab, { TabContainer } from '../layout/SectionTab';
-
-const ProjectFilter = ({ activeFilter, setActiveFilter }) => {
-  const { theme } = useTheme();
-
-  const filters = [
-    { id: 'all', label: 'All' },
-    { id: 'AI/ML', label: 'AI/ML' },
-    { id: 'Data Science', label: 'Data Science' },
-    { id: 'Software Engineering', label: 'Software Engineering' },
-    { id: 'Finance', label: 'Finance' },
-  ];
-
+import React from "react";
+import projects from "../../data/projects";
+export default function ProjectFilter({ activeFilter, setActiveFilter }) {
   return (
-    <TabContainer>
-      {filters.map((filter) => (
-        <SectionTab
-          key={filter.id}
-          isActive={activeFilter === filter.id}
-          theme={theme}
-          onClick={() => setActiveFilter(filter.id)}
+    <div className="tab-list" aria-label="Filter projects">
+      {["all", ...new Set(projects.map((p) => p.category))].map((category) => (
+        <button
+          key={category}
+          aria-pressed={activeFilter === category}
+          onClick={() => setActiveFilter(category)}
         >
-          {filter.label}
-        </SectionTab>
+          {category === "all" ? "All projects" : category}
+        </button>
       ))}
-    </TabContainer>
+    </div>
   );
-};
-
-export default ProjectFilter;
+}

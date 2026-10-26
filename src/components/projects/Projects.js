@@ -1,115 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import ProjectCard from './ProjectCard';
-import ProjectFilter from './ProjectFilter';
-import { useTheme } from '../../styles/ThemeContext';
-import Section from '../layout/Section';
-import projects from '../../data/projects';
-
-const ProjectsGrid = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ShowMoreButton = styled(motion.button)`
-  display: block;
-  margin: 3rem auto;
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-medium);
-  background: var(--color-btn-bg);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
-
-  &:hover {
-    transform: translateY(-2px);
-    background: var(--color-btn-hover-bg);
-  }
-`;
-
-const Projects = () => {
-  const { theme } = useTheme();
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [visibleProjects, setVisibleProjects] = useState(6);
-  const [showButton, setShowButton] = useState(false);
-
-  const filteredProjects =
-    activeFilter === 'all'
+import React, { useState } from "react";
+import Section from "../layout/Section";
+import ProjectCard from "./ProjectCard";
+import ProjectFilter from "./ProjectFilter";
+import projects from "../../data/projects";
+export default function Projects() {
+  const [activeFilter, setFilter] = useState("all");
+  const [visible, setVisible] = useState(6);
+  const filtered =
+    activeFilter === "all"
       ? projects
-      : projects.filter((project) => project.category === activeFilter);
-
-  const displayedProjects = filteredProjects.slice(0, visibleProjects);
-  const hasMoreProjects = filteredProjects.length > visibleProjects;
-
-  const handleShowMore = () => {
-    setVisibleProjects((prev) => prev + 6);
+      : projects.filter((p) => p.category === activeFilter);
+  const setActiveFilter = (value) => {
+    setFilter(value);
+    setVisible(6);
   };
-
-  useEffect(() => {
-    setVisibleProjects(6);
-    setShowButton(false);
-
-    if (filteredProjects.length > 6) {
-      const timer = setTimeout(() => {
-        setShowButton(true);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [activeFilter, filteredProjects.length]);
-
   return (
     <Section
-      id='projects'
-      title='Featured Projects'
-      subtitle='A collection of projects that showcase my work on AI/ML, data science, software engineering, and finance applications.'
+      id="projects"
+      title="Selected work"
+      subtitle="Exploring AI, data science, software engineering, and finance through working projects."
     >
       <ProjectFilter
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
       />
-
-      <AnimatePresence mode='wait'>
-        <ProjectsGrid
-          key={activeFilter}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
+      <div className="project-list" aria-live="polite">
+        {filtered.slice(0, visible).map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
+      {visible < filtered.length && (
+        <button
+          className="primary-button show-more"
+          onClick={() => setVisible((v) => v + 6)}
         >
-          {displayedProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </ProjectsGrid>
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {hasMoreProjects && showButton && (
-          <ShowMoreButton
-            theme={theme}
-            onClick={handleShowMore}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Show More Projects
-          </ShowMoreButton>
-        )}
-      </AnimatePresence>
+          Show more projects
+        </button>
+      )}
     </Section>
   );
-};
-
-export default Projects;
+}
