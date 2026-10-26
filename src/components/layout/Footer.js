@@ -1,35 +1,20 @@
-import React from 'react';
-import { useTheme } from '../../styles/ThemeContext';
-import { FiGithub, FiLinkedin } from 'react-icons/fi';
-
-const Footer = () => {
-  const { theme } = useTheme();
-  const currentYear = new Date().getFullYear();
-
+import React from "react";
+export default function Footer() {
   return (
-    <footer
-      className={`py-8 bg-[var(--color-bg-secondary)]`}
-    >
-      <div className='container mx-auto px-4 h-full border-t-2 border-[var(--color-card-icon)]'>
-        <div className='flex flex-col md:flex-row justify-center items-center py-4'>
-          <div className='text-center md:text-left'>
-            <p
-              className={`text-sm text-[var(--color-text-accent)]`}
-            >
-              © {currentYear} Sahil Kumar. All rights reserved.
-            </p>
-            <a href='/trading-lab/' className='text-sm text-[var(--color-text-accent)] underline'>
-              Trading research reports
-            </a>
-            <span className='text-sm text-[var(--color-text-accent)]'> · </span>
-            <a href='/trading-journal/' className='text-sm text-[var(--color-text-accent)] underline'>
-              Journal insights demo
-            </a>
+    <footer className="site-footer">
+      <div className="frame">
+        <div className="footer-meta">
+          <p>© {new Date().getFullYear()} Sahil Kumar</p>
+          <div>
+            <a href="/trading-lab/">Trading research reports</a>
+            <a href="/trading-journal/">Journal insights demo</a>
+            <a href="#hero">Back to top</a>
           </div>
         </div>
+        <p className="footer-name" aria-hidden="true">
+          Sahil Kumar
+        </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

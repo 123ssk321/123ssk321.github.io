@@ -21,3 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Local design inspection artifacts
+/.taste-skill/
+/.hallmark/
+/.hallmark-sweep.txt
+/.impeccable/review/
+/.impeccable/questions/
+/.impeccable/detector.json

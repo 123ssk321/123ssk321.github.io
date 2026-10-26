@@ -1,16 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sahil Kumar Portfolio</title>
-    <link rel="stylesheet" href="%PUBLIC_URL%/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <meta
+      name="description"
+      content="Sahil Kumar — AI engineer, data scientist and software engineer. Explore projects, research, experience and skills."
+    />
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/fonts/manrope-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-</head>
-<body>
+    <script>
+      try {
+        var t = localStorage.getItem("theme");
+        document.documentElement.classList.add(
+          t === "dark" || t === "light"
+            ? t
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light",
+        );
+      } catch (e) {
+        document.documentElement.classList.add("light");
+      }
+    </script>
+  </head>
+  <body>
     <div id="root"></div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>

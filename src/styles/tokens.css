@@ -1,0 +1,51 @@
+:root {
+  --font-body: "Manrope", sans-serif;
+  --font-display: "Manrope", sans-serif;
+  --color-paper: #faf5f8;
+  --color-paper-2: #f0e6ef;
+  --color-ink: #24182c;
+  --color-muted: #604d65;
+  --color-accent: #a32267;
+  --color-on-accent: #fff8fc;
+  --color-accent-ink: var(--color-on-accent);
+  --color-focus: #006b77;
+  --color-field: #fffafd;
+  --color-rule: #8b7088;
+  --color-clear: transparent;
+  --color-hero-ink: #24182c;
+  --hero-scrim: linear-gradient(0deg, #faf5f8 0%, #faf5f800 24%);
+  --color-selection: #eac2df;
+  --color-error: #a51d40;
+  --horizon: url("../../public/images/horizon-light.webp");
+  --container: 1400px;
+  --gutter: clamp(20px, 4vw, 64px);
+  --section-space: clamp(72px, 10vw, 144px);
+  --radius: 2px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration: 200ms;
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-muted);
+  --color-text-accent: var(--color-accent);
+  --color-bg-primary: var(--color-paper);
+  --color-bg-secondary: var(--color-paper-2);
+}
+:root.dark {
+  color-scheme: dark;
+  --color-paper: #100d18;
+  --color-paper-2: #1d1727;
+  --color-ink: #f9f1f7;
+  --color-muted: #c4afc7;
+  --color-accent: #ff86c0;
+  --color-on-accent: #291326;
+  --color-focus: #76e5ea;
+  --color-field: #231a2d;
+  --color-rule: #75647e;
+  --color-hero-ink: #fff4fb;
+  --hero-scrim: linear-gradient(0deg, #100d18 0%, #100d1800 24%);
+  --color-selection: #732950;
+  --color-error: #ff9fb7;
+  --horizon: url("../../public/images/horizon-dark.webp");
+}
+:root.light {
+  color-scheme: light;
+}
