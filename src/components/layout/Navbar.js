@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
 import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
 
@@ -72,6 +72,38 @@ const Logo = styled(motion.a)`
   text-shadow: 0 0 10px var(--color-navbar-logo-shadow);
   text-decoration: none;
   user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.12em;
+    width: 1.1em;
+    height: 1px;
+    background: var(--color-text-accent);
+    opacity: 0.9;
+    transition: width 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  .collapsible {
+    display: inline-block;
+    overflow: hidden;
+    white-space: pre;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition-duration: 0.01ms;
+    }
+  }
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -167,6 +199,12 @@ const HamburgerButton = styled(motion.button)`
   padding: 0.5rem;
   color: ${(props) => (props.theme === 'dark' ? '#fff' : '#000')};
 
+  &:focus-visible {
+    outline: 2px solid var(--color-text-accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
   @media (max-width: 768px) {
     display: flex;
     align-items: center;
@@ -232,48 +270,44 @@ const menuVariants = {
 };
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const [fullLogo, setFullLogo] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
+  const [fullLogo, setFullLogo] = useState(() => window.scrollY <= 50);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('about');
   const [shouldShowGlow, setShouldShowGlow] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
+  const mobileMenuOpenRef = useRef(false);
 
-  // Debounce function to limit the rate of scroll updates
-  const debounce = (func, wait) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
+  const closeMobileMenu = () => {
+    mobileMenuOpenRef.current = false;
+    setIsMobileMenuOpen(false);
   };
-
-  const handleScroll = useCallback(
-    debounce(() => {
-      setIsScrolled(window.scrollY > 50);
-      setFullLogo(window.scrollY <= 50);
-    }, 10),
-    []
-  );
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
       setFullLogo(window.scrollY <= 50);
-      if (isMobileMenuOpen) {
+      if (mobileMenuOpenRef.current) {
+        mobileMenuOpenRef.current = false;
         setIsMobileMenuOpen(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        mobileMenuOpenRef.current = false;
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -327,7 +361,7 @@ const Navbar = () => {
 
   const handleLogoClick = (e) => {
     e.preventDefault();
-    setIsMobileMenuOpen(false);
+    closeMobileMenu();
     setIsScrolling(true);
 
     // Clear any existing timeout
@@ -337,7 +371,7 @@ const Navbar = () => {
 
     const heroSection = document.getElementById('hero');
     if (heroSection) {
-      heroSection.scrollIntoView({ behavior: 'smooth' });
+      heroSection.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       setActiveLink('hero');
       setShouldShowGlow(false);
 
@@ -360,11 +394,11 @@ const Navbar = () => {
     // Immediately update active link and glow
     setActiveLink(sectionId);
     setShouldShowGlow(true);
-    setIsMobileMenuOpen(false);
+    closeMobileMenu();
 
     const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 
       // Reset scrolling state after animation
       scrollTimeout.current = setTimeout(() => {
@@ -383,42 +417,41 @@ const Navbar = () => {
   }, []);
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    const open = !mobileMenuOpenRef.current;
+    mobileMenuOpenRef.current = open;
+    setIsMobileMenuOpen(open);
   };
+  const navVariants = prefersReducedMotion
+    ? { closed: { opacity: 0, y: 0 }, open: { opacity: 1, y: 0 } }
+    : menuVariants;
 
   return (
     <>
-      <NavContainer initial={{ y: -100 }} animate={{ y: 0 }}>
+      <NavContainer initial={prefersReducedMotion ? false : { y: -100 }} animate={{ y: 0 }}>
         <NavContent>
           <LeftSection>
             <Logo
               theme={theme}
               href='#hero'
+              aria-label='Sahil Kumar, home'
               onClick={handleLogoClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
             >
-              <AnimatePresence mode='wait'>
-                {fullLogo ? (
-                  <motion.span
-                    key='full'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    Sahil Kumar
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key='short'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    SK
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <span aria-hidden='true'>S</span>
+              <motion.span
+                className='collapsible'
+                aria-hidden='true'
+                animate={{ width: fullLogo ? 'auto' : 0, opacity: fullLogo ? 1 : 0 }}
+                transition={{ duration: prefersReducedMotion ? 0.01 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >ahil </motion.span>
+              <span aria-hidden='true'>K</span>
+              <motion.span
+                className='collapsible'
+                aria-hidden='true'
+                animate={{ width: fullLogo ? 'auto' : 0, opacity: fullLogo ? 1 : 0 }}
+                transition={{ duration: prefersReducedMotion ? 0.01 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >umar</motion.span>
             </Logo>
           </LeftSection>
 
@@ -428,8 +461,8 @@ const Navbar = () => {
                 href='#about'
                 theme={theme}
                 className={activeLink === 'about' ? 'active' : ''}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 onClick={() => handleNavClick('about')}
                 shouldglow={shouldShowGlow}
               >
@@ -439,8 +472,8 @@ const Navbar = () => {
                 href='#projects'
                 theme={theme}
                 className={activeLink === 'projects' ? 'active' : ''}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 onClick={() => handleNavClick('projects')}
                 shouldglow={shouldShowGlow}
               >
@@ -450,8 +483,8 @@ const Navbar = () => {
                 href='#skills'
                 theme={theme}
                 className={activeLink === 'skills' ? 'active' : ''}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 onClick={() => handleNavClick('skills')}
                 shouldglow={shouldShowGlow}
               >
@@ -461,8 +494,8 @@ const Navbar = () => {
                 href='#contact'
                 theme={theme}
                 className={activeLink === 'contact' ? 'active' : ''}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
                 onClick={() => handleNavClick('contact')}
                 shouldglow={shouldShowGlow}
               >
@@ -473,8 +506,8 @@ const Navbar = () => {
                 target='_blank'
                 rel='noopener noreferrer'
                 theme={theme}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
               >
                 CV
               </NavLink>
@@ -482,13 +515,16 @@ const Navbar = () => {
           </CenterSection>
 
           <RightSection>
-            <ThemeToggle onClick={toggleTheme} theme={theme}>
+            <ThemeToggle onClick={toggleTheme} theme={theme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
               {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
             </ThemeToggle>
             <HamburgerButton
               onClick={toggleMobileMenu}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls='mobile-navigation'
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.1 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
               theme={theme}
             >
               {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -500,11 +536,14 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <MobileMenu
+            id='mobile-navigation'
+            aria-label='Mobile navigation'
+            role='navigation'
             theme={theme}
             initial='closed'
             animate='open'
             exit='closed'
-            variants={menuVariants}
+            variants={navVariants}
           >
             <MobileNavLinks>
               <MobileNavLink
@@ -540,7 +579,7 @@ const Navbar = () => {
                 Contact
               </MobileNavLink>
               <MobileNavLink
-                href='/CV-AI.pdf'
+                href='/CV.pdf'
                 target='_blank'
                 rel='noopener noreferrer'
                 theme={theme}
@@ -550,8 +589,9 @@ const Navbar = () => {
             </MobileNavLinks>
             <MobileThemeToggle
               onClick={toggleTheme}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.1 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
             >
               {theme === 'dark' ? <FiSun size={24} /> : <FiMoon size={24} />}
             </MobileThemeToggle>

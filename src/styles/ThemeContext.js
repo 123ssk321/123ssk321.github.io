@@ -12,17 +12,25 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(() => {
-        // Check if theme preference exists in localStorage
-        const savedTheme = localStorage.getItem('theme');
-        // Check if user prefers dark mode
+        let savedTheme;
+        try {
+            savedTheme = localStorage.getItem('theme');
+        } catch {
+            // Storage can be unavailable in restricted browser contexts.
+        }
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-        return savedTheme || (prefersDark ? 'dark' : 'light');
+        return savedTheme === 'light' || savedTheme === 'dark'
+            ? savedTheme
+            : (prefersDark ? 'dark' : 'light');
     });
 
     useEffect(() => {
-        // Update localStorage when theme changes
-        localStorage.setItem('theme', theme);
+        try {
+            localStorage.setItem('theme', theme);
+        } catch {
+            // The selected theme still applies for the current page session.
+        }
         // Update document class for global theme switching
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
