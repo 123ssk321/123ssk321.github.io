@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import SocialLinks from './SocialLinks';
 import HorizonBackground from './HorizonBackground';
 import ActionButton from './ActionButton';
@@ -15,6 +15,10 @@ const HeroContainer = styled.section`
   align-items: center;
   justify-content: center;
   background:var(--color-hero-bg);
+
+  @media (max-width: 768px) {
+    min-height: max(100vh, 900px);
+  }
 `;
 
 const Content = styled.div`
@@ -24,7 +28,34 @@ const Content = styled.div`
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  transform: translateY(-20vh);
+
+  @media (max-width: 768px) {
+    transform: translateY(-6vh);
+  }
 `;
+
+const usePrefersReducedMotion = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => (
+    typeof window !== 'undefined'
+      && typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ));
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return undefined;
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = (event) => setPrefersReducedMotion(event.matches);
+    if (query.addEventListener) query.addEventListener('change', updatePreference);
+    else query.addListener(updatePreference);
+    return () => {
+      if (query.removeEventListener) query.removeEventListener('change', updatePreference);
+      else query.removeListener(updatePreference);
+    };
+  }, []);
+
+  return prefersReducedMotion;
+};
 
 const Title = styled(motion.h1)`
   font-size: 4.5rem;
@@ -53,7 +84,7 @@ const Subtitle = styled(motion.p)`
 const Hero = () => {
   const { theme } = useTheme();
   const heroRef = useRef(null);
-  const prefersReducedMotion = useReducedMotion() || false;
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [isHeroVisible, setIsHeroVisible] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(!document.hidden);
   const isMotionActive = isHeroVisible && isDocumentVisible && !prefersReducedMotion;
