@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { flushSync } from 'react-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
@@ -168,10 +167,43 @@ const ThemeToggle = styled(motion.button)`
   align-items: center;
   justify-content: center;
   border-radius: 999px;
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(ellipse, color-mix(in srgb, var(--color-text-accent) 35%, transparent), transparent 72%);
+    filter: blur(6px);
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+    pointer-events: none;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  &:hover svg,
+  &:focus-visible svg {
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-text-accent) 55%, transparent));
+  }
+
+  &:active svg {
+    transform: scale(0.96);
+  }
 
   &:focus-visible {
     outline: 2px solid var(--color-text-accent);
     outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before { transition-duration: 0.01ms; }
   }
 
   @media (max-width: 768px) {
@@ -191,10 +223,43 @@ const MobileThemeToggle = styled(motion.button)`
   justify-content: center;
   border-radius: 999px;
   margin-top: 4rem;
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(ellipse, color-mix(in srgb, var(--color-text-accent) 35%, transparent), transparent 72%);
+    filter: blur(6px);
+    opacity: 0;
+    transition: opacity 250ms ease-out;
+    pointer-events: none;
+  }
+
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  &:hover svg,
+  &:focus-visible svg {
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-text-accent) 55%, transparent));
+  }
+
+  &:active svg {
+    transform: scale(0.96);
+  }
 
   &:focus-visible {
     outline: 2px solid var(--color-text-accent);
     outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before { transition-duration: 0.01ms; }
   }
 `;
 
@@ -270,6 +335,34 @@ const ThemeLandscape = ({ theme, motionActive }) => (
     `}</style>
   </svg>
 );
+
+const ThemeRipple = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  overflow: hidden;
+  pointer-events: none;
+
+  .theme-ripple-ring {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: visible;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .theme-ripple-ring circle {
+    fill: none;
+    stroke: var(--color-text-accent);
+    stroke-width: 1.75px;
+    vector-effect: non-scaling-stroke;
+    transform-box: fill-box;
+    transform-origin: center;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-text-accent) 58%, transparent));
+  }
+`;
 
 const HamburgerButton = styled(motion.button)`
   display: none;
@@ -360,7 +453,9 @@ const Navbar = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
   const mobileMenuOpenRef = useRef(false);
-  const activeThemeTransitionRef = useRef(null);
+  const themeRippleRef = useRef(null);
+  const themeRippleCircleRef = useRef(null);
+  const themeRippleAnimationRef = useRef(null);
   const themeToggleMotionActive = !prefersReducedMotion && isDocumentVisible;
 
   useEffect(() => {
@@ -369,56 +464,73 @@ const Navbar = () => {
     return () => document.removeEventListener('visibilitychange', updateVisibility);
   }, []);
 
+  useEffect(() => () => themeRippleAnimationRef.current?.cancel(), []);
+
   const closeMobileMenu = () => {
     mobileMenuOpenRef.current = false;
     setIsMobileMenuOpen(false);
   };
 
   const handleThemeToggle = (event) => {
-    const startViewTransition = document.startViewTransition;
-    if (prefersReducedMotion || typeof startViewTransition !== 'function') {
-      toggleTheme();
-      return;
-    }
-
+    const ring = themeRippleRef.current;
+    const circle = themeRippleCircleRef.current;
+    const stopCurrentRipple = () => {
+      themeRippleAnimationRef.current?.cancel();
+      themeRippleAnimationRef.current = null;
+      if (!ring || !circle) return;
+      ring.style.visibility = 'hidden';
+      ring.style.opacity = '0';
+      circle.style.transform = '';
+    };
     const buttonRect = event.currentTarget.getBoundingClientRect();
-    const x = event.detail === 0 ? buttonRect.left + buttonRect.width / 2 : event.clientX;
-    const y = event.detail === 0 ? buttonRect.top + buttonRect.height / 2 : event.clientY;
+    const x = buttonRect.left + buttonRect.width / 2;
+    const y = buttonRect.top + buttonRect.height / 2;
     const radius = Math.ceil(Math.max(
       Math.hypot(x, y),
       Math.hypot(window.innerWidth - x, y),
       Math.hypot(x, window.innerHeight - y),
       Math.hypot(window.innerWidth - x, window.innerHeight - y),
     ));
-    const rootStyle = document.documentElement.style;
-    rootStyle.setProperty('--theme-transition-x', `${x}px`);
-    rootStyle.setProperty('--theme-transition-y', `${y}px`);
-    rootStyle.setProperty('--theme-transition-radius', `${radius}px`);
+    toggleTheme();
 
-    let transition;
-    const clearTransitionOrigin = () => {
-      if (activeThemeTransitionRef.current !== transition) return;
-      activeThemeTransitionRef.current = null;
-      rootStyle.removeProperty('--theme-transition-x');
-      rootStyle.removeProperty('--theme-transition-y');
-      rootStyle.removeProperty('--theme-transition-radius');
-    };
-
-    let updateApplied = false;
-    try {
-      transition = startViewTransition(() => {
-        updateApplied = true;
-        flushSync(toggleTheme);
-      });
-      activeThemeTransitionRef.current = transition;
-      transition.finished.then(clearTransitionOrigin, clearTransitionOrigin);
-      transition.ready.catch(clearTransitionOrigin);
-    } catch {
-      rootStyle.removeProperty('--theme-transition-x');
-      rootStyle.removeProperty('--theme-transition-y');
-      rootStyle.removeProperty('--theme-transition-radius');
-      if (!updateApplied) toggleTheme();
+    const reduceMotionNow = prefersReducedMotion
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotionNow || !ring || !circle || typeof circle.animate !== 'function') {
+      stopCurrentRipple();
+      return;
     }
+
+    stopCurrentRipple();
+    ring.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+    circle.setAttribute('cx', `${x}`);
+    circle.setAttribute('cy', `${y}`);
+    circle.setAttribute('r', '28');
+    ring.style.visibility = 'visible';
+    ring.style.opacity = '0.88';
+
+    const endScale = radius / 28;
+    let animation;
+    try {
+      animation = circle.animate(
+        [
+          { transform: 'scale(0.55)', opacity: 0.88 },
+          { transform: `scale(${endScale})`, opacity: 0 },
+        ],
+        { duration: 800, easing: 'cubic-bezier(0.6, 0.05, 0.3, 1)', fill: 'forwards' },
+      );
+    } catch {
+      stopCurrentRipple();
+      return;
+    }
+    themeRippleAnimationRef.current = animation;
+    animation.onfinish = () => {
+      if (themeRippleAnimationRef.current !== animation) return;
+      animation.cancel();
+      themeRippleAnimationRef.current = null;
+      ring.style.visibility = 'hidden';
+      ring.style.opacity = '0';
+      circle.style.transform = '';
+    };
   };
 
   useEffect(() => {
@@ -673,6 +785,17 @@ const Navbar = () => {
           </RightSection>
         </NavContent>
       </NavContainer>
+
+      <ThemeRipple aria-hidden='true'>
+        <svg
+          ref={themeRippleRef}
+          className='theme-ripple-ring'
+          preserveAspectRatio='none'
+          aria-hidden='true'
+        >
+          <circle ref={themeRippleCircleRef} vectorEffect='non-scaling-stroke' />
+        </svg>
+      </ThemeRipple>
 
       <AnimatePresence>
         {isMobileMenuOpen && (

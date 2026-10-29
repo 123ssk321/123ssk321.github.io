@@ -308,32 +308,3 @@ section#skills {
 section#contact {
     background: var(--color-bg-secondary);
 }
-
-@keyframes theme-toggle-circle-reveal {
-    from {
-        clip-path: circle(0 at var(--theme-transition-x, 50%) var(--theme-transition-y, 50%));
-    }
-    to {
-        clip-path: circle(var(--theme-transition-radius, 150vmax) at var(--theme-transition-x, 50%) var(--theme-transition-y, 50%));
-    }
-}
-
-::view-transition-group(root) {
-    animation-duration: 800ms;
-}
-
-::view-transition-old(root) {
-    animation: none;
-}
-
-::view-transition-new(root) {
-    animation: theme-toggle-circle-reveal 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    ::view-transition-group(root),
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-        animation-duration: 0.01ms;
-    }
-}

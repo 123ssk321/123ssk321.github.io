@@ -37,7 +37,17 @@ const HorizonBackground = ({ theme }) => (
   <Artwork aria-hidden='true'>
     <img
       key={theme}
-      src={theme === 'light' ? '/images/neon-shore-light-v4.webp' : '/images/neon-shore-v3.webp'}
+      src={
+        theme === 'light'
+          ? '/images/neon-shore-light-v4-1672.webp'
+          : '/images/neon-shore-v3-1672.webp'
+      }
+      srcSet={
+        theme === 'light'
+          ? '/images/neon-shore-light-v4-840.webp 840w, /images/neon-shore-light-v4-1280.webp 1280w, /images/neon-shore-light-v4-1672.webp 1672w'
+          : '/images/neon-shore-v3-840.webp 840w, /images/neon-shore-v3-1280.webp 1280w, /images/neon-shore-v3-1672.webp 1672w'
+      }
+      sizes='(max-width: 768px) max(100vw, 107vh), max(135vw, 240vh)'
       alt=''
       aria-hidden='true'
       draggable='false'
