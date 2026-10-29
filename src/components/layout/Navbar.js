@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
-import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 const NavContainer = styled(motion.nav)`
   position: fixed;
@@ -157,17 +158,20 @@ const NavLink = styled(motion.a)`
 `;
 
 const ThemeToggle = styled(motion.button)`
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0;
+  min-width: 64px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-primary);
+  border-radius: 999px;
 
-  :hover {
-    color: var(--color-text-accent);
+  &:focus-visible {
+    outline: 2px solid var(--color-text-accent);
+    outline-offset: 3px;
   }
 
   @media (max-width: 768px) {
@@ -176,20 +180,96 @@ const ThemeToggle = styled(motion.button)`
 `;
 
 const MobileThemeToggle = styled(motion.button)`
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0;
+  min-width: 64px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  border-radius: 999px;
   margin-top: 4rem;
-  color: inherit;
-  :hover {
-    color: var(--color-text-accent);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-text-accent);
+    outline-offset: 3px;
   }
 `;
+
+const ThemeLandscape = ({ theme, motionActive }) => (
+  <svg
+    className='theme-landscape'
+    data-theme={theme}
+    data-motion-active={motionActive}
+    viewBox='0 0 64 35'
+    width='64'
+    height='35'
+    aria-hidden='true'
+    focusable='false'
+  >
+    <rect className='sky' width='64' height='35' rx='17.5' />
+    <g className='cloud cloud-one'>
+      <path d='M15 13.4c.2-1.8 1.7-3.1 3.4-3.1 1.4 0 2.6.8 3.1 2.1.4-.3.9-.5 1.5-.5 1.5 0 2.7 1.2 2.7 2.7H15.6c-.4-.3-.6-.7-.6-1.2Z' />
+    </g>
+    <g className='cloud cloud-two'>
+      <path d='M35.5 10.6c.2-1.4 1.4-2.5 2.9-2.5 1.2 0 2.2.7 2.6 1.7.4-.3.8-.4 1.3-.4 1.3 0 2.3 1 2.3 2.3h-8.6c-.3-.3-.5-.7-.5-1.1Z' />
+    </g>
+    <circle className='sun' cx='14' cy='17' r='6' />
+    <path className='moon' d='M50.2 4.8a7.1 7.1 0 1 0 7.4 11.1 7.5 7.5 0 0 1-7.4-11.1Z' />
+    <g className='stars'>
+      <path d='m38 5.2.8 1.7 1.8.7-1.8.8-.8 1.7-.7-1.7-1.8-.8 1.8-.7.7-1.7Z' />
+      <circle cx='44.5' cy='14.2' r='1' />
+      <circle cx='33.5' cy='13.3' r='.8' />
+    </g>
+    <path className='hill hill-back' d='M0 27.8c7.1-4.6 11.7-5.1 17.7-2.3 4.2-5.8 11-7.1 16.5-2.2 5.4-4.5 12.8-4.7 18.1-.5 4.2-2.5 7.8-2.9 11.7-1.1V35H0V27.8Z' />
+    <path className='hill hill-front' d='M0 30.5c7-3.8 13.1-4 19.5-1.1 5.4-3.7 11.9-4.1 18.2-1.3 6.8-3.8 14.1-3.7 20.2-.4 2.5-1.2 4.5-1.7 6.1-1.8V35H0v-4.5Z' />
+    <style>{`
+      .theme-landscape {
+        display: block;
+        overflow: hidden;
+        border-radius: 999px;
+        --toggle-day-sky: #67c8dc;
+        --toggle-night-sky: #28134f;
+        --toggle-cloud: #f5fcff;
+        --toggle-sun: #ffe07c;
+        --toggle-moon: #f7e8fa;
+        --toggle-stars: #fff5c4;
+        --toggle-day-hill-back: #168c91;
+        --toggle-day-hill-front: #08636c;
+        --toggle-night-hill-back: #251040;
+        --toggle-night-hill-front: #130825;
+      }
+      .theme-landscape .sky { fill: var(--toggle-day-sky); transition: fill 700ms ease; }
+      .theme-landscape .cloud { fill: var(--toggle-cloud); opacity: .96; transition: opacity 600ms ease; }
+      .theme-landscape .sun, .theme-landscape .moon { transform-box: fill-box; transform-origin: center; transition: transform 800ms cubic-bezier(.6,.05,.3,1), opacity 600ms ease; }
+      .theme-landscape .sun { fill: var(--toggle-sun); opacity: 1; transform: translateY(0); }
+      .theme-landscape .moon { fill: var(--toggle-moon); opacity: 0; transform: translateY(-30px); transition-delay: 100ms; }
+      .theme-landscape .stars { fill: var(--toggle-stars); opacity: 0; transition: opacity 600ms ease 300ms; animation: none; }
+      .theme-landscape .hill { transition: fill 700ms ease; }
+      .theme-landscape .hill-back { fill: var(--toggle-day-hill-back); }
+      .theme-landscape .hill-front { fill: var(--toggle-day-hill-front); }
+      .theme-landscape .cloud-one { animation: theme-cloud-drift-one 7s ease-in-out infinite alternate; }
+      .theme-landscape .cloud-two { animation: theme-cloud-drift-two 9s ease-in-out infinite alternate; }
+      .theme-landscape[data-theme='dark'] .sky { fill: var(--toggle-night-sky); }
+      .theme-landscape[data-theme='dark'] .sun { opacity: 0; transform: translateY(30px); }
+      .theme-landscape[data-theme='dark'] .moon { opacity: 1; transform: translateY(0); }
+      .theme-landscape[data-theme='dark'] .stars { opacity: 1; animation: theme-stars-twinkle 1.6s ease-in-out infinite alternate; }
+      .theme-landscape[data-theme='dark'] .cloud { opacity: 0; }
+      .theme-landscape[data-theme='dark'] .hill-back { fill: var(--toggle-night-hill-back); }
+      .theme-landscape[data-theme='dark'] .hill-front { fill: var(--toggle-night-hill-front); }
+      .theme-landscape[data-motion-active='false'] .stars, .theme-landscape[data-motion-active='false'] .cloud-one, .theme-landscape[data-motion-active='false'] .cloud-two { animation: none; }
+      @keyframes theme-cloud-drift-one { from { transform: translateX(3px); } to { transform: translateX(-5px); } }
+      @keyframes theme-cloud-drift-two { from { transform: translateX(-3px); } to { transform: translateX(5px); } }
+      @keyframes theme-stars-twinkle { from { opacity: .72; } to { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) {
+        .sun, .moon, .sky, .hill, .stars { transition-duration: .01ms; transition-delay: 0ms; }
+        .stars, .cloud-one, .cloud-two { animation: none; }
+      }
+    `}</style>
+  </svg>
+);
 
 const HamburgerButton = styled(motion.button)`
   display: none;
@@ -272,6 +352,7 @@ const menuVariants = {
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
+  const [isDocumentVisible, setIsDocumentVisible] = useState(() => !document.hidden);
   const [fullLogo, setFullLogo] = useState(() => window.scrollY <= 50);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('about');
@@ -279,10 +360,65 @@ const Navbar = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
   const mobileMenuOpenRef = useRef(false);
+  const activeThemeTransitionRef = useRef(null);
+  const themeToggleMotionActive = !prefersReducedMotion && isDocumentVisible;
+
+  useEffect(() => {
+    const updateVisibility = () => setIsDocumentVisible(!document.hidden);
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
 
   const closeMobileMenu = () => {
     mobileMenuOpenRef.current = false;
     setIsMobileMenuOpen(false);
+  };
+
+  const handleThemeToggle = (event) => {
+    const startViewTransition = document.startViewTransition;
+    if (prefersReducedMotion || typeof startViewTransition !== 'function') {
+      toggleTheme();
+      return;
+    }
+
+    const buttonRect = event.currentTarget.getBoundingClientRect();
+    const x = event.detail === 0 ? buttonRect.left + buttonRect.width / 2 : event.clientX;
+    const y = event.detail === 0 ? buttonRect.top + buttonRect.height / 2 : event.clientY;
+    const radius = Math.ceil(Math.max(
+      Math.hypot(x, y),
+      Math.hypot(window.innerWidth - x, y),
+      Math.hypot(x, window.innerHeight - y),
+      Math.hypot(window.innerWidth - x, window.innerHeight - y),
+    ));
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty('--theme-transition-x', `${x}px`);
+    rootStyle.setProperty('--theme-transition-y', `${y}px`);
+    rootStyle.setProperty('--theme-transition-radius', `${radius}px`);
+
+    let transition;
+    const clearTransitionOrigin = () => {
+      if (activeThemeTransitionRef.current !== transition) return;
+      activeThemeTransitionRef.current = null;
+      rootStyle.removeProperty('--theme-transition-x');
+      rootStyle.removeProperty('--theme-transition-y');
+      rootStyle.removeProperty('--theme-transition-radius');
+    };
+
+    let updateApplied = false;
+    try {
+      transition = startViewTransition(() => {
+        updateApplied = true;
+        flushSync(toggleTheme);
+      });
+      activeThemeTransitionRef.current = transition;
+      transition.finished.then(clearTransitionOrigin, clearTransitionOrigin);
+      transition.ready.catch(clearTransitionOrigin);
+    } catch {
+      rootStyle.removeProperty('--theme-transition-x');
+      rootStyle.removeProperty('--theme-transition-y');
+      rootStyle.removeProperty('--theme-transition-radius');
+      if (!updateApplied) toggleTheme();
+    }
   };
 
   useEffect(() => {
@@ -515,8 +651,13 @@ const Navbar = () => {
           </CenterSection>
 
           <RightSection>
-            <ThemeToggle onClick={toggleTheme} theme={theme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
-              {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
+            <ThemeToggle
+              onClick={handleThemeToggle}
+              theme={theme}
+              aria-label='Dark theme'
+              aria-pressed={theme === 'dark'}
+            >
+              <ThemeLandscape theme={theme} motionActive={themeToggleMotionActive} />
             </ThemeToggle>
             <HamburgerButton
               onClick={toggleMobileMenu}
@@ -588,12 +729,13 @@ const Navbar = () => {
               </MobileNavLink>
             </MobileNavLinks>
             <MobileThemeToggle
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+              onClick={handleThemeToggle}
+              aria-label='Dark theme'
+              aria-pressed={theme === 'dark'}
               whileHover={prefersReducedMotion ? undefined : { scale: 1.1 }}
               whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
             >
-              {theme === 'dark' ? <FiSun size={24} /> : <FiMoon size={24} />}
+              <ThemeLandscape theme={theme} motionActive={themeToggleMotionActive} />
             </MobileThemeToggle>
           </MobileMenu>
         )}

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-const IMAGE_SRC = '/images/neon-shore-v3.webp';
+const DARK_IMAGE_SRC = '/images/neon-shore-v3.webp';
+const LIGHT_IMAGE_SRC = '/images/neon-shore-light-v4.webp';
+const IMAGE_ZOOM = 1.35;
 const MAX_DPR = 1.25;
 const MAX_DESKTOP_WIDTH = 1100;
 const MAX_MOBILE_WIDTH = 660;
@@ -20,17 +22,21 @@ const FRAGMENT_SHADER = `
   varying vec2 vUv;
   uniform sampler2D uImage;
   uniform vec2 uCover;
+  uniform vec2 uCoverOffset;
   uniform float uImageAspect;
+  uniform float uViewportAspect;
   uniform float uSunDrift;
   uniform float uTime;
   uniform float uMotion;
+  uniform vec2 uPointer;
+  uniform float uRippleTime;
 
   float smoothMask(float edgeA, float edgeB, float value) {
     return smoothstep(edgeA, edgeB, value);
   }
 
   void main() {
-    vec2 imageUv = (vUv - 0.5) * uCover + 0.5;
+    vec2 imageUv = (vUv - 0.5) * uCover + 0.5 + uCoverOffset;
     float topDown = 1.0 - imageUv.y;
     float waterDepth = smoothMask(0.598, 0.622, topDown);
     float depth = clamp((topDown - 0.61) / 0.17, 0.0, 1.0);
@@ -53,11 +59,19 @@ const FRAGMENT_SHADER = `
     float laneWidth = mix(0.045, 0.19, depth);
     float lane = exp(-pow((imageUv.x - 0.5) / laneWidth, 2.0));
     float ripplePhase = imageUv.y * 250.0 - uTime * 2.2 + sin(imageUv.x * 18.0) * 1.2;
-    float ripples = pow(max(0.0, sin(ripplePhase)), 18.0) * (0.12 + 0.34 * lane) * water * uMotion;
+    float ambientRipples = pow(max(0.0, sin(ripplePhase)), 16.0) * (0.2 + 0.42 * lane) * water * uMotion;
+    vec2 screenPointer = vec2(vUv.x, 1.0 - vUv.y);
+    vec2 rippleDelta = (screenPointer - uPointer) * vec2(uViewportAspect, 1.0);
+    float rippleDistance = length(rippleDelta);
+    float rippleAge = max(uRippleTime, 0.0);
+    float rippleEnvelope = exp(-rippleAge * 1.65) * (1.0 - smoothstep(1.35, 1.8, rippleAge));
+    float pointerRipple = exp(-pow((rippleDistance - rippleAge * 0.34) / 0.012, 2.0)) * rippleEnvelope;
+    pointerRipple += exp(-pow((rippleDistance - rippleAge * 0.21 - 0.025) / 0.009, 2.0)) * rippleEnvelope * 0.48;
+    float ripples = ambientRipples + pointerRipple * water * (0.55 + lane * 0.75);
     float lowSheen = (0.5 + 0.5 * sin(imageUv.y * 72.0 - uTime * 0.7 + imageUv.x * 9.0))
                    * lane * water * uMotion * 0.045;
     color.rgb += vec3(0.12, 0.68, 0.88) * (ripples + lowSheen * 0.42);
-    color.rgb += vec3(0.9, 0.24, 0.55) * ripples * lane * 0.2;
+    color.rgb += vec3(0.9, 0.24, 0.55) * (ambientRipples * lane * 0.2 + pointerRipple * water * 0.12);
 
     float sunField = exp(-pow(sunDistance / 0.2, 2.0));
     float breath = (0.5 + 0.5 * sin(uTime * 0.42)) * uMotion;
@@ -97,17 +111,19 @@ const createProgram = (gl) => {
   return program;
 };
 
-const SunsetCanvas = ({ isMotionActive }) => {
+const SunsetCanvas = ({ theme, isMotionActive, interactionRef }) => {
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   const animationRef = useRef(0);
-  const [imageReady, setImageReady] = useState(false);
+  const [loadedImageSrc, setLoadedImageSrc] = useState(null);
   const [contextVersion, setContextVersion] = useState(0);
+  const imageSrc = theme === 'light' ? LIGHT_IMAGE_SRC : DARK_IMAGE_SRC;
+  const imageReady = loadedImageSrc === imageSrc;
 
   const markImageReady = useCallback(() => {
     const image = imageRef.current;
-    if (image?.complete && image.naturalWidth > 0) setImageReady(true);
-  }, []);
+    if (image?.complete && image.naturalWidth > 0) setLoadedImageSrc(imageSrc);
+  }, [imageSrc]);
 
   useEffect(() => {
     markImageReady();
@@ -132,6 +148,12 @@ const SunsetCanvas = ({ isMotionActive }) => {
     let sunDriftUniform;
     let timeUniform;
     let motionUniform;
+    let pointerUniform;
+    let rippleTimeUniform;
+    let coverOffsetUniform;
+    let viewportAspectUniform;
+    let wakeRender;
+    const activeInteraction = interactionRef?.current;
 
     const setCanvasUnavailable = () => {
       canvas.dataset.ready = 'false';
@@ -145,6 +167,7 @@ const SunsetCanvas = ({ isMotionActive }) => {
     };
 
     const onContextRestored = () => {
+      canvas.dataset.ready = 'false';
       setContextVersion((version) => version + 1);
     };
 
@@ -184,10 +207,14 @@ const SunsetCanvas = ({ isMotionActive }) => {
       gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
       uniforms.image = gl.getUniformLocation(program, 'uImage');
       coverUniform = gl.getUniformLocation(program, 'uCover');
+      coverOffsetUniform = gl.getUniformLocation(program, 'uCoverOffset');
       imageAspectUniform = gl.getUniformLocation(program, 'uImageAspect');
+      viewportAspectUniform = gl.getUniformLocation(program, 'uViewportAspect');
       sunDriftUniform = gl.getUniformLocation(program, 'uSunDrift');
       timeUniform = gl.getUniformLocation(program, 'uTime');
       motionUniform = gl.getUniformLocation(program, 'uMotion');
+      pointerUniform = gl.getUniformLocation(program, 'uPointer');
+      rippleTimeUniform = gl.getUniformLocation(program, 'uRippleTime');
       gl.uniform1i(uniforms.image, 0);
       gl.uniform1f(imageAspectUniform, image.naturalWidth / image.naturalHeight);
       gl.activeTexture(gl.TEXTURE0);
@@ -208,9 +235,19 @@ const SunsetCanvas = ({ isMotionActive }) => {
         }
         const viewportAspect = rect.width / rect.height;
         const imageAspect = image.naturalWidth / image.naturalHeight;
-        const coverX = viewportAspect < imageAspect ? viewportAspect / imageAspect : 1;
-        const coverY = viewportAspect > imageAspect ? imageAspect / viewportAspect : 1;
+        gl.uniform1f(viewportAspectUniform, viewportAspect);
+        const baseCoverX = viewportAspect < imageAspect ? viewportAspect / imageAspect : 1;
+        const baseCoverY = viewportAspect > imageAspect ? imageAspect / viewportAspect : 1;
+        const coverX = baseCoverX / IMAGE_ZOOM;
+        const coverY = baseCoverY / IMAGE_ZOOM;
         gl.uniform2f(coverUniform, coverX, coverY);
+        const originX = window.innerWidth <= 768 ? 0.5 : 0;
+        const originY = 0.3;
+        gl.uniform2f(
+          coverOffsetUniform,
+          (originX - 0.5) * baseCoverX * (1 - 1 / IMAGE_ZOOM),
+          (originY - 0.5) * baseCoverY * (1 - 1 / IMAGE_ZOOM),
+        );
         gl.uniform1f(sunDriftUniform, 4 / (rect.height / coverY));
         if (animationRef.current) cancelAnimationFrame(animationRef.current);
         animationRef.current = requestAnimationFrame((now) => render(now, true));
@@ -222,13 +259,22 @@ const SunsetCanvas = ({ isMotionActive }) => {
         if (force || elapsed >= FRAME_INTERVAL - 0.5) {
           lastFrameTime = now;
           gl.uniform1f(timeUniform, (now - startTime) / 1000);
+          const interaction = interactionRef?.current;
+          const rippleAge = interaction ? (now / 1000) - interaction.time : 10;
           gl.uniform1f(motionUniform, isMotionActive ? 1 : 0);
+          gl.uniform2f(pointerUniform, interaction?.x ?? 0.5, interaction?.y ?? 0.65);
+          gl.uniform1f(rippleTimeUniform, rippleAge);
           gl.drawArrays(gl.TRIANGLES, 0, 6);
           canvas.dataset.ready = 'true';
         }
         if (isMotionActive) animationRef.current = requestAnimationFrame(render);
         else animationRef.current = 0;
       };
+
+      wakeRender = () => {
+        if (!animationRef.current && !disposed) animationRef.current = requestAnimationFrame(render);
+      };
+      if (activeInteraction) activeInteraction.wake = wakeRender;
 
       resize();
       if (typeof ResizeObserver !== 'undefined') {
@@ -243,6 +289,7 @@ const SunsetCanvas = ({ isMotionActive }) => {
         window.removeEventListener('resize', resize);
         canvas.removeEventListener('webglcontextlost', onContextLost);
         canvas.removeEventListener('webglcontextrestored', onContextRestored);
+        if (activeInteraction?.wake === wakeRender) activeInteraction.wake = undefined;
         if (gl && !gl.isContextLost()) {
           if (buffer) gl.deleteBuffer(buffer);
           if (texture) gl.deleteTexture(texture);
@@ -260,18 +307,21 @@ const SunsetCanvas = ({ isMotionActive }) => {
       return () => {
         canvas.removeEventListener('webglcontextlost', onContextLost);
         canvas.removeEventListener('webglcontextrestored', onContextRestored);
+        if (activeInteraction?.wake === wakeRender) activeInteraction.wake = undefined;
       };
     }
-  }, [imageReady, isMotionActive, contextVersion]);
+  }, [imageReady, imageSrc, interactionRef, isMotionActive, contextVersion]);
 
   return (
     <>
       <img
+        key={imageSrc}
         ref={imageRef}
-        src={IMAGE_SRC}
-        alt='Neon sunset over a jagged coast and reflective ocean'
+        src={imageSrc}
+        alt=''
+        aria-hidden='true'
         onLoad={markImageReady}
-        onError={() => setImageReady(false)}
+        onError={() => setLoadedImageSrc(null)}
         draggable='false'
       />
       <canvas ref={canvasRef} data-ready='false' />
