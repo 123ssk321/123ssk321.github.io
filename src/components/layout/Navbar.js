@@ -345,22 +345,21 @@ const ThemeRipple = styled.div`
 
   .theme-ripple-ring {
     position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: visible;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      transparent 0 37%,
+      color-mix(in srgb, var(--color-text-accent) 16%, transparent) 41%,
+      color-mix(in srgb, var(--color-text-accent) 52%, transparent) 45%,
+      color-mix(in srgb, var(--color-text-accent) 78%, transparent) 48%,
+      color-mix(in srgb, var(--color-text-accent) 70%, transparent) 51%,
+      color-mix(in srgb, var(--color-text-accent) 38%, transparent) 57%,
+      color-mix(in srgb, var(--color-text-accent) 13%, transparent) 66%,
+      transparent 74%);
     opacity: 0;
     visibility: hidden;
-  }
-
-  .theme-ripple-ring circle {
-    fill: none;
-    stroke: var(--color-text-accent);
-    stroke-width: 1.75px;
-    vector-effect: non-scaling-stroke;
-    transform-box: fill-box;
-    transform-origin: center;
-    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-text-accent) 58%, transparent));
   }
 `;
 
@@ -454,7 +453,6 @@ const Navbar = () => {
   const scrollTimeout = useRef(null);
   const mobileMenuOpenRef = useRef(false);
   const themeRippleRef = useRef(null);
-  const themeRippleCircleRef = useRef(null);
   const themeRippleAnimationRef = useRef(null);
   const themeToggleMotionActive = !prefersReducedMotion && isDocumentVisible;
 
@@ -473,14 +471,14 @@ const Navbar = () => {
 
   const handleThemeToggle = (event) => {
     const ring = themeRippleRef.current;
-    const circle = themeRippleCircleRef.current;
     const stopCurrentRipple = () => {
       themeRippleAnimationRef.current?.cancel();
       themeRippleAnimationRef.current = null;
-      if (!ring || !circle) return;
+      if (!ring) return;
       ring.style.visibility = 'hidden';
       ring.style.opacity = '0';
-      circle.style.transform = '';
+      ring.style.transform = '';
+      ring.style.willChange = '';
     };
     const buttonRect = event.currentTarget.getBoundingClientRect();
     const x = buttonRect.left + buttonRect.width / 2;
@@ -495,28 +493,27 @@ const Navbar = () => {
 
     const reduceMotionNow = prefersReducedMotion
       || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotionNow || !ring || !circle || typeof circle.animate !== 'function') {
+    if (reduceMotionNow || !ring || typeof ring.animate !== 'function') {
       stopCurrentRipple();
       return;
     }
 
     stopCurrentRipple();
-    ring.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
-    circle.setAttribute('cx', `${x}`);
-    circle.setAttribute('cy', `${y}`);
-    circle.setAttribute('r', '28');
+    ring.style.left = `${x}px`;
+    ring.style.top = `${y}px`;
     ring.style.visibility = 'visible';
     ring.style.opacity = '0.88';
+    ring.style.willChange = 'transform, opacity';
 
-    const endScale = radius / 28;
+    const endScale = (radius * 2.2) / 10;
     let animation;
     try {
-      animation = circle.animate(
+      animation = ring.animate(
         [
-          { transform: 'scale(0.55)', opacity: 0.88 },
+          { transform: 'scale(0)', opacity: 0.95 },
           { transform: `scale(${endScale})`, opacity: 0 },
         ],
-        { duration: 800, easing: 'cubic-bezier(0.6, 0.05, 0.3, 1)', fill: 'forwards' },
+        { duration: 800, easing: 'ease-out', fill: 'forwards' },
       );
     } catch {
       stopCurrentRipple();
@@ -529,7 +526,8 @@ const Navbar = () => {
       themeRippleAnimationRef.current = null;
       ring.style.visibility = 'hidden';
       ring.style.opacity = '0';
-      circle.style.transform = '';
+      ring.style.transform = '';
+      ring.style.willChange = '';
     };
   };
 
@@ -787,14 +785,7 @@ const Navbar = () => {
       </NavContainer>
 
       <ThemeRipple aria-hidden='true'>
-        <svg
-          ref={themeRippleRef}
-          className='theme-ripple-ring'
-          preserveAspectRatio='none'
-          aria-hidden='true'
-        >
-          <circle ref={themeRippleCircleRef} vectorEffect='non-scaling-stroke' />
-        </svg>
+        <span ref={themeRippleRef} className='theme-ripple-ring' />
       </ThemeRipple>
 
       <AnimatePresence>

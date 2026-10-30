@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const TRAIL_LIFETIME = 200;
-const MAX_TRAIL_POINTS = 180;
+const MAX_TRAIL_POINTS = 96;
+const TRAIL_START_SPEED = 1.05;
+const TRAIL_RELEASE_SPEED = 0.68;
 const CURSOR_ATTRIBUTE = 'data-cursor-dot-visible';
 
 const CursorGlobalStyle = createGlobalStyle`
@@ -60,22 +62,33 @@ const CursorLayer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 8px;
-    height: 8px;
-    margin: -4px;
+    width: 10px;
+    height: 10px;
+    margin: -5px;
     box-sizing: border-box;
     border-radius: 50%;
     background: var(--color-text-accent);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--color-text-accent) 72%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-text-accent) 72%, transparent);
+  }
+
+  .cursor-core[data-interactive='true']::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    margin: -8px;
+    box-sizing: border-box;
+    border: 1px solid color-mix(in srgb, var(--color-text-accent) 68%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-text-accent) 48%, transparent);
   }
 
   .cursor-core[data-interactive='true']::before {
-    width: 12px;
-    height: 12px;
-    margin: -6px;
-    background: color-mix(in srgb, var(--color-text-accent) 42%, transparent);
+    background: var(--color-text-accent);
     border: 1px solid var(--color-text-accent);
-    box-shadow: 0 0 16px color-mix(in srgb, var(--color-text-accent) 82%, transparent);
   }
 
   @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
@@ -105,8 +118,16 @@ const CursorGlow = () => {
     let height = 0;
     let pixelRatio = 1;
     let accent = '#33ffc7';
+    let lastDrawBounds = null;
+    let lastPointer = null;
+    let lastPointerAt = 0;
+    let lastFrameAt = 0;
+    let pointerSpeed = 0;
+    let trailStrength = 0;
+    let trailActive = false;
 
     const setVisible = (value) => {
+      if (visible === value) return;
       visible = value;
       layerRef.current?.setAttribute('data-visible', String(value));
       if (value) document.documentElement.setAttribute(CURSOR_ATTRIBUTE, 'true');
@@ -130,6 +151,7 @@ const CursorGlow = () => {
       canvas.height = Math.round(height * pixelRatio);
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       context.clearRect(0, 0, width, height);
+      lastDrawBounds = null;
       refreshAccent();
     };
 
@@ -140,48 +162,89 @@ const CursorGlow = () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       frameRef.current = 0;
       points.length = 0;
-      context?.clearRect(0, 0, width, height);
+      if (lastDrawBounds) {
+        context?.clearRect(lastDrawBounds.x, lastDrawBounds.y, lastDrawBounds.width, lastDrawBounds.height);
+        lastDrawBounds = null;
+      }
+      lastPointer = null;
+      lastPointerAt = 0;
+      lastFrameAt = 0;
+      pointerSpeed = 0;
+      trailStrength = 0;
+      trailActive = false;
       coreRef.current?.removeAttribute('data-interactive');
       setVisible(false);
     };
 
     const drawTrail = (now) => {
+      frameRef.current = 0;
       if (!context || !canvas || !visible || !enabled || document.hidden) {
         stop();
         return;
       }
 
       while (points.length && now - points[0].at > TRAIL_LIFETIME) points.shift();
-      context.clearRect(0, 0, width, height);
+      if (lastDrawBounds) {
+        context.clearRect(lastDrawBounds.x, lastDrawBounds.y, lastDrawBounds.width, lastDrawBounds.height);
+        lastDrawBounds = null;
+      }
+      if (points.length < 2) return;
+
+      const elapsed = lastFrameAt ? Math.min(now - lastFrameAt, 40) : 16;
+      lastFrameAt = now;
+      const strengthTarget = trailActive && now - lastPointerAt < 42
+        ? Math.max(0.2, Math.min(1, (pointerSpeed - TRAIL_RELEASE_SPEED) / 2.2))
+        : 0;
+      const strengthTau = strengthTarget > trailStrength ? 34 : 92;
+      trailStrength += (strengthTarget - trailStrength) * (1 - Math.exp(-elapsed / strengthTau));
+
+      if (trailStrength < 0.012 && !strengthTarget) {
+        trailStrength = 0;
+        lastFrameAt = 0;
+        return;
+      }
+
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+      points.forEach((point) => {
+        minX = Math.min(minX, point.x);
+        minY = Math.min(minY, point.y);
+        maxX = Math.max(maxX, point.x);
+        maxY = Math.max(maxY, point.y);
+      });
+      const padding = 24;
+      lastDrawBounds = {
+        x: minX - padding,
+        y: minY - padding,
+        width: maxX - minX + padding * 2,
+        height: maxY - minY + padding * 2,
+      };
+
       context.lineCap = 'round';
       context.lineJoin = 'round';
       context.strokeStyle = accent;
-
-      for (let index = 1; index < points.length; index += 1) {
-        const start = points[index - 1];
-        const end = points[index];
-        const fade = Math.max(0, 1 - (now - end.at) / TRAIL_LIFETIME);
-        if (!fade) continue;
-
-        context.beginPath();
-        context.moveTo(start.x, start.y);
-        context.lineTo(end.x, end.y);
-        context.shadowColor = accent;
-        context.shadowBlur = 22;
-        context.lineWidth = 12;
-        context.globalAlpha = fade * 0.2;
-        context.stroke();
-
-        context.shadowBlur = 7;
-        context.lineWidth = 2.5;
-        context.globalAlpha = fade * 0.56;
-        context.stroke();
+      context.beginPath();
+      context.moveTo(points[0].x, points[0].y);
+      for (let index = 1; index < points.length - 1; index += 1) {
+        const point = points[index];
+        const next = points[index + 1];
+        context.quadraticCurveTo(point.x, point.y, (point.x + next.x) / 2, (point.y + next.y) / 2);
       }
+      const lastPoint = points[points.length - 1];
+      context.lineTo(lastPoint.x, lastPoint.y);
+      context.shadowColor = accent;
+      context.shadowBlur = 16;
+      context.lineWidth = 2.5;
+      const trailAgeFade = Math.max(0, 1 - (now - lastPoint.at) / TRAIL_LIFETIME);
+      context.globalAlpha = trailStrength * trailAgeFade * 0.76;
+      context.stroke();
 
       context.globalAlpha = 1;
       context.shadowBlur = 0;
       if (points.length > 1) frameRef.current = requestAnimationFrame(drawTrail);
-      else frameRef.current = 0;
+      else lastFrameAt = 0;
     };
 
     const handlePointerMove = (event) => {
@@ -191,21 +254,32 @@ const CursorGlow = () => {
       }
 
       const now = performance.now();
-      while (points.length && now - points[0].at > TRAIL_LIFETIME) points.shift();
-      const point = { x: event.clientX, y: event.clientY, at: now };
+      const eventTime = Number.isFinite(event.timeStamp) && Math.abs(now - event.timeStamp) < 2000
+        ? event.timeStamp
+        : now;
+      const point = { x: event.clientX, y: event.clientY, at: eventTime };
+      const pointerStep = lastPointer ? Math.hypot(point.x - lastPointer.x, point.y - lastPointer.y) : 0;
+      const pointerElapsed = lastPointer ? Math.max(1, point.at - lastPointer.at) : 1;
+      pointerSpeed = pointerStep / pointerElapsed;
+      lastPointer = point;
+      lastPointerAt = eventTime;
+      if (!trailActive && pointerSpeed >= TRAIL_START_SPEED) trailActive = true;
+      else if (trailActive && pointerSpeed < TRAIL_RELEASE_SPEED) trailActive = false;
+
+      while (points.length && eventTime - points[0].at > TRAIL_LIFETIME) points.shift();
       const previous = points[points.length - 1];
       coreRef.current?.style.setProperty('transform', `translate3d(${point.x}px, ${point.y}px, 0)`);
       const target = event.target instanceof Element ? event.target : null;
       const isInteractive = Boolean(target?.closest('a, button, [role="button"], [data-cursor-hover]'));
-      if (isInteractive) coreRef.current?.setAttribute('data-interactive', 'true');
-      else coreRef.current?.removeAttribute('data-interactive');
+      if ((coreRef.current?.getAttribute('data-interactive') === 'true') !== isInteractive) {
+        if (isInteractive) coreRef.current?.setAttribute('data-interactive', 'true');
+        else coreRef.current?.removeAttribute('data-interactive');
+      }
       setVisible(true);
 
-      if (!previous || Math.hypot(point.x - previous.x, point.y - previous.y) >= 0.8) {
-        points.push(point);
+      if (trailActive && pointerSpeed >= TRAIL_RELEASE_SPEED) {
+        if (!previous || Math.hypot(point.x - previous.x, point.y - previous.y) >= 1) points.push(point);
         if (points.length > MAX_TRAIL_POINTS) points.shift();
-      } else {
-        previous.at = now;
       }
 
       if (points.length > 1 && !frameRef.current) frameRef.current = requestAnimationFrame(drawTrail);
