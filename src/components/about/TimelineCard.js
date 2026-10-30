@@ -8,7 +8,6 @@ import {
   MdCalendarToday,
   MdGrade,
   MdBusinessCenter,
-  MdVolunteerActivism,
 } from 'react-icons/md';
 
 const Card = styled(motion.div)`

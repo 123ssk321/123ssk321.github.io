@@ -5,15 +5,18 @@ import About from './components/about/About';
 import Projects from './components/projects/Projects';
 import Skills from './components/skills/Skills';
 import Contact from './components/contact/Contact';
+import UnderseaAtmosphere from './components/layout/UnderseaAtmosphere';
 
 function App() {
     return (
         <Layout>
             <Hero />
-            <About />
-            <Projects />
-            <Skills />
-            <Contact />
+            <UnderseaAtmosphere>
+                <About />
+                <Projects />
+                <Skills />
+                <Contact />
+            </UnderseaAtmosphere>
         </Layout>
     );
 }

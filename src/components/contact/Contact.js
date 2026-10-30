@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import ContactForm from './ContactForm';
 import { useTheme } from '../../styles/ThemeContext';
 import Section from '../layout/Section';
@@ -43,26 +42,6 @@ const Description = styled.p`
   line-height: 1.6;
   margin-bottom: 2rem;
   color: var(--color-text-secondary);
-`;
-
-const SocialLinkss = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;
-
-const SocialLink = styled(motion.a)`
-  color: ${(props) => (props.theme === 'dark' ? '#fff' : '#333')};
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: ${(props) => (props.theme === 'dark' ? '#00ffff' : '#0066ff')};
-  }
 `;
 
 const FormWrapper = styled(motion.div)`

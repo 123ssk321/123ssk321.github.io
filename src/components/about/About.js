@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiX } from 'react-icons/fi';
+import { AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../styles/ThemeContext';
 import Section from '../layout/Section';
 import SectionTab, { TabContainer } from '../layout/SectionTab';

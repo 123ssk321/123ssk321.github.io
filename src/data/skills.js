@@ -30,7 +30,6 @@ import { GrMysql } from 'react-icons/gr';
 import { DiRedis } from 'react-icons/di';
 import { FaJava } from 'react-icons/fa';
 import { VscAzure } from 'react-icons/vsc';
-import { DiC } from 'react-icons/di';
 import {
   FaUsers,
   FaLightbulb,

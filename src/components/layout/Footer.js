@@ -1,9 +1,6 @@
 import React from 'react';
-import { useTheme } from '../../styles/ThemeContext';
-import { FiGithub, FiLinkedin } from 'react-icons/fi';
 
 const Footer = () => {
-  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   return (
